@@ -39,14 +39,17 @@ jobs:
         pip3 install coverage
         pip3 install pipenv
         pipenv install --dev
-        source "$(pipenv --venv)"/bin/activate
     - name: Linting
       run: |
+        source "$(pipenv --venv)"/bin/activate
         flake8 .
     - name: Migrations
       run: |
+        source "$(pipenv --venv)"/bin/activate
         python manage.py makemigrations
         python manage.py migrate
     - name: Coverage
       run: |
+        source "$(pipenv --venv)"/bin/activate
+        pip3 install coverage
         coverage run --source='.' manage.py test
