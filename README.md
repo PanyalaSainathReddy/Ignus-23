@@ -1,6 +1,5 @@
 ## Requirements:
 - Python 3.8
-- Django 3.2.9
 - Other dependencies in `Pipfile`
 
 ## Steps to setup locally:

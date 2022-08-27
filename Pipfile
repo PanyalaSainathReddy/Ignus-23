@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 python-decouple = "*"
 flake8-django = "*"
+django = "*"
 
 [dev-packages]
 
