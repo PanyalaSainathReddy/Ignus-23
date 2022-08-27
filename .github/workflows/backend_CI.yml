@@ -1,0 +1,52 @@
+name: Backend CI
+
+on: [push, pull_request]
+
+env:
+  DJANGO_SETTINGS_MODULE: ignus.settings
+  DJANGO_SECRET_KEY: "django-insecure-g55)tc@oib8s^@9#&l+idn$w=bgcjlxy18lqx@9@2k117s0o+#"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: ignususer
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: ignusdb
+        ports:
+        # will assign a random free host port
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Setup environment variables
+      run: |
+        cp .env.example .env
+        export DJANGO_SETTINGS_MODULE=ignus.settings
+    - name: Install dependencies
+      run: |
+        sudo apt-get install libpq-dev 
+        pip3 install coverage
+        pip3 install pipenv
+        pipenv install --dev
+        source "$(pipenv --venv)"/bin/activate
+    - name: Linting
+      run: |
+        flake8 .
+    - name: Migrations
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+    - name: Coverage
+      run: |
+        coverage run --source='.' manage.py test
