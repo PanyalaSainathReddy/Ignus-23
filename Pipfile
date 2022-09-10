@@ -7,6 +7,8 @@ name = "pypi"
 python-decouple = "*"
 flake8-django = "*"
 django = "*"
+django-ckeditor = "*"
+django-versatileimagefield = "*"
 
 [dev-packages]
 
