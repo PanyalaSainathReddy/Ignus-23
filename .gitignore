@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# media files
+media/
+
+#migrations
+**/migrations/*
+!**/migrations/__init__.py
+
 # C extensions
 *.so
 
