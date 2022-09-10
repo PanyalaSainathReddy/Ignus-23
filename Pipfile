@@ -7,6 +7,7 @@ name = "pypi"
 python-decouple = "*"
 flake8-django = "*"
 django = "*"
+pillow = "*"
 
 [dev-packages]
 
