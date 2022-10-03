@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "742c229c47564a7d9bb2326a981cfbce9d25596a2c24d817f13799a9f4880cc7"
+            "sha256": "3446d0fcd6d51597527f28c66694e5ef491183940dc918f59a94bd33ee23b791"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -70,13 +70,13 @@
             "markers": "python_version >= '3.6'",
             "version": "==2.0.0"
         },
-        "django-versatileimagefield": {
+        "djangorestframework": {
             "hashes": [
-                "sha256:03766f4d2332f192978879fdb196e18c53e6ccef6c55c5c26b59747b76a97288",
-                "sha256:6569d5c3e13c69ab8912ba5100084aa5abcdcffb8d1f5abc085b226e7bbd65b3"
+                "sha256:579a333e6256b09489cbe0a067e66abe55c6595d8926be6b99423786334350c8",
+                "sha256:eb63f58c9f218e1a7d064d17a70751f528ed4e1d35547fdade9aaf4cd103fd08"
             ],
             "index": "pypi",
-            "version": "==2.2"
+            "version": "==3.14.0"
         },
         "flake8": {
             "hashes": [
@@ -163,7 +163,7 @@
                 "sha256:fa768eff5f9f958270b081bb33581b4b569faabf8774726b283edb06617101dc",
                 "sha256:fac2d65901fb0fdf20363fbd345c01958a742f2dc62a8dd4495af66e3ff502a4"
             ],
-            "markers": "python_version >= '3.7'",
+            "index": "pypi",
             "version": "==9.2.0"
         },
         "pycodestyle": {
@@ -190,21 +190,20 @@
             "index": "pypi",
             "version": "==3.6"
         },
-        "python-magic": {
+        "pytz": {
             "hashes": [
-                "sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b",
-                "sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"
+                "sha256:2c0784747071402c6e99f0bafdb7da0fa22645f06554c7ae06bf6358897e9c91",
+                "sha256:48ce799d83b6f8aab2020e369b627446696619e79645419610b9facd909b3174"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
-            "version": "==0.4.27"
+            "version": "==2022.4"
         },
         "sqlparse": {
             "hashes": [
-                "sha256:0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae",
-                "sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d"
+                "sha256:0323c0ec29cd52bceabc1b4d9d579e311f3e4961b98d174201d5622a23b85e34",
+                "sha256:69ca804846bb114d2ec380e4360a8a340db83f0ccf3afceeb1404df028f57268"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==0.4.2"
+            "version": "==0.4.3"
         }
     },
     "develop": {}

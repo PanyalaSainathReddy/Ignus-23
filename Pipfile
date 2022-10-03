@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-decouple = "*"
-flake8-django = "*"
 django = "*"
+djangorestframework = "*"
+pillow = "*"
+python-decouple = "*"
 django-ckeditor = "*"
-django-versatileimagefield = "*"
+flake8-django = "*"
 
 [dev-packages]
 
