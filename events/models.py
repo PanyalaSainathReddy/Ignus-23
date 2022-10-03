@@ -1,7 +1,6 @@
 from django.db import models
 # from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
-from versatileimagefield.fields import VersatileImageField
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -32,7 +31,7 @@ class EventType(models.Model):
     # )
     name = models.CharField(max_length=128)
     # parent_type = models.CharField(max_length=1, choices=ETYPE_CHOICES, verbose_name='event type')
-    cover = VersatileImageField(upload_to='event_type')
+    cover = models.ImageField(upload_to='event_type')
     slug = models.SlugField()
     about = RichTextUploadingField()
 
@@ -53,7 +52,7 @@ class Event(models.Model):
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
     unique_id = models.CharField(max_length=8)
-    cover = VersatileImageField(upload_to='event', null=True, blank=True)
+    cover = models.ImageField(upload_to='event', null=True, blank=True)
     pdf = models.FileField(upload_to='pdf', null=True, blank=True)
     # organisers = models.ManyToManyField(AdminProfile)
     max_team_size = models.PositiveSmallIntegerField(default=1, help_text='Leave 1 for single participant event')
