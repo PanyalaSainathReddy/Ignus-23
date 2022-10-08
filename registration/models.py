@@ -1,7 +1,9 @@
 import uuid
 # import re
 from django.db import models
-# from django.db.models.signals import pre_save, post_save
+from django.db.models import Count
+from django.db.models.signals import pre_save
+# from django.db.models.signals import post_save
 # from django.db.models import Sum, Q
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
@@ -9,7 +11,7 @@ from django.shortcuts import reverse
 from django.utils.safestring import mark_safe
 from events.models import Event
 # from workshops.models import Workshop
-# from .utils import unique_ig_number, send_confirmation_mail
+from .utils import unique_ca_referral_code
 
 
 class UserProfile(models.Model):
@@ -68,7 +70,7 @@ class UserProfile(models.Model):
     # Validators
     contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
     # Model
-    # referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
+    referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10, validators=[contact])
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
@@ -93,13 +95,13 @@ class UserProfile(models.Model):
     def __str__(self):
         return '{ig_number} ({name})'.format(ig_number=self.user.username, name=self.user.get_full_name())
 
-    # @property
-    # def team_events_registered(self):
-    #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
+    @property
+    def team_events_registered(self):
+        return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
 
-    # def team_registrations(self):
-    #     result = self.teamregistration_set.all() | self.team_leader.all()
-    #     return result.distinct()
+    def team_registrations(self):
+        result = self.teamregistration_set.all() | self.team_leader.all()
+        return result.distinct()
 
     def get_absolute_url(self):
         return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
@@ -160,3 +162,52 @@ class UserProfile(models.Model):
     #     if transaction or igmun_paid or workshop_paid:
     #         approved = True
     #     return True if approved else False
+
+
+class CampusAmbassador(models.Model):
+    ca_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ca_user')
+    insta_link = models.URLField()
+    workshop_capability = models.BooleanField(default=False)
+    publicize_ignus = models.TextField(max_length=512)
+    past_experience = models.TextField(max_length=512)
+    description = models.TextField(max_length=512, blank=True, default='')
+    timestamp = models.DateTimeField(auto_now_add=True)
+    referral_code = models.CharField(max_length=7, editable=False, unique=True, primary_key=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return "{name} ({code})".format(name=self.ca_user.user.first_name, code=self.referral_code)
+
+
+def pre_save_campus_ambassador(sender, instance, **kwargs):
+    if instance._state.adding is True:
+        instance.referral_code = unique_ca_referral_code(instance)
+
+
+# def post_save_campus_ambassador(sender, instance, created, **kwargs):
+#     if created:
+#         send_ca_confirmation_mail(instance=instance)
+
+
+pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
+
+# post_save.connect(post_save_campus_ambassador, sender=CampusAmbassador)
+
+
+class TeamRegistrationManager(models.Manager):
+    def user_profiles_count(self):
+        return self.aggregate(members_count=Count('members'))['members_count'] + \
+               self.aggregate(leader_count=Count('leader'))['leader_count']
+
+
+class TeamRegistration(models.Model):
+    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
+    members = models.ManyToManyField(UserProfile, blank=True)
+
+    objects = TeamRegistrationManager()
+
+    def __str__(self):
+        return "{event} - {leader}".format(leader=self.leader, event=self.event)
