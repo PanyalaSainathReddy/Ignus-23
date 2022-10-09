@@ -17,7 +17,7 @@ body{
   -webkit-transition: background-color 0.5s ease-in-out;
 }
 #container{
-  overflow: scroll;
+  overflow: hidden;
 }
 section{
   /* margin-top: 10vh; */
@@ -27,12 +27,14 @@ section{
   max-width: 100vw;
   overflow: visible;
 }
+
+
 .back-scene{
   width: 700vw;
   position: relative;
-  top: -23vw; 
+  bottom: 0;
 }
-
+/* 
 @media screen and (max-height: 790px) {
   .back-scene{
     top: -26vw;
@@ -157,7 +159,7 @@ section{
   .back-scene{
     top: 130vw;
   }
-}
+} */
 
 
 

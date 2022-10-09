@@ -8,13 +8,15 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 
-// for(let i=0; i<7; i++){
-//     // sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
-//     sec[i].style.backgroundRepeat = "no-repeat";
-//     sec[i].style.backgroundSize = "100vw ";
-//     sec[i].style.backgroundPosition = "bottom";
-  
-// }
+for(let i=0; i<7; i++){
+  sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
+  sec[i].style.backgroundRepeat = "no-repeat";
+  sec[i].style.backgroundPosition = "bottom";
+  sec[i].style.backgroundSize = "100vw";
+}
+
+
+
 
 
 container.addEventListener("wheel", (e)=>{
@@ -25,7 +27,6 @@ container.addEventListener("wheel", (e)=>{
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
   moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
-
   if(Math.floor(container.scrollLeft / window.innerWidth) >= 5){
     footer.style.animation = "fadeUp 4s ease-in-out";
   }
