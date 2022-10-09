@@ -80,10 +80,10 @@ class UserProfile(models.Model):
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
     id_issued = models.BooleanField(default=False)
     accommodation_required = models.BooleanField(default=False)
-    registration_paid = models.BooleanField(default=False)
-    accommodation_paid = models.BooleanField(default=False)
+    # registration_paid = models.BooleanField(default=False)
+    # accommodation_paid = models.BooleanField(default=False)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
-    events_registered = models.ManyToManyField(Event, limit_choices_to={'max_team_size': 1}, blank=True)
+    # events_registered = models.ManyToManyField(Event, limit_choices_to={'max_team_size': 1}, blank=True)
     # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
     #                                             through_fields=('userprofile', 'workshop'), blank=True)
 

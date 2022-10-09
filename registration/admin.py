@@ -3,9 +3,8 @@ from .models import UserProfile, CampusAmbassador, TeamRegistration
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'phone', 'gender', 'college', 'id_issued', 'registration_paid', 'accommodation_required',
-                    'accommodation_paid', 'qr_code']
-    list_filter = ['gender', 'id_issued', 'registration_paid', 'accommodation_required', 'accommodation_paid']
+    list_display = ['__str__', 'phone', 'gender', 'college', 'id_issued', 'accommodation_required', 'qr_code']
+    list_filter = ['gender', 'id_issued', 'accommodation_required']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 
