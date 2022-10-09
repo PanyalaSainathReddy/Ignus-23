@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/sponsors/', include('sponsors.urls')),
+    path('api/core-team/', include('team.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
 if settings.DEBUG:
