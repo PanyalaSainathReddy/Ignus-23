@@ -10,6 +10,7 @@ pillow = "*"
 python-decouple = "*"
 django-ckeditor = "*"
 flake8-django = "*"
+requests = "*"
 
 [dev-packages]
 
