@@ -42,13 +42,13 @@ aud_btn.addEventListener("click", ()=>{
   if(aud_ct%2 == 0){
     audio.play();
     aud_ct++;
-    aud_btn.children[0].src = "./static/speaker-off-icon.webp";
+    aud_btn.children[0].src = "./static/Speaker_Icon.svg.png";
     
   }
   else{
     audio.pause();
     aud_ct++;
-    aud_btn.children[0].src = "./static/Speaker_Icon.svg.png";
+    aud_btn.children[0].src = "./static/speaker-off-icon.webp";
   }
 })
 

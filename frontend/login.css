@@ -7,7 +7,7 @@
 }
 
 body {
-	background-image: url('2.jpg');
+	background-image: url('static/2.jpg');
 	background-position: center;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
@@ -198,7 +198,7 @@ input:focus {
 }
 
 .overlay {
-	background-image: url("1.jpg");  
+	background-image: url("static/1.JPG");  
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
