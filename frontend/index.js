@@ -8,13 +8,14 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 
-for(let i=0; i<7; i++){
-    sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
-    sec[i].style.backgroundRepeat = "no-repeat";
-    sec[i].style.backgroundSize = "contain";
-    sec[i].style.backgroundPosition = "bottom";
+// for(let i=0; i<7; i++){
+//     // sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
+//     sec[i].style.backgroundRepeat = "no-repeat";
+//     sec[i].style.backgroundSize = "100vw ";
+//     sec[i].style.backgroundPosition = "bottom";
   
-}
+// }
+
 
 container.addEventListener("wheel", (e)=>{
   e.preventDefault();

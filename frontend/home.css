@@ -26,14 +26,145 @@ section{
   min-width: 100vw;
   max-width: 100vw;
   overflow: visible;
-  /* display: flex;
-  flex-direction: column; */
-  /* padding: 20% 0 0 0; */
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: contain;
-  /* justify-content: end; */
 }
+.back-scene{
+  width: 700vw;
+  position: relative;
+  top: -23vw; 
+}
+
+@media screen and (max-height: 790px) {
+  .back-scene{
+    top: -26vw;
+  }
+}
+@media screen and (max-height: 700px){
+  .back-scene{
+    top: -30vw;
+  }
+}
+@media screen and (max-width: 1350px) {
+  .back-scene{
+    top: -20vw;
+  }
+}
+@media screen and (max-width: 1230px){
+  .back-scene{
+    top: -13vw;
+  }
+}
+@media screen and (max-width: 1120px){
+  .back-scene{
+    top: -8vw;
+  }
+}
+@media screen and (max-width: 1030px){
+  .back-scene{
+    top: -3vw;
+  }
+}
+@media screen and (max-width: 960px) {
+  .back-scene{
+    top: 3vw;
+  }
+}
+@media screen and (max-width: 890px) {
+  .back-scene{
+    top: 8vw;
+  }
+}
+@media screen and (max-width: 840px) {
+  .back-scene{
+    top: 13vw;
+  }
+}
+@media screen and (max-width: 840px) {
+  .back-scene{
+    top: 18vw;
+  }
+}
+@media screen and (max-width: 750px) {
+  .back-scene{
+    top: 25vw;
+  }
+}
+@media screen and (max-width: 700px) {
+  .back-scene{
+    top: 32vw;
+  }
+}
+@media screen and (max-width: 650px) {
+  .back-scene{
+    top: 38vw;
+  }
+}
+@media screen and (max-width: 620px) {
+  .back-scene{
+    top: 43vw;
+  }
+}
+@media screen and (max-width: 600px) {
+  .back-scene{
+    top: 50vw;
+  }
+}
+@media screen and (max-width: 565px) {
+  .back-scene{
+    top: 55vw;
+  }
+}
+@media screen and (max-width: 545px) {
+  .back-scene{
+    top: 60vw;
+  }
+}
+@media screen and (max-width: 525px) {
+  .back-scene{
+    top: 70vw;
+  }
+}
+@media screen and (max-width: 490px) {
+  .back-scene{
+    top: 85vw;
+  }
+}
+@media screen and (max-width: 445px) {
+  .back-scene{
+    top: 90vw;
+  }
+}
+@media screen and (max-width: 435px) {
+  .back-scene{
+    top: 100vw;
+  }
+}
+@media screen and (max-width: 390px) {
+  .back-scene{
+    top: 110vw;
+  }
+}
+@media screen and (max-width: 370px) {
+  .back-scene{
+    top: 120vw;
+  }
+}
+@media screen and (max-width: 355px) {
+  .back-scene{
+    top: 125vw;
+  }
+}
+@media screen and (max-width: 345px) {
+  .back-scene{
+    top: 130vw;
+  }
+}
+
+
+
+
+
+
+
 
 #aud, .faq_btn{
   background-color: salmon;
@@ -47,6 +178,7 @@ section{
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 20000;
 }
 #aud{
   left: 20px;
@@ -332,7 +464,7 @@ nav button:hover{
     left: 26vw;
   }
 }
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
   .header{
     margin-top: 45vw;
   }
@@ -364,4 +496,4 @@ nav button:hover{
     font-size: 20px !important;
   }
   
-}
+} */
