@@ -1,3 +1,4 @@
+from django.urls import reverse
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics, status
 from .models import UserProfile
+import requests
 
 
 class UserDetailAPI(APIView):
@@ -21,6 +23,33 @@ class UserDetailAPI(APIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.create(
+            username=request.data['email'],
+            email=request.data['email'],
+            first_name=request.data['first_name'],
+            last_name=request.data['last_name']
+        )
+
+        user.set_password(request.data['password'])
+        user.save()
+
+        r = requests.post(
+            url=request.build_absolute_uri(reverse('login')),
+            data={
+                'username': request.data['email'],
+                'password': request.data['password']
+            }
+        )
+
+        res = {
+            'message': 'User created successfully',
+            'token': r.json()['token'],
+            'email': user.email
+        }
+
+        return Response(res, status=status.HTTP_201_CREATED)
 
 
 class UserProfileAPIView(generics.CreateAPIView):
@@ -55,5 +84,5 @@ class UserProfileDetailsView(generics.RetrieveAPIView):
         userprofile = UserProfile.objects.get(user=user)
         userserializer = UserSerializer(user)
         userprofileserializer = UserProfileSerializer(userprofile)
-        
+
         return Response({"user": userserializer.data, "userprofile": userprofileserializer.data})
