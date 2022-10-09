@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/sponsors/', include('sponsors.urls')),
     path('api/core-team/', include('team.urls')),
     path('api/accounts/', include('registration.urls')),
-    path('api/api-token-auth/', views.obtain_auth_token),
+    path('api/api-token-auth/', views.obtain_auth_token, name='login'),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
