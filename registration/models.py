@@ -2,7 +2,7 @@ import uuid
 # import re
 from django.db import models
 from django.db.models import Count
-from django.db.models.signals import pre_save
+# from django.db.models.signals import pre_save
 # from django.db.models.signals import post_save
 # from django.db.models import Sum, Q
 from django.contrib.auth.models import User
@@ -11,7 +11,7 @@ from django.shortcuts import reverse
 from django.utils.safestring import mark_safe
 from events.models import Event
 # from workshops.models import Workshop
-from .utils import unique_ca_referral_code
+# from .utils import unique_ca_referral_code
 
 
 class PreRegistration(models.Model):
@@ -181,30 +181,30 @@ class UserProfile(models.Model):
     #     return True if approved else False
 
 
-class CampusAmbassador(models.Model):
-    ca_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ca_user')
-    insta_link = models.URLField()
-    workshop_capability = models.BooleanField(default=False)
-    publicize_ignus = models.TextField(max_length=512)
-    past_experience = models.TextField(max_length=512)
-    description = models.TextField(max_length=512, blank=True, default='')
-    timestamp = models.DateTimeField(auto_now_add=True)
-    referral_code = models.CharField(max_length=7, editable=False, unique=True, primary_key=True)
+# class CampusAmbassador(models.Model):
+#     ca_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ca_user')
+#     insta_link = models.URLField()
+#     workshop_capability = models.BooleanField(default=False)
+#     publicize_ignus = models.TextField(max_length=512)
+#     past_experience = models.TextField(max_length=512)
+#     description = models.TextField(max_length=512, blank=True, default='')
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     referral_code = models.CharField(max_length=7, editable=False, unique=True, primary_key=True)
 
-    class Meta:
-        ordering = ['-timestamp']
+#     class Meta:
+#         ordering = ['-timestamp']
 
-    @property
-    def number_referred(self):
-        return self.userprofile_set.count()
+#     @property
+#     def number_referred(self):
+#         return self.userprofile_set.count()
 
-    def __str__(self):
-        return "{name} ({code})".format(name=self.ca_user.user.first_name, code=self.referral_code)
+#     def __str__(self):
+#         return "{name} ({code})".format(name=self.ca_user.user.first_name, code=self.referral_code)
 
 
-def pre_save_campus_ambassador(sender, instance, **kwargs):
-    if instance._state.adding is True:
-        instance.referral_code = unique_ca_referral_code(instance)
+# def pre_save_campus_ambassador(sender, instance, **kwargs):
+#     if instance._state.adding is True:
+#         instance.referral_code = unique_ca_referral_code(instance)
 
 
 # def post_save_campus_ambassador(sender, instance, created, **kwargs):
@@ -212,7 +212,7 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 #         send_ca_confirmation_mail(instance=instance)
 
 
-pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
+# pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
 
 # post_save.connect(post_save_campus_ambassador, sender=CampusAmbassador)
 
