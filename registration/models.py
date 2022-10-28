@@ -14,6 +14,23 @@ from events.models import Event
 from .utils import unique_ca_referral_code
 
 
+class PreRegistration(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    college = models.CharField(max_length=100)
+    accomodation_required = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = 'Pre Registration'
+        verbose_name_plural = 'Pre Registrations'
+
+
 class UserProfile(models.Model):
     # choices
     GENDER_CHOICES = (
@@ -176,6 +193,10 @@ class CampusAmbassador(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+
+    @property
+    def number_referred(self):
+        return self.userprofile_set.count()
 
     def __str__(self):
         return "{name} ({code})".format(name=self.ca_user.user.first_name, code=self.referral_code)

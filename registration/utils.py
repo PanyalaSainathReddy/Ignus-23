@@ -1,30 +1,34 @@
 import random
-import string
+# import string
 from django.core.mail import EmailMessage
 # from django.template.loader import get_template
 
 
-def random_string_generator(size=7, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
+# def random_string_generator(size=7, chars=string.ascii_uppercase + string.digits):
+#     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def get_referral_code():
-    return "IG{rand_letters}{rand_digits}".format(rand_letters=random_string_generator(3, string.ascii_uppercase),
-                                                  rand_digits=random.randint(10, 99))
+# def get_referral_code():
+#     return "IG{rand_letters}{rand_digits}".format(rand_letters=random_string_generator(3, string.ascii_uppercase),
+#                                                   rand_digits=random.randint(10, 99))
 
 
-def unique_ca_referral_code(instance, new_referral_code=None):
-    if new_referral_code is not None:
-        referral_code = new_referral_code
-    else:
-        referral_code = get_referral_code()
+def generate_registration_code(name):
+    return f"IG-{name[:3].upper()}-{random.randint(100, 999)}"
 
-    klass = instance.__class__
-    qs_exists = klass.objects.filter(referral_code=referral_code).exists()
-    if qs_exists:
-        new_referral_code = get_referral_code()
-        return unique_ca_referral_code(instance, new_referral_code=new_referral_code)
-    return referral_code
+
+# def unique_ca_referral_code(instance, new_referral_code=None):
+#     if new_referral_code is not None:
+#         referral_code = new_referral_code
+#     else:
+#         referral_code = get_referral_code()
+
+#     klass = instance.__class__
+#     qs_exists = klass.objects.filter(referral_code=referral_code).exists()
+#     if qs_exists:
+#         new_referral_code = get_referral_code()
+#         return unique_ca_referral_code(instance, new_referral_code=new_referral_code)
+#     return referral_code
 
 
 def send_ca_confirmation_mail(instance=None):
