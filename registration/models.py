@@ -87,7 +87,7 @@ class UserProfile(models.Model):
     # Validators
     contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
     # Model
-    referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
+    # referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10, validators=[contact])
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
