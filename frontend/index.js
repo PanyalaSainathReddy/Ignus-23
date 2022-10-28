@@ -7,6 +7,7 @@ const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
+const res_nav = document.querySelector(".res-nav");
 
 for(let i=0; i<7; i++){
   sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
@@ -54,4 +55,11 @@ aud_btn.addEventListener("click", ()=>{
   }
 })
 
+
+$(document).ready(function(){
+	$('#nav-icon1,#nav-icon2,#nav-icon3,#nav-icon4').click(function(){
+		$(this).toggleClass('open');
+    $(".res-nav").toggleClass("opened");
+	});
+});
 
