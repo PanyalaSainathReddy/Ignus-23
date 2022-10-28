@@ -13,11 +13,19 @@
 </head>
 
 <body id="body">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <nav>
     <img src="./static/ignus icon.png" alt="icon" style="height: 3.5rem;">
-    <!-- <button style="float: left; display: inline"><img src="./static/ignus icon.png" style="width: 3rem;"></button> -->
-    <div>
 
+    <div class="res-menu-btn">
+      <div id="nav-icon4">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="nav-btns">
       <button>CA PROGRAM</button>
       <button>EVENTS</button>
       <button>SCHEDULE</button>
@@ -28,17 +36,26 @@
       </a>
       <!-- <button id="logout_button" style="display: none;">LOGOUT</button> -->
     </div>
-      
+
   </nav>
+  <div class="res-nav">
+    <ul>
+      <li><button> Events </button></li>
+      <li><button> Shedule </button></li>
+      <li><button> Sponsors </button></li>
+      <li><button> Login </button></li>
+      <li><button> CA Program </button></li>
+      <li><button> Contact Us </button></li>
+    </ul>
+    
+  </div>
 
   <main id="container">
     <section>
       <div class="header" data-aos="fade-up" data-aos-duration="3000">
         <img src="./static/logo.png" alt="logo" id="logo">
-        <button style="font-weight: 700;"> Watch Trailer </button>
+        <!-- <button style="font-weight: 700;"> Watch Trailer </button> -->
       </div>
-
-      <img src="./static/background.png" class="back-scene">
     </section>
 
     <section>
@@ -50,7 +67,7 @@
 
     <section>
       <div class="theme-content" data-aos="fade-up" data-aos-delay="3000" data-aos-duration="2000" >
-        <h1 style="margin-bottom: 30px; font-size: 45px;" >THE COSMIC <br> EUPHORIA</h1>
+        <h1 style="margin-bottom: 30px; font-size: 45px;" >A COSMIC EUPHORIA</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam omnis quod libero unde rem eaque doloribus maxime, voluptates dolores officiis necessitatibus adipisci, explicabo vitae nulla ut blanditiis recusandae quis officia. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam omnis quod libero unde rem eaque doloribus maxime</p>
       </div>
     </section>
@@ -58,31 +75,22 @@
     <section class="events-sec" >
 
       <div class="events-img" style="background-image: url('./static/dawid-labno-tZTLzyz4-xI-unsplash.jpg');">
-        <div class="white-overlay">
+        <div class="white-overlay"> 
         </div>
       </div>
       <div class="events-img" style="background-image: url('./static/ante-samarzija-kJrgFxaCdEk-unsplash.jpg');">
-        <div class="white-overlay"></div>
+        <div class="white-overlay">  </div>
       </div>
       <div class="events-img" style="background-image: url('./static/sam-moghadam-khamseh-TmbMLAvXrZQ-unsplash.jpg');">
-        <div class="white-overlay"></div>
+        <div class="white-overlay"> </div>
       </div>
-      <!-- <img src="./static/dawid-labno-tZTLzyz4-xI-unsplash.jpg" alt="img">
-      <img src="./static/ante-samarzija-kJrgFxaCdEk-unsplash.jpg" alt="img"> -->
-
-      <!-- <div class="events-text-cont">
-        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, suscipit fugiat incidunt enim tenetur illo id mollitia nesciunt unde perferendis itaque quis aperiam exercitationem facilis doloremque illum blanditiis deleniti excepturi.</p>
-        <button> KNOW MORE </button>
-      </div> -->
-
-    
     </section>
 
     <section>
     </section>
 
     <section class="gallery-sec" >
-      <img src="./static/aditya-chinchure-ZhQCZjr9fHo-unsplash.jpg" alt="galery-img1" style="transform: rotate(-17deg); top: 13vh; left: 12vw; width: 20%; aspect-ratio: 35/28;" >
+      <!-- <img src="./static/aditya-chinchure-ZhQCZjr9fHo-unsplash.jpg" alt="galery-img1" style="transform: rotate(-17deg); top: 13vh; left: 12vw; width: 20%; aspect-ratio: 35/28;" >
 
       <img src="./static/yvette-de-wit-8XLapfNMW04-unsplash.jpg" alt="galery-img1" style="transform: rotate(8deg); top: 28vh; left:-12vw; width: 18%; aspect-ratio: 35/20; z-index: -2;">
 
@@ -90,12 +98,12 @@
 
       <img src="./static/ante-samarzija-kJrgFxaCdEk-unsplash.jpg" alt="galery-img1" style="transform: rotate(6.17deg); top: 14vh; left:-10vw; width: 18%; aspect-ratio: 35/34; z-index: -2;">
 
-      <img src="./static/sam-moghadam-khamseh-TmbMLAvXrZQ-unsplash.jpg" alt="galery-img1" style="transform: rotate(-1.7deg); top: 30vh; left:-14vw; width: 18%; aspect-ratio: 35/20; z-index: -1;">
+      <img src="./static/sam-moghadam-khamseh-TmbMLAvXrZQ-unsplash.jpg" alt="galery-img1" style="transform: rotate(-1.7deg); top: 30vh; left:-14vw; width: 18%; aspect-ratio: 35/20; z-index: -1;"> -->
 
     </section>
 
     <section>
-      <div class="footer">
+      <div class="footer" >
         <h1 style="margin-bottom: 20px; font-size: 45px;"> CONTACT US</h1>
         <p>
           Officer In-Charge<br>

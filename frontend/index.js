@@ -7,6 +7,7 @@ const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
+const res_nav = document.querySelector(".res-nav");
 var ca_or_login_button = document.getElementById("ca_or_login_button");
 // var logout_button = document.getElementById("logout_button");
 
@@ -23,14 +24,12 @@ ca_or_login_button.addEventListener("click", function(){
   }
 });
 
-// for(let i=0; i<7; i++){
-//     // sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
-//     sec[i].style.backgroundRepeat = "no-repeat";
-//     sec[i].style.backgroundSize = "100vw ";
-//     sec[i].style.backgroundPosition = "bottom";
-  
-// }
-
+for(let i=0; i<7; i++){
+  sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
+  sec[i].style.backgroundRepeat = "no-repeat";
+  sec[i].style.backgroundPosition = "bottom";
+  sec[i].style.backgroundSize = "100vw";
+}
 
 container.addEventListener("wheel", (e)=>{
   e.preventDefault();
@@ -40,7 +39,6 @@ container.addEventListener("wheel", (e)=>{
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
   moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
-
   if(Math.floor(container.scrollLeft / window.innerWidth) >= 5){
     footer.style.animation = "fadeUp 4s ease-in-out";
   }
@@ -68,4 +66,11 @@ aud_btn.addEventListener("click", ()=>{
   }
 })
 
+
+$(document).ready(function(){
+	$('#nav-icon1,#nav-icon2,#nav-icon3,#nav-icon4').click(function(){
+		$(this).toggleClass('open');
+    $(".res-nav").toggleClass("opened");
+	});
+});
 
