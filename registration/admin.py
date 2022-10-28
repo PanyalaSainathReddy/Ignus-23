@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, CampusAmbassador, TeamRegistration
+from .models import UserProfile, CampusAmbassador, TeamRegistration, PreRegistration
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -9,7 +9,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 
 class CampusAmbassadorAdmin(admin.ModelAdmin):
-    list_display = ['ca_user', 'referral_code', 'workshop_capability']
+    list_display = ['ca_user', 'referral_code', 'workshop_capability', 'number_referred']
     list_filter = ['workshop_capability', 'ca_user__current_year']
     search_fields = ['referral_code', 'ca_user__user__first_name', 'ca_user__user__last_name', 'ca_user__phone']
 
@@ -27,6 +27,15 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         model = TeamRegistration
 
 
+class PreRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'college', 'accomodation_required')
+    list_filter = ('college', 'accomodation_required')
+
+    class Meta:
+        model = PreRegistration
+
+
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(TeamRegistration, TeamRegistrationAdmin)
+admin.site.register(PreRegistration, PreRegistrationAdmin)

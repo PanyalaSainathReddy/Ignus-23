@@ -1,18 +1,37 @@
 from django.urls import reverse
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, RegisterSerializer, UserProfileSerializer
+from .serializers import UserSerializer, RegisterSerializer, UserProfileSerializer, CASerializer, PreRegistrationSerializer
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics, status
-from .models import UserProfile
+from .models import UserProfile, CampusAmbassador, PreRegistration
 import requests
+from .utils import get_referral_code
+
+
+class PreRegistrationAPIView(generics.CreateAPIView):
+    serializer_class = PreRegistrationSerializer
+    permission_classes = (AllowAny,)
+
+    def create(self, request, *args, **kwargs):
+        prereg = PreRegistration.objects.create(
+            first_name=request.data['first_name'],
+            last_name=request.data['last_name'],
+            email=request.data['email'],
+            phone_number=request.data['phone_number'],
+            college=request.data['college'],
+            accomodation_required=request.data['accomodation_required']
+        )
+        prereg.save()
+
+        return Response({"message": "Pre-Registration Successful"}, status=status.HTTP_201_CREATED)
 
 
 class UserDetailAPI(APIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
@@ -54,7 +73,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
 
 class UserProfileAPIView(generics.CreateAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
 
     def create(self, request, *args, **kwargs):
@@ -76,7 +95,7 @@ class UserProfileAPIView(generics.CreateAPIView):
 
 class UserProfileDetailsView(generics.RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
 
     def get(self, request, *args, **kwargs):
@@ -86,3 +105,25 @@ class UserProfileDetailsView(generics.RetrieveAPIView):
         userprofileserializer = UserProfileSerializer(userprofile)
 
         return Response({"user": userserializer.data, "userprofile": userprofileserializer.data})
+
+
+class CARegisterAPIView(generics.CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CASerializer
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        userprofile = UserProfile.objects.get(user=user)
+        ca = CampusAmbassador.objects.create(
+            ca_user=userprofile,
+            insta_link=request.data['insta_link'],
+            workshop_capability=request.data['workshop_capability'],
+            publicize_ignus=request.data['publicize_ignus'],
+            past_experience=request.data['past_experience'],
+            description=request.data['description'],
+            referral_code=get_referral_code()
+        )
+        ca.save()
+
+        return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
