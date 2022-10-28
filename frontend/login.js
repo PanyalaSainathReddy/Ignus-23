@@ -1,6 +1,11 @@
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
+const homeButton = document.getElementById('home');
+
+homeButton.addEventListener('click', () => {
+  window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+});
 
 signUpButton.addEventListener('click', () => {
 	container.classList.add("right-panel-active");
@@ -25,3 +30,62 @@ function moveLogin() {
   register.style.left = "450px";
   button.style.left = "0";
 }
+
+// API
+var sign_up_form=document.getElementById('sign_up_form')
+
+sign_up_form.addEventListener('submit', function(e){
+  e.preventDefault()
+  var first_name=document.getElementById('first_name').value
+  var last_name=document.getElementById('last_name').value
+  var email_sign_up=document.getElementById('email_sign_up').value
+  var password_sign_up=document.getElementById('password_sign_up').value
+
+  fetch('http://127.0.0.1:8000/api/accounts/register/', {
+    method: 'POST',
+    body: JSON.stringify({
+      first_name:first_name,
+      last_name:last_name,
+      email:email_sign_up,
+      password:password_sign_up,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    }
+    })
+    .then(function(response){
+    return response.json()})
+    .then(function(data){
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+  })
+  .catch(error => console.error('Error:', error));
+});
+
+var sign_in_form=document.getElementById('sign_in_form')
+
+sign_in_form.addEventListener('submit', function(e){
+  e.preventDefault()
+  var email_sign_in=document.getElementById('email_sign_in').value
+  var password_sign_in=document.getElementById('password_sign_in').value
+
+  fetch('http://127.0.0.1:8000/api/api-token-auth/', {
+    method: 'POST',
+    body: JSON.stringify({
+      username:email_sign_in,
+      password:password_sign_in,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    }
+    })
+    .then(function(response){
+    return response.json()})
+    .then(function(data){
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+  })
+  .catch(error => console.error('Error:', error));
+});

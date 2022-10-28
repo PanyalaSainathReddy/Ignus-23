@@ -7,6 +7,21 @@ const moon = document.getElementById("moon");
 const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
+var ca_or_login_button = document.getElementById("ca_or_login_button");
+// var logout_button = document.getElementById("logout_button");
+
+if(window.localStorage.getItem("token") != null){
+  ca_or_login_button.innerHTML = "<button>LOGOUT</button>";
+  ca_or_login_button.removeAttribute("href");
+  // logout_button.style.display = "block";
+}
+
+ca_or_login_button.addEventListener("click", function(){
+  if(window.localStorage.getItem("token") != null){
+    window.localStorage.removeItem("token");
+    window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+  }
+});
 
 // for(let i=0; i<7; i++){
 //     // sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
@@ -32,7 +47,7 @@ container.addEventListener("wheel", (e)=>{
 });
 
 var audio = document.createElement("audio");
-audio.autoplay = true;
+audio.autoplay = false;
 document.body.appendChild(audio);
 audio.src = "./static/arabicmusi.mp4";
 audio.loop = true;

@@ -11,6 +11,7 @@ python-decouple = "*"
 django-ckeditor = "*"
 flake8-django = "*"
 requests = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
