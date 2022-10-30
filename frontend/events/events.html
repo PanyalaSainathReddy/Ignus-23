@@ -8,6 +8,13 @@
 </head>
 
 <body>
+  <link rel="stylesheet" type="text/css" href="fullpage.css" />
+  <!-- This following line is optional. Only necessary if you use the option css3:false and you want to use other easing effects rather than "easeInOutCubic". -->
+  <!-- <script src="vendors/easings.min.js"></script> -->
+  <script type="text/javascript" src="fullpage.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.12/fullpage.min.js"></script>
+  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <nav class="top-nav">
@@ -44,86 +51,90 @@
   </div>
 
 
-  <section class="sec cult">
-    <img src="../static/events/cult_img.png" alt="cult" id="cult-img">
-    <img src="../static/events/CULTURAL.png" alt="culttext" style="top: 13vh; width: 90vw;">
-    <h1 style="top: 24vh; left: 5vw">CULTURAL</h1>
+  <div id="fullpage">
 
-    <div class="btn-container" style="top: 45vh; left: 6vw">
-      <button>FILM MAKING</button>
-      <button>DANCE</button>
-      <button>DRAMA</button>
-      <button>FINE ARTS</button>
-      <button>LITERATURE</button>
-      <button>QUIZ</button>
-      <button>MUSIC</button>
-      <button>PHOTOGRAPHY</button>
-    </div>
-
-  </section>
-
-  <section class="sec informal">
-    <img src="../static/events/informal_img.png" alt="informal" class="inf-img">
-    <img src="../static/events/INFORMALS.png" alt="informaltxt" class="inf-txt">
-    <h1 style="margin: 20vh 0 0 7vw;">INFORMALS</h1>
-
-    <div class="btn-container" style="top: 143vh; left: 7vw;">
-      <button>SPEED DATING</button>
-      <button>SALSA WORKSHOP</button>
-      <button>PAINTBALL</button>
-      <button>PAPER DANCE</button>
-      <button>PROM NIGHT</button>
-      <button>MOVIE SCREENING</button>
-      <button>POKER ROYALE</button>
-      <button>OTHERS</button>
-    </div>
-
-
-
-  </section>
-
-  <section class="sec pronite">
-    <img src="../static/events/proniteimg.png" alt="pronite-img" class="pronite-img">
-    <img src="../static/events/PRONITES.png" alt="pronites-txt" class="pronite-txt">
-    <h1 style="margin: 25vh 0 0  45vw;">PRONITES</h1>
-
-    <div class="btn-container" style="right: 8vw; top: 250vh;">
-      <button>INDIAN OCEAN</button>
-      <button>BENNY DAYAL</button>
-      <button>EDM NIGHT</button>
+    <section class="sec cult section" id = "section1">
+      <img src="../static/events/cult_img.png" alt="cult" id="cult-img">
+      <img src="../static/events/CULTURAL.png" alt="culttext" style="top: 13vh; width: 90vw;">
+      <h1 style="top: 24vh; left: 5vw">CULTURAL</h1>
       
-    </div>
+      <div class="btn-container" style="top: 45vh; left: 6vw">
+        <button class="evBtn">FILM MAKING</button>
+        <button class="evBtn">DANCE</button>
+        <button class="evBtn">DRAMA</button>
+        <button class="evBtn">FINE ARTS</button>
+        <button class="evBtn">LITERATURE</button>
+        <button class="evBtn">QUIZ</button>
+        <button class="evBtn">MUSIC</button>
+        <button class="evBtn">PHOTOGRAPHY</button>
+      </div>
+      
+    </section>
     
-
-
-  </section>
-
-  <section class="sec flagship">
-    <img src="../static/events/camel.png" alt="camel" class="flagship-img">
-    <img src="../static/events/FLAGSHIP.png" alt="fladhiptxt" class="flagship-txt">
-    <h1 style="margin: 30vh 0 0  48vw;">FLAGSHIP</h1>
-
-    <div class="btn-container">
-      <button>ANTARANG</button>
-      <button>NRITYANSH</button>
-      <button>NUKKAD</button>
-    </div>
+    <section class="sec informal section" id = "section2">
+      <img src="../static/events/informal_img.png" alt="informal" class="inf-img">
+      <img src="../static/events/INFORMALS.png" alt="informaltxt" class="inf-txt">
+      <h1 style="margin: 20vh 0 0 7vw;">INFORMALS</h1>
+      
+      <div class="btn-container" style="top: 143vh; left: 7vw;">
+        <button class="evBtn">SPEED DATING</button>
+        <button class="evBtn">SALSA WORKSHOP</button>
+        <button class="evBtn">PAINTBALL</button>
+        <button class="evBtn">PAPER DANCE</button>
+        <button class="evBtn">PROM NIGHT</button>
+        <button class="evBtn">MOVIE SCREENING</button>
+        <button class="evBtn">POKER ROYALE</button>
+        <button class="evBtn">OTHERS</button>
+      </div>
+      
+      
+      
+    </section>
     
-  </section>
-
-  <section class="sec igmun">
-    <img src="../static/events/window.png" alt="window1" class="igmun-img">
-    <img src="../static/events/window.png" alt="window2" class="igmun-img">
-    <img src="../static/events/IGMUN.png" alt="igmun-txt" class="igmun-txt">
-
-    <h1 style="margin: 20vh 0 0  40vw;">IGMUN</h1>
-
-    <img src="../static/events/igmun.jpeg" alt="igmun-main-img" class="igmun-content-img">
-
+    <section class="sec pronite section" id = "section3">
+      <img src="../static/events/proniteimg.png" alt="pronite-img" class="pronite-img">
+      <img src="../static/events/PRONITES.png" alt="pronites-txt" class="pronite-txt">
+      <h1 style="margin: 25vh 0 0  45vw;">PRONITES</h1>
+      
+      <div class="btn-container" style="right: 8vw; top: 250vh;">
+        <button class="evBtn">INDIAN OCEAN</button>
+        <button class="evBtn">BENNY DAYAL</button>
+        <button class="evBtn">EDM NIGHT</button>
+        
+      </div>
+      
+      
+      
+    </section>
     
+    <section class="sec flagship section" id = "section4">
+      <img src="../static/events/camel.png" alt="camel" class="flagship-img">
+      <img src="../static/events/FLAGSHIP.png" alt="fladhiptxt" class="flagship-txt">
+      <h1 style="margin: 30vh 0 0  48vw;">FLAGSHIP</h1>
+      
+      <div class="btn-container">
+        <button class="evBtn">ANTARANG</button>
+        <button class="evBtn">NRITYANSH</button>
+        <button class="evBtn">NUKKAD</button>
+      </div>
+      
+    </section>
+    
+    <section class="sec igmun section" id = "section5">
+      <img src="../static/events/window.png" alt="window1" class="igmun-img">
+      <img src="../static/events/window.png" alt="window2" class="igmun-img">
+      <img src="../static/events/IGMUN.png" alt="igmun-txt" class="igmun-txt">
+      
+      <h1 style="margin: 20vh 0 0  40vw;">IGMUN</h1>
+      
+      <img src="../static/events/igmun.jpeg" alt="igmun-main-img" class="igmun-content-img">
+      
+      
+      
+    </section>
 
-  </section>
-
+  </div>
+    
   <nav class="bottom-nav">
     <button>CULTURAL</button>
     <button>INFORMAL</button>
@@ -132,6 +143,22 @@
     <button>IGMUN</button>
   </nav>
 
+  <div class = "lightbox">
+    <button class="close">
+      <img src="../static/events/close.png" alt="close">
+    </button>
+    <img src="../static/events/speedDating.jpeg" alt="lightbox-img" class="lightboxImg" id="lbImg">
+  </div>
+
+
   <script src="./events.js"></script>
+
+
+  <script>
+    var myFullpage = new fullpage('#fullpage', {
+    	autoScrolling:true,
+    	scrollHorizontally: true
+    });
+  </script>
 </body>
 </html>
