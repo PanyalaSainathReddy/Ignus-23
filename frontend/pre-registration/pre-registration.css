@@ -1,0 +1,231 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+body {
+	background-image: url('../static/2.jpg');
+	background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-family: "Poppins", sans-serif;
+	height: 100vh;
+	
+}
+
+.container{
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form_box{
+    height: 90vh;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.left{
+    height: auto;
+    width: 100%;
+    background-image: url('../static/1.JPG');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px 0 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left p{
+    color: #ffffff;
+    font-size: x-large;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+
+form {
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 0 50px;
+    padding-top: 15px;
+	height: auto;
+	text-align: center;
+    width: 100%;
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;
+}
+
+form::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+    }
+
+form h1{
+    color:#f9782e;
+}
+
+input {
+    outline: none;
+	background-color: #eee;
+	border: none;
+    border-radius: 10px;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}
+
+input:focus {
+    border: 1.8px solid #f9782e;
+  }
+
+  select {
+    outline: none;
+	background-color: #eee;
+	border: none;
+    border-radius: 10px;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}
+
+select:focus {
+    border: 1.8px solid #f9782e;
+  }
+
+  button {
+	border-radius: 10px;
+	border: 1px solid #f9782e;
+	background-color: #f9782e;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+}
+
+button:hover {
+	border: 1px solid #fb6b18;
+	background-color: #fb6b18;
+    cursor: pointer;
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+button:focus {
+	outline: none;
+}
+
+@media (max-width: 767px) {
+	.left {
+	  display: none !important;
+	}
+
+    .form_box {
+        display: flex;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;
+      }
+
+      .form_box::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+        }
+  
+}
+@media (max-width: 869px) {
+	form h1{
+	  font-size: 27px;
+	}
+}
+
+@media (max-width: 467px) {
+	form h1{
+	  font-size: 27px;
+	}
+    form{
+        padding: 0 40px;
+    }
+}
+
+
+@media (max-width: 414px) {
+	form h1{
+	  font-size: 25px;
+	}
+    form{
+        padding: 0 40px;
+    }
+}
+
+
+@media (max-width: 394px) {
+	form h1{
+	  font-size: 23px;
+	}
+    form{
+        padding: 0 40px;
+    }
+}
+
+@media (max-width: 372px) {
+	form h1{
+	  font-size: 20px;
+	}
+    form{
+        padding: 0 40px;
+    }
+}
+
+@media (max-width: 340px) {
+	form h1{
+	  font-size: 18px;
+	}
+    form{
+        padding: 0 35px;
+    }
+}
+
+@media (max-width: 318px) {
+	form h1{
+	  font-size: 17px;
+	}
+    form{
+        padding: 0 35px;
+    }
+}
+
+@media (max-width: 297px) {
+	form h1{
+	  font-size: 15px;
+	}
+    form{
+        padding: 0 32px;
+    }
+    input{
+        padding: 12px 8px;
+    }
+}
+
+
