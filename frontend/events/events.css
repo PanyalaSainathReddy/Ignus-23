@@ -229,6 +229,7 @@ h1{
   row-gap: 5%;
   column-gap: 4%;
   position: absolute;
+  z-index: 0;
 }
 .btn-container button{
   border: 3px solid white;
@@ -343,6 +344,7 @@ img{
   top: 0;
   left: 0;
   display: none;
+  z-index: 1;
 }
 .lightboxImg{
   max-height: 70vh;

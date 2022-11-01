@@ -74,3 +74,25 @@ $(document).ready(function(){
 	});
 });
 
+
+
+var countDownDate = new Date("Jan 1, 2023 00:00:00").getTime();
+var days_cont = document.querySelector(".days").children[0];
+var hours_cont = document.querySelector(".hours").children[0];
+var mins_cont = document.querySelector(".mins").children[0];
+var x = setInterval(function() {
+  var now = new Date().getTime();
+  var distance = countDownDate - now;
+
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+  // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  // + minutes + "m " + seconds + "s ";  
+  days_cont.innerHTML = days;
+  hours_cont.innerHTML = hours;
+  mins_cont.innerHTML = minutes;
+
+  
+}, 1000);

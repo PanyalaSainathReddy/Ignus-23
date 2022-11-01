@@ -197,6 +197,9 @@ section{
   width: 100%;
   height: 100%;
 }
+img{
+  -webkit-user-drag: none;
+}
 #sun{
   aspect-ratio: 1/1;
   width: 15%;
@@ -204,7 +207,7 @@ section{
   background-color: #ffe8b2;
   border-radius: 50%;
   position: fixed;
-  z-index: -1;
+  z-index: -2;
   top: 5%;
   left: 9%;
   box-shadow: 0px 0px 50px 30px  rgb(255, 255, 255);
@@ -394,7 +397,6 @@ nav button:hover{
 section{
   display: flex;
 }
-
 .login-btn, .regis-btn{
   background: transparent;
   border: 2px solid white;
@@ -407,6 +409,72 @@ section{
   background-color: white;
   color: #7f5690;
 }
+.initiative img{
+  height: 15vh;
+  max-width: 50vw;
+  position: relative;
+  top: 13vh;
+  left: 11vw;
+}
+.initiative h1{
+  font-size: 11vh;
+  position: relative;
+  color: #1d3557;
+  left: -35vw;
+  top: 22vh;
+  height: 20vh;
+}
+.init-content{
+  position: relative;
+  min-width: 28vw;
+  top: 28vh;
+  color: #1d3557;
+  right: 15vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.init-content button{
+  background-color: transparent;
+  border: 2px solid #1d3557 ;
+  margin: 5% 0 ;
+  padding: 3% 6%;
+  border-radius: 20px;
+}
+.init-content button:hover{
+  background-color: #1d3557;
+  color: white;
+  font-weight: 600;
+}
+
+.timer-cont{
+  min-width: 70vw;
+  max-height: 20vh;
+  margin: 20vh 50vw;
+  display: flex;
+  column-gap: 5vw;
+  justify-content: space-between;
+  transform: translate(-50%, 0);
+  color: #fff;
+  font-weight: 700;
+}
+.timer-cont p{
+  font-size: 4vw;
+  max-width: 25%;
+}
+.days h1, .hours h1, .mins h1{
+  font-size: 9vw;
+}
+.days, .hours, .mins{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 500;
+}
+
+
+
 
 
 @keyframes fadeUp{
@@ -417,6 +485,22 @@ section{
 @media screen and (max-width: 915px) {  /*tablet*/
   nav{
     padding: 0 10vw;
+  }
+  .initiative img{
+    width: 90vw;
+    max-height: 10vh;
+    left: 15vw;
+  }
+  .initiative h1{
+    font-size: 8vw;
+  }
+  .init-content{
+    right: 50vw;
+    transform: translate(-40%, 0);
+    top: 35vh;
+    min-width: 70vw;
+    line-height: 25px;
+    font-size: 18px;
   }
   .header{
     margin-top: 25vh !important;
@@ -479,6 +563,17 @@ section{
     padding: 3.3% 5.6%;
     font-size: 95%;
   }
+  .timer-cont{
+    flex-direction: column;
+    row-gap: 2vh
+    
+  }
+  .timer-cont p{
+    min-width: 100%;
+    text-align: center;
+    margin-bottom: 3vh;
+    font-size: 8vw;
+  }
 }
 @media screen and (max-width: 500px){ /*mobile*/
   .header button{
@@ -532,6 +627,9 @@ section{
   .login-btn, .regis-btn{
     padding: 6% 10%;
     border: 1px solid white;
+  }
+  .timer-cont p{
+    font-size: 8vw;
   }
 }
 
@@ -609,5 +707,28 @@ section{
   }
   .events-img:nth-child(1){
     margin-left: 13%;
+  }
+  .init-content{
+    right: 5vw;
+  }
+}
+
+@media screen and (max-width: 700px){
+  .init-content{
+    right: 50vw;
+    transform: translate(-40%, 0);
+    top: 35vh;
+    min-width: 70vw;
+    font-size: 13px;
+    line-height: 20px;
+  }
+  .timer-cont{
+    flex-direction: column;
+    
+  }
+  .timer-cont p{
+    min-width: 100%;
+    text-align: center;
+    margin-bottom: 3vh;
   }
 }
