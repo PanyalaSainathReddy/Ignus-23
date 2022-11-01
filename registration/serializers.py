@@ -43,4 +43,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class PreRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreRegistration
-        fields = ["first_name", "last_name", "email", "phone_number", "college", "accomodation_required"]
+        fields = ["full_name", "email", "phone_number", "college", "college_state", "current_year", "gender", "por", "por_holder_contact"]

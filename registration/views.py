@@ -17,12 +17,15 @@ class PreRegistrationAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         prereg = PreRegistration.objects.create(
-            first_name=request.data['first_name'],
-            last_name=request.data['last_name'],
+            full_name=request.data['full_name'],
             email=request.data['email'],
             phone_number=request.data['phone_number'],
             college=request.data['college'],
-            accomodation_required=request.data['accomodation_required']
+            college_state=request.data['college_state'],
+            current_year=request.data['current_year'],
+            gender=request.data['gender'],
+            por=request.data['por'],
+            por_holder_contact=request.data['por_holder_contact']
         )
         prereg.save()
 
