@@ -414,6 +414,9 @@ img{
   .cult .btn-container, .informal .btn-container{
     transform: translate(0, -5vh);
   }
+  *{
+    overflow-x: hidden;
+  }
   .btn-container button{
     font-size: 12px !important;
     border: 2px solid white;
