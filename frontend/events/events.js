@@ -7,6 +7,7 @@ const lightBox = document.querySelector(".lightbox");
 const lbCloseBtn = document.querySelector(".close");
 const lbImg = document.getElementById("lbImg");
 
+
 for(let i=0; i<events_btns.length; i++){
   events_btns[i].addEventListener("click", ()=>{
     lightBox.style.display = "block";
@@ -15,10 +16,16 @@ for(let i=0; i<events_btns.length; i++){
     lbImg.src = `../static/events/${key}.jpeg`
   })
 }
+
 lbCloseBtn.addEventListener("click", ()=>{
   lightBox.style.display = "none";
 })
 
+lightBox.addEventListener("click", ()=>{
+  if(lightBox.style.display != "none"){
+    lightBox.style.display = "none";
+  }
+})
 
 for(let i=0; i<5; i++){
   sec[i].style.backgroundColor = colors[i];
