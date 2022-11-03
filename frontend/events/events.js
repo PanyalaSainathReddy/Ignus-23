@@ -23,7 +23,20 @@ lbCloseBtn.addEventListener("click", ()=>{
 for(let i=0; i<5; i++){
   sec[i].style.backgroundColor = colors[i];
   btmNavBtns[i].style.backgroundColor = colors[i];
+  btmNavBtns[i].addEventListener("click", ()=>{
+    window.scrollTo(0, window.innerHeight*i);
+  })
 }
+
+window.addEventListener("scroll", (e)=>{
+  let idx = Math.ceil(window.scrollY/window.innerHeight);
+  btmNavBtns[idx].style.fontWeight = "800";
+  for(let j=0; j<5; j++){
+    if(j!=idx){
+      btmNavBtns[j].style.fontWeight = "400";
+    }
+  }
+})
 
 
 
@@ -33,3 +46,5 @@ $(document).ready(function(){
     $(".res-nav").toggleClass("opened");
 	});
 });
+
+
