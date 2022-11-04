@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* navbar styling starts here  */
+.res-menu-btn{
+  overflow: hidden;
+}
+.res-nav{
+  width: 100vw;
+  height: 0vh;
+  z-index: 2;
+  position: absolute;
+  background-color: orange;
+  transition: height 1s ease-in-out;
+  -webkit-transition: height 1s ease-in-out;
+  overflow: hidden;
+}
+.res-nav ul{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+}
+.res-nav button{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: 500;
+  font-size: large;
+}
+.res-nav.opened{
+  height: 100vh;
+}
+
+#nav-icon4 {
+  width: 50px;
+  height: 100%;
+  position: relative;
+  margin: 10px auto;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+#nav-icon4 span {
+  display: block;
+  position: absolute;
+  height: 5px;
+  width: 80%;
+  background: #d3531a;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+
+#nav-icon4 span:nth-child(1) {
+  top: 0px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4 span:nth-child(2) {
+  top: 15px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4 span:nth-child(3) {
+  top: 30px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#nav-icon4.open span{
+  background-color: white;
+}
+
+#nav-icon4.open span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 5px;
+  left: 8px;
+}
+
+#nav-icon4.open span:nth-child(2) {
+  top: 35px;
+  width: 0%;
+  opacity: 0;
+}
+
+#nav-icon4.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: 34px;
+  left: 8px;
+}
+.res-menu-btn{
+  display: none;
+}
+
+nav{
+  display: flex;
+  flex-direction: row;
+  padding: 0 3.5%;
+  justify-content: space-between;
+  position: absolute;
+  width: 100vw;
+  height: fit-content;
+  background: rgba( 255, 255, 255, 0.3 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 5.5px ); 
+  -webkit-backdrop-filter: blur( 5.5px ); 
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  z-index: 100;
+}
+nav button{
+  background: transparent;
+  border: none;
+  padding: 1.5rem 2rem;
+  font-weight: 700;
+  font-size: 1fr;
+  color: #1d3557;
+  border-bottom: 3px solid transparent;
+  text-align: center;
+}
+button{
+  background: transparent;
+}
+nav button:hover{
+  border-bottom: 3px solid #1d3557;
+}
+/* navbar ends here  */
+
+
+
+body{
+  background-image: url('./../static/schedule/schedulebg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.container{
+  width: 85vw;
+  height: 40vh;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  overflow: visible;
+}
+.csimg{
+  max-width: 50%;
+  margin: auto 0;
+}
+.calendar{
+  width: 40%;
+  overflow: visible;
+}
+.calendar-img{
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px)
+}
+
+
+
+
+/* responsiveness  */
+@media screen and (max-width: 960px) {  /*tablet*/
+  nav{
+    padding: 0 10vw;
+  }
+  .nav-btns{
+    display: none;
+  }
+  .res-menu-btn{
+    display: inline;
+  }
+  .calendar{
+    width: 50%;
+  }
+}
+@media screen and (max-width: 715px){
+  .container{
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10%;
+    top: 30%;
+  }
+  .csimg{
+    width: 50%;
+    min-height: 40%;
+  }
+  .calendar{
+    width: 80%;
+  }
+}
+@media screen and (max-width: 450px){
+  .csimg{
+    min-width: 90%;
+  }
+}
