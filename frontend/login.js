@@ -41,7 +41,7 @@ sign_up_form.addEventListener('submit', function(e){
   var email_sign_up=document.getElementById('email_sign_up').value
   var password_sign_up=document.getElementById('password_sign_up').value
 
-  fetch(process.env.FRONTEND_URL + '/api/accounts/register/', {
+  fetch('https://api.ignus.co.in/api/accounts/register/', {
     method: 'POST',
     body: JSON.stringify({
       first_name:first_name,
@@ -70,7 +70,7 @@ sign_in_form.addEventListener('submit', function(e){
   var email_sign_in=document.getElementById('email_sign_in').value
   var password_sign_in=document.getElementById('password_sign_in').value
 
-  fetch(process.env.FRONTEND_URL + '/api/api-token-auth/', {
+  fetch('https://api.ignus.co.in/api/api-token-auth/', {
     method: 'POST',
     body: JSON.stringify({
       username:email_sign_in,

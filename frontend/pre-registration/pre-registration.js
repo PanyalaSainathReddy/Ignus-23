@@ -12,7 +12,7 @@ pre_register_form.addEventListener('submit', function(e){
   var por=document.getElementById('por').value
   var por_holder_contact=document.getElementById('por_holder_contact').value
 
-  fetch(process.env.FRONTEND_URL + '/api/accounts/pre-register/', {
+  fetch('https://api.ignus.co.in/api/accounts/pre-register/', {
     method: 'POST',
     body: JSON.stringify({
         full_name:full_name,
