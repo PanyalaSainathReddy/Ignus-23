@@ -36,6 +36,7 @@ class PreRegistrationAPIView(viewsets.ModelViewSet):
     queryset = PreRegistration.objects.all()
     serializer_class = PreRegistrationSerializer
 
+
 class UserDetailAPI(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
