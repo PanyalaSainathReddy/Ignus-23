@@ -11,11 +11,10 @@ body{
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-/* Created with https://www.css-gradient.com */
-background: #DFA74B;
-background: -webkit-linear-gradient(top left, #DFA74B, #D56DB5);
-background: -moz-linear-gradient(top left, #DFA74B, #D56DB5);
-background: linear-gradient(to bottom right, #DFA74B, #D56DB5);
+background: #C6A6FF;
+background: -webkit-linear-gradient(top, #C6A6FF, #FFB4B5);
+background: -moz-linear-gradient(top, #C6A6FF, #FFB4B5);
+background: linear-gradient(to bottom, #C6A6FF, #FFB4B5);
 }
 
 .res-nav{
