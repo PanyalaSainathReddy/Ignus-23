@@ -292,8 +292,8 @@ background: linear-gradient(to bottom right, #DFA74B, #D56DB5);
     display: none;
 }
 
-  body {
-    font-family: 'Quicksand', sans-serif;
+    body {
+    font-family: "Poppins", sans-serif;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -302,11 +302,27 @@ background: linear-gradient(to bottom right, #DFA74B, #D56DB5);
   .main{
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
+ 
   .cards {
     max-width: 1000px;
-    margin-top: 6%;
+    margin-top: 2%;
+  }
+
+  .heading h1{
+    width: 100%;
+    color: #1d3557;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: 50px;
+    margin-top: 20%;
+    max-width: 1000px;
+  
   }
   
  
@@ -354,5 +370,42 @@ background: linear-gradient(to bottom right, #DFA74B, #D56DB5);
 
     .cards{
         height: 100vh;
+    }
+  }
+  @media(max-width: 456px) {
+    .heading h1{  
+      font-size: 45px;
+      margin-top: 19%;
+    }
+  }
+
+  @media(max-width: 410px) {
+    .heading h1{   
+      font-size: 40px;
+      margin-top: 21%;
+    }
+  }
+
+  @media(max-width: 365px) {
+    .heading h1{ 
+      margin-top: 24%;  
+      font-size: 35px;
+      font-weight: 700;
+    }
+  }
+
+  @media(max-width: 319px) {
+    .heading h1{ 
+      margin-top: 26%;  
+      font-size: 32px;
+      font-weight: 700;
+    }
+  }
+
+  @media(max-width: 292px) {
+    .heading h1{ 
+      margin-top: 26%;  
+      font-size: 30px;
+      font-weight: 700;
     }
   }
