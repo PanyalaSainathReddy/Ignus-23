@@ -285,6 +285,7 @@ background: linear-gradient(to bottom, #C6A6FF, #FFB4B5);
     scrollbar-width: none;  /* Firefox */
     background-color: transparent;
     bottom: 0px;
+    padding-bottom: 10%;
   }
 
   ::-webkit-scrollbar {
@@ -356,6 +357,21 @@ background: linear-gradient(to bottom, #C6A6FF, #FFB4B5);
     .cards{
         padding: 7%;
         height: 100vh;
+        padding-bottom: 18%;
+    }
+  }
+
+  @media(max-width: 780px) {
+
+    .cards{
+        padding-bottom: 21%;
+    }
+  }
+
+  @media(max-width: 665px) {
+
+    .cards{
+        padding-bottom: 24%;
     }
   }
 
@@ -378,6 +394,13 @@ background: linear-gradient(to bottom, #C6A6FF, #FFB4B5);
     }
   }
 
+  @media(max-width: 424px) {
+
+    .cards{
+        padding-bottom: 27%;
+    }
+  }
+
   @media(max-width: 410px) {
     .heading h1{   
       font-size: 40px;
@@ -393,11 +416,25 @@ background: linear-gradient(to bottom, #C6A6FF, #FFB4B5);
     }
   }
 
+  @media(max-width: 354px) {
+
+    .cards{
+        padding-bottom: 31%;
+    }
+  }
+
   @media(max-width: 319px) {
     .heading h1{ 
       margin-top: 26%;  
       font-size: 32px;
       font-weight: 700;
+    }
+  }
+
+  @media(max-width: 303px) {
+
+    .cards{
+        padding-bottom: 34%;
     }
   }
 
