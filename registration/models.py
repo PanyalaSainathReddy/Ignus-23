@@ -16,11 +16,6 @@ from events.models import Event
 
 class PreRegistration(models.Model):
     # choices
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('T', 'Other'),
-    )
     YEAR_CHOICES = (
         ('1', 'First Year'),
         ('2', 'Second Year'),
@@ -76,7 +71,6 @@ class PreRegistration(models.Model):
     college = models.CharField(max_length=100)
     college_state = models.CharField(max_length=2, choices=STATE_CHOICES, default='22')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     por = models.CharField(max_length=500, blank=True, default='')
     por_holder_contact = models.CharField(max_length=1000, blank=True, default='')
 

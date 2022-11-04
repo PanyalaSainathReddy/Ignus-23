@@ -55,7 +55,46 @@ body {
     text-align: center;
 }
 
+#home {
+    background-color: salmon;
+    height: 70px;
+    width: 70px;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20000;
+}
+  
+#home img {
+    height: 35px;
+    width: 35px;
+    mix-blend-mode: soft-light;
+}
 
+@media screen and (max-width: 768px){
+    .form_box{
+        height: 85vh;
+        margin-top: 10vh;
+        margin-bottom: 5vh;
+    }
+    #home{
+        height: 60px;
+        width: 60px;
+        left: 10px;
+        top: 10px;
+    }
+
+    #home img {
+        height: 30px;
+        width: 30px;
+    }
+}
 
 form {
 	background-color: #ffffff;

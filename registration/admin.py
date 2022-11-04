@@ -29,7 +29,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
 
 class PreRegistrationAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email', 'phone_number', 'college')
-    list_filter = ('college', 'gender', 'current_year', 'college_state')
+    list_filter = ('college', 'current_year', 'college_state')
 
     class Meta:
         model = PreRegistration

@@ -1,4 +1,5 @@
 from django.urls import reverse
+from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,26 +12,29 @@ import requests
 # from .utils import get_referral_code
 
 
-class PreRegistrationAPIView(generics.CreateAPIView):
+# class PreRegistrationAPIView(viewsets.ModelViewSet):
+#     serializer_class = PreRegistrationSerializer
+#     permission_classes = (AllowAny,)
+
+#     def create(self, request, *args, **kwargs):
+#         prereg = PreRegistration.objects.create(
+#             full_name=request.data['full_name'],
+#             email=request.data['email'],
+#             phone_number=request.data['phone_number'],
+#             college=request.data['college'],
+#             college_state=request.data['college_state'],
+#             current_year=request.data['current_year'],
+#             por=request.data['por'],
+#             por_holder_contact=request.data['por_holder_contact']
+#         )
+#         prereg.save()
+
+#         return Response({"message": "Pre-Registration Successful"}, status=status.HTTP_201_CREATED)
+
+
+class PreRegistrationAPIView(viewsets.ModelViewSet):
+    queryset = PreRegistration.objects.all()
     serializer_class = PreRegistrationSerializer
-    permission_classes = (AllowAny,)
-
-    def create(self, request, *args, **kwargs):
-        prereg = PreRegistration.objects.create(
-            full_name=request.data['full_name'],
-            email=request.data['email'],
-            phone_number=request.data['phone_number'],
-            college=request.data['college'],
-            college_state=request.data['college_state'],
-            current_year=request.data['current_year'],
-            gender=request.data['gender'],
-            por=request.data['por'],
-            por_holder_contact=request.data['por_holder_contact']
-        )
-        prereg.save()
-
-        return Response({"message": "Pre-Registration Successful"}, status=status.HTTP_201_CREATED)
-
 
 class UserDetailAPI(APIView):
     authentication_classes = (TokenAuthentication,)

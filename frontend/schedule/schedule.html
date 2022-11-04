@@ -4,7 +4,7 @@
    <meta charset='UTF-8'>
    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
    <link rel="stylesheet" href="./schedule.css">
-   <title></title>
+   <title>Schedule | Ignus'23</title>
 </head>
 
 <body>
@@ -12,7 +12,9 @@
 
   <!-- top navigation menu  -->
   <nav>
-    <img src="../static/ignus icon.png" alt="icon" style="height: 3.5rem;">
+    <a href="../index.html">
+      <img src="../static/ignus icon.png" alt="icon" style="height: 3.5rem;">
+    </a>
 
     <div class="res-menu-btn">
       <div id="nav-icon4">
@@ -23,15 +25,19 @@
     </div>
 
     <div class="nav-btns">
-      <button>CA PROGRAM</button>
-      <a href="events/events.html" style="text-decoration: none" id="ca_or_login_button">
-        <button>EVENTS</button>
+      <!-- <button>CA PROGRAM</button> -->
+      <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+        <button>PAST-EVENTS</button>
       </a>
-      <button>SCHEDULE</button>
-      <button>SPONSORS</button>
-      <button>CONTACT US</button>
-      <a href="login.html" style="text-decoration: none" id="ca_or_login_button">
-        <button>LOGIN</button>
+      <a href="./schedule.html" style="text-decoration: none" id="ca_or_login_button">
+        <button>SCHEDULE</button>
+      </a>
+      <a href="../sponsors/sponsors.html" style="text-decoration: none" id="ca_or_login_button">
+        <button>PAST-SPONSORS</button>
+      </a>
+      <!-- <button>CONTACT US</button> -->
+      <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
+        <button>PRE-REGISTER</button>
       </a>
     </div>
 
@@ -40,12 +46,28 @@
   <!-- responsive nav (accordion)  -->
   <div class="res-nav">
     <ul>
-      <li><button> CA Program </button></li>
-      <li><button> Events </button></li>
-      <li><button> Shedule </button></li>
-      <li><button> Sponsors </button></li>
-      <li><button> Contact Us </button></li>
-      <li><button> Login </button></li>
+      <!-- <li><button> CA Program </button></li> -->
+      <li>
+        <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+          <button>PAST-EVENTS</button>
+        </a>
+      </li>
+      <li>
+        <a href="./schedule.html" style="text-decoration: none" id="ca_or_login_button">
+          <button>SCHEDULE</button>
+        </a>
+      </li>
+      <li>
+        <a href="../sponsors/sponsors.html" style="text-decoration: none" id="ca_or_login_button">
+          <button>PAST-SPONSORS</button>
+        </a>
+      </li>
+      <!-- <li><button> Contact Us </button></li> -->
+      <li>
+        <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
+          <button>PRE-REGISTER</button>
+        </a>
+      </li>
     </ul>
   </div>
 

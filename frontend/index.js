@@ -76,7 +76,7 @@ $(document).ready(function(){
 
 
 
-var countDownDate = new Date("Jan 1, 2023 00:00:00").getTime();
+var countDownDate = new Date("Feb 16, 2023 00:00:00").getTime();
 var days_cont = document.querySelector(".days").children[0];
 var hours_cont = document.querySelector(".hours").children[0];
 var mins_cont = document.querySelector(".mins").children[0];
@@ -96,3 +96,10 @@ var x = setInterval(function() {
 
   
 }, 1000);
+
+if(sessionStorage.getItem("showmsg")=='Successfully pre-registered'){
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+  sessionStorage.removeItem("showmsg");
+}
