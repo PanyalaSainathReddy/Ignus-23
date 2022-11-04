@@ -4,7 +4,7 @@ const container = document.getElementById('container');
 const homeButton = document.getElementById('home');
 
 homeButton.addEventListener('click', () => {
-  window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+  window.location.replace("/index.html");
 });
 
 signUpButton.addEventListener('click', () => {
@@ -58,7 +58,7 @@ sign_up_form.addEventListener('submit', function(e){
     .then(function(data){
       console.log(data);
       localStorage.setItem('token', data.token);
-      window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+      window.location.replace("/index.html");
   })
   .catch(error => console.error('Error:', error));
 });
@@ -85,7 +85,7 @@ sign_in_form.addEventListener('submit', function(e){
     .then(function(data){
       console.log(data);
       localStorage.setItem('token', data.token);
-      window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+      window.location.replace("/index.html");
   })
   .catch(error => console.error('Error:', error));
 });

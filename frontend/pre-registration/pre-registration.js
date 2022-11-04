@@ -31,7 +31,7 @@ pre_register_form.addEventListener('submit', function(e){
     .then(function(response){
         if(response.status==201){
             sessionStorage.setItem("showmsg", "Successfully pre-registered");
-            window.location.replace("http://127.0.0.1:5500/frontend/index.html");
+            window.location.replace("/index.html");
         }
         else{
             alert("This Email has already been pre-registered");

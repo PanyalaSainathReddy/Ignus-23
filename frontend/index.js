@@ -20,7 +20,7 @@ if(window.localStorage.getItem("token") != null){
 ca_or_login_button.addEventListener("click", function(){
   if(window.localStorage.getItem("token") != null){
     window.localStorage.removeItem("token");
-    window.location.href = "http://127.0.0.1:5500/frontend/index.html";
+    window.location.replace("/index.html");
   }
 });
 

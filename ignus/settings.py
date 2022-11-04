@@ -44,7 +44,7 @@ ROOT_URLCONF = 'ignus.urls'
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:5500',
+    config('FRONTEND_URL', cast=str),
 )
 
 TEMPLATES = [
