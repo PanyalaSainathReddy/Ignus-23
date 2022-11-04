@@ -9,6 +9,9 @@ main{
   display: flex;
   overflow: hidden;
 }
+a{
+  text-decoration: none;
+}
 
 
 body{
@@ -283,12 +286,12 @@ img{
   background-color: transparent;
   border: 3px solid #6e6d6e;
   color: #6e6d6e;
-  max-width: fit-content;
+  min-width: max-content;
   text-align: center;
   margin-top: 4%;
-  padding: 1% 2%;
-  align-self: center;
-  font-weight: 600;;
+  padding: 4.5% 7.5%;
+  font-weight: 600;
+  left: 50%;
 }
 .header-btn:hover{
   background-color: #6e6d6e;
@@ -297,6 +300,13 @@ img{
 }
 section:nth-child(1){
   flex-direction: column;
+}
+section:nth-child(1) a{
+  align-self: center;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  padding: 1% 1.5%;
 }
 
 
