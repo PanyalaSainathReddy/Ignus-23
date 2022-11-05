@@ -547,7 +547,7 @@ nav button:hover{
   .igmun-img{
     height: 30vh;
     top: 460vh;
-    z-index: 2;
+    z-index: 0;
   }
   .igmun-img:nth-child(2){
     top: 460vh;
