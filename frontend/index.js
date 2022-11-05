@@ -145,3 +145,24 @@ if(sessionStorage.getItem("showmsg")=='Successfully pre-registered'){
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
   sessionStorage.removeItem("showmsg");
 }
+
+
+// lightBox functionality 
+const lightBox = document.querySelector(".lightbox");
+const lbCloseBtn = document.querySelector(".close");
+const lbImg = document.getElementById("lbImg");
+
+lbCloseBtn.addEventListener("click", ()=>{
+  lightBox.style.display = "none";
+})
+
+lightBox.addEventListener("click", ()=>{
+  if(lightBox.style.display != "none"){
+    lightBox.style.display = "none";
+  }
+})
+
+document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
+  lightBox.style.display = "block"
+})
+
