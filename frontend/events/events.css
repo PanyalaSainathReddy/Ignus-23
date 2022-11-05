@@ -506,15 +506,26 @@ nav button:hover{
     font-size: 40px;
   }
   #cult-img, .inf-img, .pronite-img, .flagship-img{
-    height: 42vh;
+    max-height: 42vh;
   }
   .cult .btn-container, .informal .btn-container{
     transform: translate(-50%, -7vh);
     left: 50vw !important;
   }
+  #cult-img{
+    top: 100vh;
+    transform: translate(0, -100%);
+  }
+  .flagship-img{
+    top: 400vh;
+    transform: translate(0, -100%);
+    max-height: 30vh;
+  }
   .inf-img{
-    top: 158vh;
+    top: 200vh;
+    transform: translate(0, -100%);
     min-width: 85vw;
+    max-height: 35vh;
   }
   .informal{
     padding: 2vh 0 0 0;
@@ -536,7 +547,7 @@ nav button:hover{
   .igmun-img{
     height: 30vh;
     top: 460vh;
-    z-index: 2;
+    z-index: 0;
   }
   .igmun-img:nth-child(2){
     top: 460vh;
@@ -562,3 +573,8 @@ nav button:hover{
   }
 }
 
+@media screen and (min-height: 780px) and (max-width: 1430px){
+  .igmun-img:nth-child(2){
+    left: 70vw;
+  }
+}
