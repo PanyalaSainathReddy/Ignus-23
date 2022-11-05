@@ -313,7 +313,7 @@ section:nth-child(1) a{
 
 .about{
   width: 40%;
-  line-height: 25px;
+  line-height: 29px;
   color: #1d3557;
   position: relative;
   display: inline;
@@ -486,10 +486,10 @@ section{
   font-size: 4vw;
   max-width: 25%;
 }
-.days h1, .hours h1, .mins h1{
+.days h1, .hours h1, .mins h1, .seconds h1{
   font-size: 9vw;
 }
-.days, .hours, .mins{
+.days, .hours, .mins, .seconds{
   display: flex;
   flex-direction: column;
   align-items: center;
