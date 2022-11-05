@@ -65,7 +65,7 @@ function touchMove(event) {
   offset.x = start.x - event.touches[0].pageX;
   offset.y = start.y - event.touches[0].pageY;
   
-  // event.preventDefault();
+  event.preventDefault();
   container.scrollBy({
     left: offset.y *0.1,
   })
