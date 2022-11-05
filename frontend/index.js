@@ -65,9 +65,9 @@ function touchMove(event) {
   offset.x = start.x - event.touches[0].pageX;
   offset.y = start.y - event.touches[0].pageY;
   
-  event.preventDefault();
+  // event.preventDefault();
   container.scrollBy({
-    left: offset.y *0.05,
+    left: offset.y *0.1,
   })
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
