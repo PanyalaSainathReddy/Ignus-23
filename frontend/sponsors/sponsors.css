@@ -7,10 +7,10 @@
 }
 
 body{
-    background-image: url('../static/sponsors/bg.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-image: url('../static/sponsors/bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 
 }
 
@@ -478,7 +478,7 @@ nav button:hover{
     justify-content: center;
     font-weight: bolder;
     font-size: 50px;
-    margin-top: 20%;
+    margin-top: 22%;
     max-width: 1000px;
   
   }
@@ -549,6 +549,7 @@ nav button:hover{
     .heading h1{  
       font-size: 45px;
       margin-top: 19%;
+      padding-top: 7%;
     }
   }
 
@@ -563,6 +564,7 @@ nav button:hover{
     .heading h1{   
       font-size: 40px;
       margin-top: 21%;
+      padding-top: 7%;
     }
   }
 
@@ -571,6 +573,7 @@ nav button:hover{
       margin-top: 24%;  
       font-size: 35px;
       font-weight: 700;
+      padding-top: 7%;
     }
   }
 
@@ -579,11 +582,15 @@ nav button:hover{
     .cards{
         padding-bottom: 32%;
     }
+
+    .heading h1{
+      padding-top: 7%;
+    }
   }
 
   @media(max-width: 319px) {
     .heading h1{ 
-      margin-top: 26%;  
+      margin-top: 30%;  
       font-size: 32px;
       font-weight: 700;
     }
@@ -598,7 +605,7 @@ nav button:hover{
 
   @media(max-width: 292px) {
     .heading h1{ 
-      margin-top: 26%;  
+      padding-top: 5%; 
       font-size: 30px;
       font-weight: 700;
     }
