@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="igmun-form.css">
+    <link rel="stylesheet" href="igmun_eb_registration.css">
     <title>IGMUN | Ignus'23</title>
 </head>
 <body>
     <div class="container">
-        <a href="../index.html"><button id="home"><img src="../static/home.svg" /></button></a>
+        <a href="index.html"><button id="home"><img src="../static/igmun/logo.png" /></button></a>
         <div class="form_box">
             <div class="left">
                 <div class="text">
@@ -20,24 +20,24 @@
             </div>
             
                 <form action="#" id="pre_register_form">
-                    <h1>IGMUN</h1>
-		            <input id="full_name" type="text" placeholder="First Name*" required>
-                    <input id="full_name" type="text" placeholder="Last Name*" required>
+                    <h1>Executive Board Registration</h1>
+		            <input id="first_name" type="text" placeholder="First Name*" required>
+                    <input id="last_name" type="text" placeholder="Last Name*" required>
                     <input id="email" type="email" placeholder="Email*" required>
                     <input id="phone_number" type="tel" oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number')"
                     onchange="try{setCustomValidity('')}catch(e){}"
                     oninput="setCustomValidity(' ')" pattern="[6789][0-9]{9}" placeholder="Mobile Number*" required>
                     <input id="college" type="text" placeholder="College*" required>
                     <input id="address" type="text" placeholder="Permanent Address*" required>
-                    <input id="experience" type="text" placeholder="Experience as EB*" required>
-                    <input id="experience" type="text" placeholder="Experience as Delegate*" required>
+                    <input id="exp_eb" type="text" placeholder="Experience as EB">
+                    <input id="exp_delegate" type="text" placeholder="Experience as Delegate">
                     
-                    <select id="current_year" required>
-                        <option selected disabled>Choose Committee</option>
-                        <option value="1">DISEC</option>
-                        <option value="2">UNHRC</option>
-                        <option value="3">ODC</option>
-                        <option value="4">LOK SABHA</option>
+                    <select id="committee" required>
+                        <option selected disabled>Choose Committee*</option>
+                        <option value="1">DISEC (Disarmament and International Security)</option>
+                        <option value="2">UNHRC (United Nations Human Rights Council)</option>
+                        <option value="3">LOK SABHA</option>
+                        <option value="4">ESS-UNGA (Emergency Special Session United Nations General Assembly)</option>
                     </select>
                     
                     <br>

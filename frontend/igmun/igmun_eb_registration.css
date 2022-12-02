@@ -7,7 +7,7 @@
 }
 
 body {
-	background-image: url('../static/igmun/bg12blur.jpg');
+	background-image: url('../static/igmun/igmun_registration_bg_blur.jpg');
     
 	background-position: center;
 	background-attachment: fixed;
@@ -42,7 +42,7 @@ body {
 .left{
     height: auto;
     width: 100%;
-    background-image: url('../static/igmun/bg12.JPG');
+    background-image: url('../static/igmun/igmun_registration_bg.JPG');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: center;
@@ -100,9 +100,9 @@ body {
 }
   
 #home img {
-    height: 35px;
-    width: 35px;
-    mix-blend-mode: soft-light;
+    height: 70px;
+    width: 70px;
+    color: #FFFFFF;
 }
 
 @media screen and (max-width: 768px){
@@ -231,6 +231,18 @@ button:focus {
 @media (max-width: 869px) {
 	form h1{
 	  font-size: 30px;
+	}
+}
+
+@media (max-width: 822px) {
+	form h1{
+	  font-size: 28px;
+	}
+}
+
+@media (max-width: 799px) {
+	form h1{
+	  font-size: 24px;
 	}
 }
 
