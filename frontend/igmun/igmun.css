@@ -8,10 +8,13 @@
 }
 body{
   background-color: #36597A;
+  overflow-x: hidden;
 }
 section{
-  height: 100vh;
+  /* min-height: 100vh; */
   width: 100vw;
+  height: min-content;
+  min-height: 100vh;
 }
 section:nth-child(1){
   background-image: url('./../static/igmun/Group\ 13.png');
@@ -24,12 +27,13 @@ section:nth-child(1){
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 section:nth-child(3){
   height: fit-content;
   background-color: #E5E5E5;
 }
 video{
-  height: 90%;
+  height: 100%;
   position: absolute;
   right: -15%;
   mix-blend-mode: luminosity;
@@ -94,6 +98,7 @@ button:hover a{
   justify-content: space-between;
   align-items: center;
   column-gap: 5%;
+  margin-bottom: 20px;
 }
 .countdown-tile{
   background: rgba( 255, 255, 255, 0.25 );
@@ -220,16 +225,29 @@ footer img{
 .side-social button:hover{
   background-color: transparent;
 }
+#scrollicon{
+  display: none;
+}
 
 
 @media screen and (max-width: 900px) {
     video{
       display: none;
     }
+    #scrollicon{
+      display: block;
+      height: 7vh;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%, 0);
+      bottom: 10vh;
+    }
+
     .about-us{
       max-width: 100vw;
       text-align: center;
       padding: 0 10vw;
+      margin-top: 8vh;
     }
     .about-us h1, .committees h1{
       font-size: 40px !important;
@@ -276,7 +294,9 @@ footer img{
     .side-social{
       display: none;
     }
-    
+    .scrollmagic-pin-spacer{
+      display: none;
+    }
 }
 
 @media screen and (max-width: 500px) {
