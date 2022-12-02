@@ -1,21 +1,29 @@
 // video animation on scroll 
-const intro = document.querySelector(".intro");
-const video = document.querySelector('video');
-const text = document.querySelector(".text-cont")
+
+  const intro = document.querySelector(".intro");
+  const video = document.querySelector('video');
+  const text = document.querySelector(".text-cont")
+  
+
 
 const controller = new ScrollMagic.Controller();
 const scene = new ScrollMagic.Scene({
-  duration: 3000,
+  duration: 4000,
   triggerElement: intro,
   triggerHook: 0
 })
 .setPin(intro)
-.addTo(controller)
+.addTo(controller) 
 
+// if(window.innerWidth < 900){
+//   scene.removePin(true)
+// }
+
+    
 let accelamt = 1;
 let scrollpos = 0;
 let delay = 0;
-
+  
 
 scene.on('update', e=>{
   scrollpos = e.scrollPos /1000;
@@ -25,6 +33,7 @@ setInterval(()=>{
   delay += (scrollpos - delay)*accelamt;
   video.currentTime = delay;
 }, 33.3);
+
 
 
 
