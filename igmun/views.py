@@ -11,8 +11,7 @@ class EBFormAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         ebform = EBForm.objects.create(
-            first_name=request.data['first_name'],
-            last_name=request.data['last_name'],
+            full_name=request.data['full_name'],
             phone_number=request.data['phone_number'],
             email=request.data['email'],
             org=request.data['org'],

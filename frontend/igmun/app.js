@@ -54,3 +54,9 @@ for(let i=0; i<5; i++){
   })
 }
 
+if(sessionStorage.getItem("showmsg")=='Successfully eb-registered'){
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+  sessionStorage.removeItem("showmsg");
+}

@@ -42,7 +42,7 @@ body {
 .left{
     height: auto;
     width: 100%;
-    background-image: url('../static/igmun/igmun_registration_bg.JPG');
+    background-image: url('../static/igmun/igmun_registration_bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: center;

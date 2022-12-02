@@ -22,7 +22,9 @@
                     <h1>Pre-Registration</h1>
 		            <input id="full_name" type="text" placeholder="Full Name*" required>
                     <input id="email" type="email" placeholder="Email*" required>
-                    <input id="phone_number" type="tel" placeholder="Mobile Number*" required>
+                    <input id="phone_number" type="tel" oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number')"
+                    onchange="try{setCustomValidity('')}catch(e){}"
+                    oninput="setCustomValidity(' ')" pattern="[6789][0-9]{9}" placeholder="Mobile Number*" required>
                     <input id="college" type="text" placeholder="College*" required>
                     <select id="college_state">
                         <option value="1">Andhra Pradesh</option>

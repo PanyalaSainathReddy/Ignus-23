@@ -14,15 +14,14 @@
             <div class="left">
                 <div class="text">
                    <p><img src="../static/igmun/logo.png"></p>
-                   <span>All for MUN, MUN for all</span> 
+                   <span>IGMUN<br/>All for MUN, MUN for all</span> 
                 </div>
 
             </div>
             
-                <form action="#" id="pre_register_form">
+                <form action="#" id="eb_register_form">
                     <h1>Executive Board Registration</h1>
-		            <input id="first_name" type="text" placeholder="First Name*" required>
-                    <input id="last_name" type="text" placeholder="Last Name*" required>
+		            <input id="full_name" type="text" placeholder="Full Name*" required>
                     <input id="email" type="email" placeholder="Email*" required>
                     <input id="phone_number" type="tel" oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number')"
                     onchange="try{setCustomValidity('')}catch(e){}"
@@ -34,10 +33,10 @@
                     
                     <select id="committee" required>
                         <option selected disabled>Choose Committee*</option>
-                        <option value="1">DISEC (Disarmament and International Security)</option>
-                        <option value="2">UNHRC (United Nations Human Rights Council)</option>
-                        <option value="3">ESS-UNGA (Emergency Special Session United Nations General Assembly)</option>
-                        <option value="4">LOK SABHA</option>
+                        <option value="DISEC">DISEC (Disarmament and International Security)</option>
+                        <option value="UNHRC">UNHRC (United Nations Human Rights Council)</option>
+                        <option value="ESS-UNGA">ESS-UNGA (Emergency Special Session United Nations General Assembly)</option>
+                        <option value="LS">LOK SABHA</option>
                     </select>
                     
                     <br>
@@ -47,6 +46,6 @@
             
         </div>
     </div>
-    <script src="pre-registration.js"></script>
+    <script src="igmun_eb_registration.js"></script>
 </body>
 </html>
