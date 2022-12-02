@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="igmun-form.css">
+    <title>IGMUN | Ignus'23</title>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html"><button id="home"><img src="../static/home.svg" /></button></a>
+        <div class="form_box">
+            <div class="left">
+                <div class="text">
+                   <p><img src="../static/igmun/logo.png"></p>
+                   <span>All for MUN, MUN for all</span> 
+                </div>
+
+            </div>
+            
+                <form action="#" id="pre_register_form">
+                    <h1>IGMUN</h1>
+		            <input id="full_name" type="text" placeholder="First Name*" required>
+                    <input id="full_name" type="text" placeholder="Last Name*" required>
+                    <input id="email" type="email" placeholder="Email*" required>
+                    <input id="phone_number" type="tel" oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number')"
+                    onchange="try{setCustomValidity('')}catch(e){}"
+                    oninput="setCustomValidity(' ')" pattern="[6789][0-9]{9}" placeholder="Mobile Number*" required>
+                    <input id="college" type="text" placeholder="College*" required>
+                    <input id="address" type="text" placeholder="Permanent Address*" required>
+                    <input id="experience" type="text" placeholder="Experience as EB*" required>
+                    <input id="experience" type="text" placeholder="Experience as Delegate*" required>
+                    
+                    <select id="current_year" required>
+                        <option selected disabled>Choose Committee</option>
+                        <option value="1">DISEC</option>
+                        <option value="2">UNHRC</option>
+                        <option value="3">ODC</option>
+                        <option value="4">LOK SABHA</option>
+                    </select>
+                    
+                    <br>
+                    <button>Submit</button>
+                    <br>
+                </form>
+            
+        </div>
+    </div>
+    <script src="pre-registration.js"></script>
+</body>
+</html>
