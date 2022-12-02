@@ -16,6 +16,24 @@ section{
   height: min-content;
   min-height: 100vh;
 }
+ul{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+}
+ul li{
+  list-style-type: none;
+  width: min-content;
+  font-size: 20px;
+  color: white;
+  min-width: fit-content;
+  border-bottom: 2px solid transparent;
+  padding: 2% 0%;
+}
+ul li:hover{
+  border-bottom: 2px solid white;
+}
 section:nth-child(1){
   background-image: url('./../static/igmun/Group\ 13.png');
   background-repeat: no-repeat;
@@ -26,23 +44,38 @@ section:nth-child(1){
   background-color: #36597A ;
   overflow-x: hidden;
   overflow-y: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 section:nth-child(3){
   height: fit-content;
   background-color: #E5E5E5;
 }
-video{
-  height: 100%;
-  position: absolute;
-  right: -15%;
-  mix-blend-mode: luminosity;
-  outline: none;
-  border: none;
+.table{
+  max-height: 70vh;
   clip-path: inset(2px 2px);
-  top: 50%;
-  transform: translate(0, -50%);
+  max-width: 50vw;
+  -webkit-animation:spin 80s linear infinite;
+  -moz-animation:spin 80s linear infinite;
+  animation:spin 80s linear infinite;
+  mix-blend-mode: luminosity;
 }
+
+@-moz-keyframes spin { 
+  100% { -moz-transform: rotate(360deg); } 
+}
+@-webkit-keyframes spin { 
+  100% { -webkit-transform: rotate(360deg); } 
+}
+@keyframes spin { 
+  100% { 
+      -webkit-transform: rotate(360deg); 
+      transform:rotate(360deg); 
+  } 
+}
+
 nav{
   max-width: 100%;
   display: flex;
@@ -52,6 +85,10 @@ nav{
 }
 nav img{
   height: 50px;
+}
+#menu-icon{
+  height: 25px;
+  display: none;
 }
 button{
   background-color: transparent;
@@ -119,11 +156,9 @@ button:hover a{
 }
 .about-us{
   max-width: 38vw;
-  margin: 18vh 7vw;
-  z-index: 3;
-  position: relative;
+  margin: 0 7vw;
   color: white;
-  max-height: 70vh;
+  height: fit-content;
   overflow-y: scroll;
 }
 .about-us::-webkit-scrollbar {
@@ -131,7 +166,7 @@ button:hover a{
 }
 .about-us h1{
   font-size: 75px;
-  margin: 30px 0;
+  margin: 0 0 30px 0;
 }
 .about-us-text{
   line-height: 25px;
@@ -206,9 +241,7 @@ footer img{
 .social-media-handles button:hover{
   background-color: transparent;
 }
-.intro img{
-  display: none;
-}
+
 .side-social{
   position: absolute;
   right: 0;
@@ -225,29 +258,41 @@ footer img{
 .side-social button:hover{
   background-color: transparent;
 }
-#scrollicon{
-  display: none;
+
+.res-nav{
+  height: 100vh;
+  width: 100vw;
+  background-color: #cecece;
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.res-nav{
+  overflow: hidden;
+  height: 0;
+  transition: height 1s ease-in-out;
 }
 
 
 @media screen and (max-width: 900px) {
-    video{
+    .table{
       display: none;
     }
-    #scrollicon{
-      display: block;
-      height: 7vh;
-      left: 50%;
-      position: absolute;
-      transform: translate(-50%, 0);
-      bottom: 10vh;
+    .table{
+      top: 200%;
     }
-
+    .intro{
+      flex-direction: column;
+    }
     .about-us{
       max-width: 100vw;
       text-align: center;
       padding: 0 10vw;
       margin-top: 8vh;
+
     }
     .about-us h1, .committees h1{
       font-size: 40px !important;
@@ -321,4 +366,19 @@ footer img{
   }
   
 
+}
+
+@media screen and (max-width: 690px){
+  ul{display: none;}
+  #menu-icon{display: block;}
+  .res-nav ul{
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+  .res-nav ul li a{
+    color: #616161;
+    font-weight: bold;
+  }
+  
 }

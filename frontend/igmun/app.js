@@ -1,42 +1,3 @@
-// video animation on scroll 
-
-  const intro = document.querySelector(".intro");
-  const video = document.querySelector('video');
-  const text = document.querySelector(".text-cont")
-  
-
-
-const controller = new ScrollMagic.Controller();
-const scene = new ScrollMagic.Scene({
-  duration: 4000,
-  triggerElement: intro,
-  triggerHook: 0
-})
-.setPin(intro)
-.addTo(controller) 
-
-// if(window.innerWidth < 900){
-//   scene.removePin(true)
-// }
-
-    
-let accelamt = 1;
-let scrollpos = 0;
-let delay = 0;
-  
-
-scene.on('update', e=>{
-  scrollpos = e.scrollPos /1000;
-})
-
-setInterval(()=>{
-  delay += (scrollpos - delay)*accelamt;
-  video.currentTime = delay;
-}, 33.3);
-
-
-
-
 // countdown js 
 var countDownDate = new Date("Feb 16, 2023 00:00:00").getTime();
 const countdownTiles = document.querySelectorAll('.countdown-tile')
@@ -57,3 +18,39 @@ var x = setInterval(function() {
   mins_cont.innerHTML = minutes;
   secs_cont.innerHTML = seconds;
 }, 1000);
+
+// responsive menu js 
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+      });
+  });
+});
+
+const menuIcon = document.getElementById("menu-icon")
+
+const resNav = document.querySelector(".res-nav")
+let isOpen = false
+menuIcon.addEventListener("click", (e)=>{
+  if(!isOpen){
+    isOpen = true;
+    resNav.style.height = '100vh'; 
+    menuIcon.src = './../static/igmun/close.png' 
+  } else {
+    isOpen = false;
+    resNav.style.height = '0';
+    menuIcon.src = './../static/igmun/menu.png'
+  }
+})
+const resNavBtns = document.querySelectorAll(".res-nav-btns")
+for(let i=0; i<5; i++){
+  resNavBtns[i].addEventListener("click", (e)=>{
+    isOpen = false;
+    resNav.style.height = '0';
+    menuIcon.src = './../static/igmun/menu.png'
+  })
+}
+
