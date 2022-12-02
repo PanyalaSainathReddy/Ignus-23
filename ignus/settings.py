@@ -10,6 +10,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['http://*.ignus.co.in', 'https://*.ignus.co.in']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +47,7 @@ ROOT_URLCONF = 'ignus.urls'
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:5500',
+    config('FRONTEND_URL', cast=str),
 )
 
 TEMPLATES = [
@@ -98,7 +100,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='../staticfiles', cast=str))
+STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str))
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
