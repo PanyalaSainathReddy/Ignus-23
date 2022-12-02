@@ -4,8 +4,8 @@ from django.core.validators import RegexValidator
 COMMITTEE_CHOICES = (
     ("DISEC", "Disarmament and International Security"),
     ("UNHRC", "United Nations Human Rights Council"),
-    ("LS", "Lok Sabha"),
-    ("UNODC", "United Nations Office on Drugs and Crime")
+    ("ESS-UNGA", "Emergency Special Session United Nations General Assembly"),
+    ("LS", "Lok Sabha")
 )
 
 
@@ -17,8 +17,8 @@ class EBForm(models.Model):
     email = models.EmailField(unique=True)
     org = models.CharField(max_length=200)
     permanent_address = models.TextField()
-    exp_eb = models.TextField(blank=True)
-    exp_delegate = models.TextField(blank=True)
+    exp_eb = models.TextField(blank=True, default="")
+    exp_delegate = models.TextField(blank=True, default="")
     preferred_comm = models.CharField(max_length=10, choices=COMMITTEE_CHOICES)
 
     class Meta:
