@@ -46,13 +46,21 @@ menuIcon.addEventListener("click", (e)=>{
   }
 })
 const resNavBtns = document.querySelectorAll(".res-nav-btns")
-for(let i=0; i<5; i++){
-  resNavBtns[i].addEventListener("click", (e)=>{
+resNavBtns.forEach((btn)=>{
+  btn.addEventListener("click", (e)=>{
     isOpen = false;
-    resNav.style.height = '0';
+    resNav.style.height = '0'
     menuIcon.src = './../static/igmun/menu.png'
   })
-}
+})
+
+// for(let i=0; i<4; i++){
+//   resNavBtns[i].addEventListener("click", (e)=>{
+//     isOpen = false;
+//     resNav.style.height = '0';
+//     menuIcon.src = './../static/igmun/menu.png'
+//   })
+// }
 
 if(sessionStorage.getItem("showmsg")=='Successfully eb-registered'){
   var x = document.getElementById("snackbar");
@@ -63,22 +71,21 @@ if(sessionStorage.getItem("showmsg")=='Successfully eb-registered'){
 const nav_btns = document.querySelectorAll(".nav-btns")
 const logo = document.getElementById("ignus-logo")
 
-// window.addEventListener("scroll", (e)=>{
-//   console.log(e)
-//   if(window.scrollY > window.innerHeight*2){
-//     nav_btns.forEach((btn) => {
-//       btn.style.color = "grey";
-//       menuIcon.style.mixBlendMode = "difference";
-//       logo.style.mixBlendMode = "difference";
-//     }) 
-//   } else {
-//     nav_btns.forEach((btn) => {
-//       btn.style.color = "#fff";
-//       menuIcon.style.mixBlendMode = "normal"
-//       logo.style.mixBlendMode = "normal"
-//     })
-//   }
-// })
+window.addEventListener("scroll", (e)=>{
+  if(window.scrollY > window.innerHeight*2){
+    nav_btns.forEach((btn) => {
+      btn.style.color = "grey";
+      menuIcon.style.mixBlendMode = "difference";
+      logo.style.mixBlendMode = "difference";
+    }) 
+  } else {
+    nav_btns.forEach((btn) => {
+      btn.style.color = "#fff";
+      menuIcon.style.mixBlendMode = "normal"
+      logo.style.mixBlendMode = "normal"
+    })
+  }
+})
 
 
 
