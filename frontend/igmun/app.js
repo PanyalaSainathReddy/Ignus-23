@@ -1,5 +1,5 @@
 // countdown js 
-var countDownDate = new Date("Feb 16, 2023 00:00:00").getTime();
+var countDownDate = new Date("Feb 18, 2023 00:00:00").getTime();
 const countdownTiles = document.querySelectorAll('.countdown-tile')
 const days_cont = countdownTiles[0].children[0]
 const hours_cont = countdownTiles[1].children[0]
