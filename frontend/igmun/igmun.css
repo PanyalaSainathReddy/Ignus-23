@@ -214,6 +214,9 @@ button:hover a{
   margin-top: 40px;
   padding: 40px 20px;
 }
+.committee-container-mobile{
+  display: none;
+}
 .commitee-info{
   max-width: 40%;
 }
@@ -294,119 +297,7 @@ footer img{
   transition: height 1s ease-in-out;
 }
 
-
-@media screen and (max-width: 900px) {
-    .table{
-      display: none;
-    }
-    .landing{
-      padding: 11% 0;
-    }
-    .table{
-      top: 200%;
-    }
-    .intro{
-      flex-direction: column;
-    }
-    .about-us{
-      max-width: 100vw;
-      text-align: center;
-      padding: 0 10vw;
-      margin-top: 8vh;
-
-    }
-    .about-us h1, .committees h1{
-      font-size: 40px !important;
-    }
-    h1{
-      font-size: 20px !important;
-    }
-    .countdown-tile span{
-      font-size: 40px;
-    }
-    .countdown-tile h2{
-      font-size: 17px !important;
-    }
-    .committee-container{
-      flex-direction: column;
-      row-gap: 20px;
-    }
-    .commitee-info{
-      min-width: 90%;
-      text-align: center;
-    }
-    .commitee-info h1{
-      font-size: 24px !important;
-    }
-    .commitee-info div{
-      font-size: 18px !important;
-    }
-    footer{
-      flex-direction: column;
-      height: fit-content;
-      row-gap: 20px;
-    }
-    footer img{
-      display: none;
-    }
-    .social-media-handles img{
-      display: block;
-    }
-    .contact, .address{
-      min-width: 100%;
-      text-align: center;
-      margin: 0;
-    }
-    .side-social{
-      display: none;
-    }
-    .scrollmagic-pin-spacer{
-      display: none;
-    }
-}
-
-@media screen and (max-width: 500px) {
-  .countdown-container{
-    display: none;
-  }
-  .landing{
-    padding: 18% 0;
-  }
-  h1{
-    text-align: center;
-    font-size: 15px !important;
-  }
-  .side-social{
-    display: flex;
-    flex-direction: row;
-    position: absolute;
-    top: 90vh;
-    width: 100vw;
-    left: 50%;
-    justify-content: space-evenly;
-    row-gap: 0;
-    column-gap: 10px;
-    margin-right: 0;
-  }
-  
-
-}
-
-@media screen and (max-width: 690px){
-  ul{display: none;}
-  #menu-icon{display: block;}
-  .res-nav ul{
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-  }
-  .res-nav ul li a{
-    color: #616161;
-    font-weight: bold;
-  }
-  
-}
-
+/* Snack Bar */
 #snackbar {
   visibility: hidden;
   min-width: 250px;
@@ -447,4 +338,154 @@ footer img{
 @keyframes fadeout {
   from {top: 80px; opacity: 1;}
   to {top: 0; opacity: 0;}
+}
+
+@media screen and (max-width: 1000px) {
+  .about-us h1, .committees h1{
+    font-size: 50px !important;
+  }
+}
+
+
+@media screen and (max-width: 900px) {
+    .table{
+      display: none;
+    }
+    .landing{
+      padding: 11% 0;
+    }
+    .table{
+      top: 200%;
+    }
+    .intro{
+      flex-direction: column;
+    }
+    .about-us{
+      max-width: 100vw;
+      text-align: center;
+      padding: 0 10vw;
+      margin-top: 8vh;
+
+    }
+    .about-us h1, .committees h1{
+      font-size: 40px !important;
+    }
+    h1{
+      font-size: 18px !important;
+    }
+    .countdown-tile span{
+      font-size: 40px;
+    }
+    .countdown-tile h2{
+      font-size: 17px !important;
+    }
+    .committee-container-laptop{
+      display: none;
+    }
+    .committee-container-mobile{
+      display: flex;
+    }
+    .committee-container{
+      flex-direction: column;
+      row-gap: 20px;
+    }
+    .commitee-info{
+      min-width: 90%;
+      text-align: center;
+    }
+    .commitee-info h1{
+      font-size: 24px !important;
+    }
+    .commitee-info div{
+      font-size: 18px !important;
+    }
+    footer{
+      flex-direction: column;
+      height: fit-content;
+      row-gap: 20px;
+    }
+    footer img{
+      display: none;
+    }
+    .social-media-handles img{
+      display: block;
+    }
+    .contact, .address{
+      min-width: 100%;
+      text-align: center;
+      margin: 0;
+    }
+    .side-social{
+      display: none;
+    }
+    .scrollmagic-pin-spacer{
+      display: none;
+    }
+}
+
+@media screen and (max-width: 690px){
+  ul{display: none;}
+  #menu-icon{display: block;}
+  .res-nav ul{
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+  .res-nav ul li a{
+    color: #616161;
+    font-weight: bold;
+  }
+  
+}
+
+@media screen and (max-width: 540px) {
+  .about-us{
+    padding: 0px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .countdown-container{
+    display: none;
+  }
+  .landing{
+    padding: 18% 0;
+  }
+  h1{
+    text-align: center;
+    font-size: 13px !important;
+  }
+  .side-social{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 90vh;
+    width: 100vw;
+    left: 50%;
+    justify-content: space-evenly;
+    row-gap: 0;
+    column-gap: 10px;
+    margin-right: 0;
+  }
+  
+
+}
+
+@media screen and (max-width: 415px) {
+  .about-us{
+    margin: 20px !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  h1{
+    text-align: center;
+    font-size: 10px !important;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .about-us-text{
+    font-size: 14px !important;
+  }
 }
