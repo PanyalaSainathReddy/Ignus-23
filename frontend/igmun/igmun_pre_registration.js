@@ -28,7 +28,7 @@ pre_register_form.addEventListener('submit', function(e){
     })
     .then(function(response){
         if(response.status==201){
-            sessionStorage.setItem("showmsg", "Successfully pre-registered for IGMUN");
+            sessionStorage.setItem("showmsg", "Successfully Pre-Registered for IGMUN");
             window.location.replace("/igmun/index.html");
         }
         else{

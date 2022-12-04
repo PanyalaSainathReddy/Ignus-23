@@ -30,11 +30,11 @@ eb_register_form.addEventListener('submit', function(e){
     })
     .then(function(response){
         if(response.status==201){
-            sessionStorage.setItem("showmsg", "Successfully eb-registered");
+            sessionStorage.setItem("showmsg", "Successfully EB-Registered");
             window.location.replace("/igmun/index.html");
         }
         else{
-            alert("This Email has already been eb-registered");
+            alert("This Email has already been EB-Registered");
         }
     })
     .catch(error => console.error('Error:', error));

@@ -62,8 +62,9 @@ resNavBtns.forEach((btn)=>{
 //   })
 // }
 
-if(sessionStorage.getItem("showmsg")=='Successfully eb-registered' || sessionStorage.getItem("showmsg")=='Successfully pre-registered for IGMUN'){
+if(sessionStorage.getItem("showmsg")=='Successfully EB-Registered' || sessionStorage.getItem("showmsg")=='Successfully Pre-Registered for IGMUN'){
   var x = document.getElementById("snackbar");
+  x.innerHTML = sessionStorage.getItem("showmsg");
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
   sessionStorage.removeItem("showmsg");
