@@ -62,7 +62,7 @@ resNavBtns.forEach((btn)=>{
 //   })
 // }
 
-if(sessionStorage.getItem("showmsg")=='Successfully eb-registered'){
+if(sessionStorage.getItem("showmsg")=='Successfully eb-registered' || sessionStorage.getItem("showmsg")=='Successfully pre-registered for IGMUN'){
   var x = document.getElementById("snackbar");
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
