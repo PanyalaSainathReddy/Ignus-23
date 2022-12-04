@@ -7,7 +7,7 @@ from .serializers import UserSerializer, RegisterSerializer, UserProfileSerializ
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import generics, status
-from .models import UserProfile, PreRegistration
+from .models import UserProfile, PreRegistration, CampusAmbassador
 import requests
 # from .utils import get_referral_code
 
@@ -115,23 +115,16 @@ class UserProfileDetailsView(generics.RetrieveAPIView):
         return Response({"user": userserializer.data, "userprofile": userprofileserializer.data})
 
 
-# class CARegisterAPIView(generics.CreateAPIView):
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = CASerializer
+class CARegisterAPIView(generics.CreateAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
-#     def create(self, request, *args, **kwargs):
-#         user = User.objects.get(id=request.user.id)
-#         userprofile = UserProfile.objects.get(user=user)
-#         ca = CampusAmbassador.objects.create(
-#             ca_user=userprofile,
-#             insta_link=request.data['insta_link'],
-#             workshop_capability=request.data['workshop_capability'],
-#             publicize_ignus=request.data['publicize_ignus'],
-#             past_experience=request.data['past_experience'],
-#             description=request.data['description'],
-#             referral_code=get_referral_code()
-#         )
-#         ca.save()
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        userprofile = UserProfile.objects.get(user=user)
+        ca = CampusAmbassador.objects.create(
+            ca_user=userprofile,
+        )
+        ca.save()
 
-#         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+        return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
