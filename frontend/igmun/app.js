@@ -69,20 +69,17 @@ if(sessionStorage.getItem("showmsg")=='Successfully eb-registered'){
   sessionStorage.removeItem("showmsg");
 }
 const nav_btns = document.querySelectorAll(".nav-btns")
-const logo = document.getElementById("ignus-logo")
 
 window.addEventListener("scroll", (e)=>{
   if(window.scrollY > window.innerHeight*2){
     nav_btns.forEach((btn) => {
       btn.style.color = "grey";
       menuIcon.style.mixBlendMode = "difference";
-      logo.style.mixBlendMode = "difference";
     }) 
   } else {
     nav_btns.forEach((btn) => {
       btn.style.color = "#fff";
-      menuIcon.style.mixBlendMode = "normal"
-      logo.style.mixBlendMode = "normal"
+      menuIcon.style.mixBlendMode = "normal";
     })
   }
 })
