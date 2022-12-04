@@ -238,6 +238,7 @@ def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
         instance.registration_code = generate_registration_code(instance.user.first_name, instance.__class__.objects.count())
 
+
 pre_save.connect(pre_save_user_profile, sender=UserProfile)
 
 

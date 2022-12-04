@@ -7,7 +7,7 @@ eb_register_form.addEventListener('submit', function(e){
   var email=document.getElementById('email').value
   var phone_number=document.getElementById('phone_number').value
   var college=document.getElementById('college').value
-  var address=document.getElementById('address').value
+  var city=document.getElementById('city').value
   var exp_eb=document.getElementById('exp_eb').value
   var exp_delegate=document.getElementById('exp_delegate').value
   var committee=document.getElementById('committee').value
@@ -19,7 +19,7 @@ eb_register_form.addEventListener('submit', function(e){
         email:email,
         phone_number:phone_number,
         org:college,
-        permanent_address:address,
+        city:city,
         exp_eb:exp_eb,
         exp_delegate:exp_delegate,
         preferred_comm:committee,
@@ -34,7 +34,7 @@ eb_register_form.addEventListener('submit', function(e){
             window.location.replace("/igmun/index.html");
         }
         else{
-            alert("This Email has already been registered");
+            alert("This Email has already been eb-registered");
         }
     })
     .catch(error => console.error('Error:', error));

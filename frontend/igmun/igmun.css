@@ -204,7 +204,7 @@ button:hover a{
 }
 .committee-container{
   width: 75vw;
-  height: fit-content;
+  height: 270px;
   background-color: #cecece;
   border-radius: 10px;
   display: flex;
@@ -386,6 +386,8 @@ footer img{
       display: flex;
     }
     .committee-container{
+      min-height: 300px;
+      height: fit-content;
       flex-direction: column;
       row-gap: 20px;
     }
