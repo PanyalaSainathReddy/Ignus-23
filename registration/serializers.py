@@ -31,7 +31,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["phone", "gender", "current_year", "college", "address", "state", "id_issued", "accommodation_required", "uuid"]
+        fields = ["phone", "gender", "current_year", "college", "address", "state", "id_issued", "accommodation_required", "uuid", "registration_code"]
 
 
 # class CASerializer(serializers.ModelSerializer):
