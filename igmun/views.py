@@ -15,7 +15,7 @@ class EBFormAPIView(generics.CreateAPIView):
             phone_number=request.data['phone_number'],
             email=request.data['email'],
             org=request.data['org'],
-            permanent_address=request.data['permanent_address'],
+            city=request.data['city'],
             exp_eb=request.data['exp_eb'],
             exp_delegate=request.data['exp_delegate'],
             preferred_comm=request.data['preferred_comm']
