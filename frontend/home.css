@@ -274,30 +274,12 @@ img{
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: -1;
+  z-index: 1;
 }
 #logo{
   width: 30vw;
 }
-.header button, .header-btn{
-  /* padding: 1rem 1.5rem; */
-  font-size: 1.2rem;
-  border-radius: 30px;
-  background-color: transparent;
-  border: 3px solid #6e6d6e;
-  color: #6e6d6e;
-  min-width: max-content;
-  text-align: center;
-  margin-top: 4%;
-  padding: 4.5% 7.5%;
-  font-weight: 600;
-  left: 50%;
-}
-.header-btn:hover{
-  background-color: #6e6d6e;
-  color: white;
-  cursor: pointer;
-}
+
 section:nth-child(1){
   flex-direction: column;
 }
@@ -511,6 +493,36 @@ section{
 
 
 
+/* aftermovie */
+.header-btn-cont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+}
+.header-btn-cont button{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  border: 2px solid #1d3557;
+  color: #1d3557;
+}
+.header button:hover{
+  background-color: #1d3557;
+  color: #fff;
+}
+.header a{min-width: max-content; }
+iframe{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 8px solid white;
+  border-radius: 30px;
+  width: 65vw;
+  aspect-ratio: 1.77/1;
+}
 
 
 @keyframes fadeUp{
@@ -519,6 +531,12 @@ section{
 }
 
 @media screen and (max-width: 915px) {  /*tablet*/
+  iframe{
+    width: 90vw;
+    border: 3px solid white !important;
+    border-radius: 10px;
+
+  }
   nav{
     padding: 0 10vw;
   }
@@ -543,11 +561,6 @@ section{
   }
   .header img{
     width: 50vw !important;
-  }
-  .header-btn{
-    font-size: 20px;
-    padding: 13px 15px !important;
-    font-weight: 600 !important;
   }
   .nav-btns{
     display: none;
@@ -620,8 +633,12 @@ section{
   }
 }
 @media screen and (max-width: 500px){ /*mobile*/
-  .header-btn{
-    font-size: 14px;
+  .header-btn-cont{
+    flex-direction: column;
+    row-gap: 20px;
+  }
+  .header-btn-cont button{
+    padding: 10px 12px;
   }
   .white-overlay{
     font-size: 22px;
@@ -827,7 +844,7 @@ section{
 
 
 /* lightbox styling   */
-.lightbox{
+.lightbox, .am-lightbox{
   min-height: 100vh;
   position: fixed;
   width: 100vw;

@@ -166,3 +166,25 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
   lightBox.style.display = "block"
 })
 
+
+
+
+// aftermovie js
+const amLightbox = document.querySelector(".am-lightbox");
+const amClose = amLightbox.children[0];
+const amBtns = document.querySelectorAll(".am-btn")
+amBtns.forEach((btn)=>{
+  btn.addEventListener("click", (e)=>{
+    let year = btn.innerHTML.substring(0, 4);
+    amLightbox.style.display = "block";
+  })
+})
+amClose.addEventListener("click", ()=>{
+  amLightbox.style.display = "none";
+})
+amLightbox.addEventListener("click", ()=>{
+  amLightbox.style.display = "none";
+})
+
+
+
