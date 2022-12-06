@@ -38,7 +38,9 @@ class PreRegistrationForm(models.Model):
     org = models.CharField(max_length=200)
     city = models.TextField()
     exp_delegate = models.TextField(blank=True, default="")
-    preferred_comm = models.CharField(max_length=10, choices=COMMITTEE_CHOICES)
+    preferred_comm1 = models.CharField(max_length=10, choices=COMMITTEE_CHOICES, default="")
+    preferred_comm2 = models.CharField(max_length=10, choices=COMMITTEE_CHOICES, default="")
+    preferred_comm3 = models.CharField(max_length=10, choices=COMMITTEE_CHOICES, default="")
 
     class Meta:
         verbose_name = "Pre Registration Form"

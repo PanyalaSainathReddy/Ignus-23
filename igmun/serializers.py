@@ -11,4 +11,4 @@ class EBFormSerializer(serializers.ModelSerializer):
 class PreRegistrationFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreRegistrationForm
-        fields = ["full_name", "phone_number", "email", "org", "city", "exp_delegate", "preferred_comm"]
+        fields = ["full_name", "phone_number", "email", "org", "city", "exp_delegate", "preferred_comm1", "preferred_comm2", "preferred_comm3"]

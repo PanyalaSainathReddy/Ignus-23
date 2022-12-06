@@ -8,7 +8,7 @@ class EBFormAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class PreRegistrationFormAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = ("__str__", "email", "org", "preferred_comm")
+    list_display = ("__str__", "email", "org", "preferred_comm1", "preferred_comm2", "preferred_comm3")
 
 
 admin.site.register(EBForm, EBFormAdmin)
