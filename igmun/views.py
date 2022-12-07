@@ -18,7 +18,9 @@ class EBFormAPIView(generics.CreateAPIView):
             city=request.data['city'],
             exp_eb=request.data['exp_eb'],
             exp_delegate=request.data['exp_delegate'],
-            preferred_comm=request.data['preferred_comm']
+            preferred_comm1=request.data['preferred_comm1'],
+            preferred_comm2=request.data['preferred_comm2'],
+            preferred_comm3=request.data['preferred_comm3']
         )
         ebform.save()
 
@@ -37,7 +39,9 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
             org=request.data['org'],
             city=request.data['city'],
             exp_delegate=request.data['exp_delegate'],
-            preferred_comm=request.data['preferred_comm']
+            preferred_comm1=request.data['preferred_comm1'],
+            preferred_comm2=request.data['preferred_comm2'],
+            preferred_comm3=request.data['preferred_comm3']
         )
         preregform.save()
 
