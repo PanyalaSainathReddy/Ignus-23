@@ -171,33 +171,33 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
 
 
 // aftermovie js
-const amLightbox = document.querySelector(".am-lightbox");
-const amClose = amLightbox.children[0];
-const amBtns = document.querySelectorAll(".am-btn")
-amBtns.forEach((btn)=>{
-  btn.addEventListener("click", (e)=>{
-    let year = btn.innerHTML.substring(0, 4);
-    amLightbox.style.display = "block";
-  })
-})
-amClose.addEventListener("click", ()=>{
-  amLightbox.style.display = "none";
-  document.querySelectorAll("iframe").forEach((ifr)=>{
-    // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
-    const source= ifr.src;
-    ifr.src = "";
-    ifr.src = source;
-  })
-})
-amLightbox.addEventListener("click", ()=>{
-  amLightbox.style.display = "none";
-  document.querySelectorAll("iframe").forEach((ifr)=>{
-    // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
-    const source= ifr.src;
-    ifr.src = "";
-    ifr.src = source;
-  })
-})
+// const amLightbox = document.querySelector(".am-lightbox");
+// const amClose = amLightbox.children[0];
+// const amBtns = document.querySelectorAll(".am-btn")
+// amBtns.forEach((btn)=>{
+//   btn.addEventListener("click", (e)=>{
+//     let year = btn.innerHTML.substring(0, 4);
+//     amLightbox.style.display = "block";
+//   })
+// })
+// amClose.addEventListener("click", ()=>{
+//   amLightbox.style.display = "none";
+//   document.querySelectorAll("iframe").forEach((ifr)=>{
+//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
+//     const source= ifr.src;
+//     ifr.src = "";
+//     ifr.src = source;
+//   })
+// })
+// amLightbox.addEventListener("click", ()=>{
+//   amLightbox.style.display = "none";
+//   document.querySelectorAll("iframe").forEach((ifr)=>{
+//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
+//     const source= ifr.src;
+//     ifr.src = "";
+//     ifr.src = source;
+//   })
+// })
 
 
 
