@@ -51,6 +51,7 @@ container.addEventListener("wheel", (e)=>{
 });
 
 
+
 // animations for touchscreen devices 
 container.addEventListener("touchstart", touchStart, false);
 container.addEventListener("touchmove", touchMove, false);
@@ -165,4 +166,61 @@ lightBox.addEventListener("click", ()=>{
 document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
   lightBox.style.display = "block"
 })
+
+
+
+
+// aftermovie js
+// const amLightbox = document.querySelector(".am-lightbox");
+// const amClose = amLightbox.children[0];
+// const amBtns = document.querySelectorAll(".am-btn")
+// amBtns.forEach((btn)=>{
+//   btn.addEventListener("click", (e)=>{
+//     let year = btn.innerHTML.substring(0, 4);
+//     amLightbox.style.display = "block";
+//   })
+// })
+// amClose.addEventListener("click", ()=>{
+//   amLightbox.style.display = "none";
+//   document.querySelectorAll("iframe").forEach((ifr)=>{
+//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
+//     const source= ifr.src;
+//     ifr.src = "";
+//     ifr.src = source;
+//   })
+// })
+// amLightbox.addEventListener("click", ()=>{
+//   amLightbox.style.display = "none";
+//   document.querySelectorAll("iframe").forEach((ifr)=>{
+//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
+//     const source= ifr.src;
+//     ifr.src = "";
+//     ifr.src = source;
+//   })
+// })
+
+
+
+
+// stats js 
+
+// let ctr = 0;
+// container.addEventListener("wheel", (e)=>{
+//   if(Math.floor(container.scrollLeft / window.innerWidth) >= 4 && ctr == 0){
+//     document.querySelectorAll(".stats-tile").forEach((tile)=>{
+//       const stat = tile.children[1].children[0];
+//       let final_val = stat.innerHTML;
+//       stat.innerHTML = 0;
+//       // console.log(tile);
+//       setInterval(()=>{
+//         if(stat.innerHTML != final_val){
+//           stat.innerHTML = parseInt(stat.innerHTML) + 1;
+//         }
+//       }, 50)
+//     })
+//     ctr = 1;
+//   }
+// })
+
+
 

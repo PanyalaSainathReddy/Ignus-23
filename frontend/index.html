@@ -6,7 +6,9 @@
 <head>
   <meta charset='UTF-8'>
   <title>Ignus'23</title>
+  <!-- <meta name = "introduction" content = "no-reference"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+  <!-- <meta name = "introduction" content = "no-reference"> -->
   <meta name="description" content="IGNUS, the much anticipated annual socio-cultural fest of IIT Jodhpur, is now back, after three years. Ignus celebrates art, culture and pluralism. It provides a stage for the creative and intellectual minds from across the country to showcase their incredible talent and creativity through art and culture."/>
   <meta name="og:site_name" content="Ignus'23"/>
   <meta name="og:title" content="Ignus'23 - A Bohemian Convoy"/>
@@ -27,6 +29,8 @@
   <link rel="stylesheet" type="text/css" href="./home.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 </head>
 
 <body id="body">
@@ -111,25 +115,53 @@
     <section>
       <div class="header" data-aos="fade-up" data-aos-duration="3000">
         <img src="./static/logo.svg" alt="logo" id="logo">
+
+        <div class="timer-cont" >
+          <div class="val-cont">
+            
+            <div class="days">
+              <h1>69</h1>
+              <span>DAYS</span>
+            </div>
+            <div class="hours">
+              <h1>12</h1>
+              <span>HOURS</span>
+            </div>
+            <div class="mins">
+              <h1>30</h1>
+              <span>MINS</span>
+            </div>
+            <div class="seconds">
+              <h1>30</h1>
+              <span>SECONDS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-btn-cont">
+          <a href="./pre-registration/pre-registration.html" class="pre-regis-btn"> <button> PRE-REGISTER </button>  </a>
+          <a href="https://www.youtube.com/watch?v=dxW5eOUjoHU" target="_blank"> <button class="am-btn">Aftermovie '19 </button></a> 
+          <a href="https://www.youtube.com/watch?v=6-ueRyJIDYg" target="_blank"> <button class="am-btn">Aftermovie '20 </button></a> 
+        </div>
+
+        
+        
+
       </div>
-      <a href="./pre-registration/pre-registration.html" data-aos="fade-up" data-aos-duration="3000">
-        <button class="header-btn">
-          PRE-REGISTER
-        </button>
-      </a>
     </section>
 
     <section>
-      <div class="about" data-aos="fade-up" data-aos-duration="3000" data-aos-delay="2000">
-        <h1 style="margin-bottom: 30px; font-size: 3rem; line-height: 2.5rem;" >ABOUT US</h1>
+      <div class="about" data-aos="fade-up" data-aos-duration="3000" data-aos-delay="1000">
+        <h1 style="margin-bottom: 30px; font-size: 3rem; line-height: 2.5rem;" >About Us</h1>
         <p style="font-size: 1rem;">IGNUS, the much anticipated annual socio-cultural fest of IIT Jodhpur, is now back, after three years. Ignus celebrates art, culture and pluralism. It provides a stage for the creative and intellectual minds from across the country to showcase their incredible talent and creativity through art and culture.</p>
       </div>
     </section>
 
     <section>
-      <div class="theme-content" data-aos="fade-up" data-aos-delay="3000" data-aos-duration="2000" >
-        <h1 style="margin-bottom: 30px; font-size: 45px;" >Bohemian Convoy</h1>
-        <p>Our theme for this year is Bohemian Convoy : a socially unconventional journey.<br/>Bohemians are wanderers and vagabonds and don't we all want little adventures in our life to keep us going? IGNUS has been celebrating art and culture for years now but this year IGNUS is celebrating the uniqueness of every individual expressed through art and culture. So, just like Bohemians, let's be carefree for these 4 days and celebrate our eccentricities together.</p>
+      <div class="theme-content" data-aos="fade-up" data-aos-duration="3000" data-aos-delay="1000" >
+        <h1 style="margin-bottom: 30px; font-size: 45px; " >Bohemian Convoy</h1>
+        <p style="line-height: 25px;">Our theme for this year is Bohemian Convoy : a socially unconventional journey.<br/>Bohemians are wanderers and vagabonds and don't we all want little adventures in our life to keep us going? IGNUS has been celebrating art and culture for years now but this year IGNUS is celebrating the uniqueness of every individual expressed through art and culture. So, just like Bohemians, let's be carefree for these 4 days and celebrate our eccentricities together.</p>
+        <!-- <iframe src="https://www.youtube.com/embed/GdNceDHonLU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
       </div>
     </section>
     
@@ -158,26 +190,48 @@
       </div>  
     </section>
 
-    <section class="timer-sec">
-      <div class="timer-cont">
-        <p> The wait ends in </p>
-        <div class="val-cont">
-
-          <div class="days">
-            <h1>69</h1>
-            <span>DAYS</span>
+    <section class="stats-sec">
+      <div class="stats-cont">
+        <div class="stats-tile">
+          <img src="./static/icon college.png" alt="college-icon">
+          <div>
+            <h1>200</h1>
+            <span>Colleges</span>
           </div>
-          <div class="hours">
-            <h1>12</h1>
-            <span>HOURS</span>
+        </div>
+        <div class="stats-tile">
+          <img src="./static/icon eyeball.png" alt="eyeball-icon">
+          <div>
+            <h1>200K</h1>
+            <span>Eyeballs</span>
           </div>
-          <div class="mins">
+        </div>
+        <div class="stats-tile">
+          <img src="./static/icon govt.png" alt="govt-icon">
+          <div>
             <h1>30</h1>
-            <span>MINS</span>
+            <span>Govt. Org.</span>
           </div>
-          <div class="seconds">
-            <h1>30</h1>
-            <span>SECONDS</span>
+        </div>
+        <div class="stats-tile">
+          <img src="./static/icon footfall.png" alt="footfall-icon">
+          <div>
+            <h1>80</h1>
+            <span>Footfalls</span>
+          </div>
+        </div>
+        <div class="stats-tile">
+          <img src="./static/icon corporate.png" alt="corporate-icon">
+          <div>
+            <h1>75</h1>
+            <span>Corporates</span>
+          </div>
+        </div>
+        <div class="stats-tile">
+          <img src="./static/icon events.png" alt="events-icon">
+          <div>
+            <h1>50</h1>
+            <span>Events</span>
           </div>
         </div>
       </div>
@@ -229,6 +283,21 @@
       <img src="./static/events/close.png" alt="close">
     </button>
     <img src="./static/prakriti-lb-img.jpeg" alt="lightbox-img" class="lightboxImg" id="lbImg">
+  </div>
+
+  <div class = "am-lightbox">
+    <button class="close" style="border: none">
+      <img src="./static/events/close.png" alt="close">
+    </button>
+
+
+
+
+    <!-- <iframe width="1038" height="584" src="https://www.youtube.com/embed/GdNceDHonLU" title="Theme reveal | Prometeo'23 | IIT Jodhpur" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
+    <iframe  src="https://www.youtube.com/embed/IqE9tIVHm-Q" title="INGUS'23 Theme Reveal "Bohemian Convoy"" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    
   </div>
 
   
