@@ -9,8 +9,8 @@ pre_register_form.addEventListener('submit', function(e){
   var college=document.getElementById('college').value
   var college_state=document.getElementById('college_state').value
   var current_year=document.getElementById('current_year').value
-  var por=document.getElementById('por').value
-  var por_holder_contact=document.getElementById('por_holder_contact').value
+//   var por=document.getElementById('por').value
+//   var por_holder_contact=document.getElementById('por_holder_contact').value
 
   fetch('https://api.ignus.co.in/api/accounts/pre-register/', {
     method: 'POST',
@@ -21,8 +21,8 @@ pre_register_form.addEventListener('submit', function(e){
         college:college,
         college_state:college_state,
         current_year:current_year,
-        por:por,
-        por_holder_contact:por_holder_contact,
+        por:'',
+        por_holder_contact:'',
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',

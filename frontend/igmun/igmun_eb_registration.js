@@ -1,5 +1,12 @@
 // API
 var eb_register_form=document.getElementById('eb_register_form')
+var container=document.getElementById('container')
+var eb_registration_open=false
+
+if(eb_registration_open==false){
+  container.innerHTML="<h1>EB Registration is closed</h1>";
+  container.style.color="white";
+}
 
 eb_register_form.addEventListener('submit', function(e){
   e.preventDefault()
