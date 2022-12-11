@@ -5,3 +5,11 @@ $(document).ready(function(){
     $(".res-nav").toggleClass("opened");
 	});
 });
+
+const radioBtns = document.querySelectorAll(".radio-btn");
+console.log(radioBtns);
+radioBtns.forEach((btn)=>{
+	btn.addEventListener("click", ()=>{
+		document.querySelector(".expand").style.height = "fit-content";
+	})
+})

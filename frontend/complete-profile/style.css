@@ -140,7 +140,7 @@ nav{
   flex-direction: row;
   padding: 0 3.5%;
   justify-content: space-between;
-  position: absolute;;
+  position: fixed;
   width: 100vw;
   height: fit-content;
   background: rgba( 255, 255, 255, 0.3 );
@@ -170,52 +170,45 @@ nav button:hover{
 /* navbar ends here  */
 
 body{
-  background-image: url('./../static/schedule/schedulebg.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #8ecae6;
+}
+.vulture{
+  position: fixed;
+  right: 0;
+  top: 10vh;
+  max-width: 38vw;
+  z-index: -1;
 }
 
 main{
-  background: rgba( 255, 255, 255, 100 );
-  backdrop-filter: blur( 4px );
-  -webkit-backdrop-filter: blur( 4px );
-  border-radius: 10px;
-  height: 70vh;
-  width: 80vw;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height:fit-content;
+  width: 57vw;
   display: flex;
   justify-content: space-between;
+  margin: 10vh 0 0 3vw
 }
-.left-container{
-  width: 37%;
-  height: 100%;
-  background-image: url('./../static/ante-samarzija-kJrgFxaCdEk-unsplash.jpg');
-  background-size: cover;
-  padding: 50px 30px;
-  color: white;
-  font-size: 1.2rem;
-}
+h1{font-size: 2.5rem;}
+
 .right-container{
   height: 100%;
-  width: 60%;
+  width: 100%;
   padding: 20px 30px;
   font-size: 14px;
-  font-weight: 500;
-  color:#1d3557; 
-  overflow-y: scroll;
+  font-weight: 600;
+  color:  #1d3557;
   padding-bottom: 70px;
 
 }
 input[type = "text"], select{
-  padding: 7px 10px;
+  padding: 10px 13px;
   margin-top: 7px;
   border-radius: 5px;
-  border: 2px solid #b5b6b89c;
-  
+  border: 3px solid #ffffff89;
+  background: transparent; 
+  outline: none;
+}
+input:focus, select:focus{
+  border: 3px solid #123f7d;
 }
 label, input[type="text"], select{width: 100%;}
 .input-tile{
@@ -250,7 +243,7 @@ table {
   width: 100%;
   border-spacing: 0;
   border-color: transparent;
-  margin: 7% 0;
+  margin: 7% 0 3% 0;
   border-radius: 10px;
   
 }
@@ -261,7 +254,34 @@ td, th {
 }
 
 tr:nth-child(odd) {
-  background-color: #dddddd;
+  background-color: #66bee7;
+}
+.btn-container{
+  display: flex;
+  width: 100%;
+  justify-content: baseline;
+  align-items: center;
+  margin-top: 3vh;
+  column-gap: 10%;
+}
+.btn-container button{
+  border: 3px solid #123f7d;
+  padding: 0.8rem 1.3rem;
+  color: #123f7d;
+  background: transparent;
+  font-weight: 600;
+  border-radius: 50px;
+}
+.btn-container button:hover{
+  background-color: #123f7d;
+  color: white;
+}
+.expand{
+  width: 100%;
+  height: 0;
+  transition: height 1s ease-in-out;
+  -webkit-transition: height 1s ease-in-out;
+  margin: 5% 0 7% 0;
 }
 
 
@@ -282,22 +302,18 @@ tr:nth-child(odd) {
 
 
 @media screen and (max-width: 960px) {  /*tablet*/
+  .vulture{display: none;}
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
   main{
     flex-direction: column;
-    width: 90vw;
-    height: 80vh;
+    width: fit-content;
+    height: 100vh;
+    padding: 0vh 3vw 0 3vw;
   }
-  .left-container, .right-container{
+  .right-container{
     width: 100%;
-  }
-  .left-container{
-    height: 30vh;
-    min-height: fit-content;
-    overflow: hidden;
-    font-size: 0.9rem;
   }
   .input-tile{width: fit-content !important;}
   .pass-container{
@@ -320,6 +336,8 @@ tr:nth-child(odd) {
 @media screen and (max-width: 500px){
   .pass-tile img{ width: 200%;}
   .pass-tile{column-gap: 10%;}
+  .btn-container{flex-direction: column; row-gap: 2vh;}
+  .btn-container button{font-size: 11px;}
 }
 .right-container::-webkit-scrollbar {
   display: none;

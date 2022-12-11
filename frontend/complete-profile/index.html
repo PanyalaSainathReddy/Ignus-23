@@ -109,17 +109,12 @@
     </ul>
   </div>
   <!-- enitre navbar ends here  -->
-
+  <img src="./../static/complete-regis/vulture.png" alt="vulture" class="vulture">
   <main>
-    <div class="left-container">
-      <h1>Complete Your Profile</h1>
-    </div>
     <div class="right-container">
+      <H1>Complete your Profile</H1>
       <form>
-        <div class="input-tile" style="width: 80%;">
-          <label>Username</label>
-          <input type="text">
-        </div>
+        
         <div class="input-tile" style="width: 60%;">
           <label>Phone No</label>
           <input type="text">
@@ -141,24 +136,54 @@
         </div>
         <div class="input-tile" style="width: 40%;">
           <label>Current Year</label>
-          <input type="text">
+          <select>
+            <option value="1">First Year</option>
+            <option value="2">Second Year</option>
+            <option value="3">Third Year</option>
+            <option value="4">Fourth Year</option>
+            <option value="5">Fifth Year</option>
+            <option value="6">Not Applicable</option>
+          </select>
         </div>
         <div class="input-tile" style="width: 40%;">
           <label>State</label>
-          <input type="text">
-        </div>
-        <div class="input-tile" style="width: 20%;">
-          <label>ID Issued?</label>
           <select>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-        <div class="input-tile">
-          <label>Acommodation Required?</label>
-          <select>
-            <option>Yes</option>
-            <option>No</option>
+            <option value="22">Rajasthan</option>
+            <option value="1">Andhra Pradesh</option>
+            <option value="2">Arunachal Pradesh</option>
+            <option value="3">Assam</option>
+            <option value="4">Bihar</option>
+            <option value="5">Chhattisgarh</option>
+            <option value="6">Goa</option>
+            <option value="7">Gujarat</option>
+            <option value="8">Haryana</option>
+            <option value="9">Himachal Pradesh</option>
+            <option value="10">Jammu and Kashmir</option>
+            <option value="11">Jharkhand</option>
+            <option value="12">Karnataka</option>
+            <option value="13">Kerala</option>
+            <option value="14">Madhya Pradesh</option>
+            <option value="15">Maharashtra</option>
+            <option value="16">Manipur</option>
+            <option value="17">Meghalaya</option>
+            <option value="18">Mizoram</option>
+            <option value="19">Nagaland</option>
+            <option value="20">Odisha</option>
+            <option value="21">Punjab</option>
+            <option value="23">Sikkim</option>
+            <option value="24">Tamil Nadu</option>
+            <option value="25">Telangana</option>
+            <option value="26">Tripura</option>
+            <option value="27">Uttarakhand</option>
+            <option value="28">Uttar Pradesh</option>
+            <option value="29">West Bengal</option>
+            <option value="30">Andaman and Nicobar Islands</option>
+            <option value="31">Delhi</option>
+            <option value="32">Chandigarh</option>
+            <option value="33">Dadra and Nagar Haveli</option>
+            <option value="34">Daman and Diu</option>
+            <option value="35">Lakshadweep</option>
+            <option value="36">Puducherry</option>
           </select>
         </div>
       </form>
@@ -167,21 +192,22 @@
         <div class="pass-tile">
           <img src="./../static/complete-regis/GOLD.png" alt="gold">
           <div class="pass-details">
-            <h3>Gold</h3>
+            <h3>Gold <br> Rs 1000</h3>
+
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
           </div>
         </div>
         <div class="pass-tile">
           <img src="./../static/complete-regis/GOLDIGMUN.png" alt="gold">
           <div class="pass-details">
-            <h3>Gold Igmun</h3>
+            <h3>Gold Igmun <br> Rs 1500</h3>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
           </div>
         </div>
         <div class="pass-tile">
           <img src="./../static/complete-regis/SILVER.png" alt="gold">
           <div class="pass-details">
-            <h3>Silver</h3>
+            <h3>Silver <br> Rs 500</h3>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
             
           </div>
@@ -193,20 +219,33 @@
         <tr>
           <th style="border-radius: 5px 0 0 0;"></th>
           <th>All Events</th>
-          <th>IGMUN</th>
+          <th style="border-radius: 0 5px 0 0;">IGMUN</th>
         </tr>
         <tr>
           <td>Gold</td>
-          <td><input type="radio" id="html" name="fav_language" value="HTML"></td>
-          <td><input type="radio" id="html" name="fav_language" value="HTML"></td>
+          <td><input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn"></td>
+          <td ><input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn"></td>
         </tr>
         <tr>
-          <td>Silver</td>
-          <td><input type="radio" id="html" name="fav_language" value="HTML"></td>
-          <td></td>
+          <td style="border-radius: 0 5px;">Silver</td>
+          <td><input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn"></td>
+          <td style="border-radius: 0 0 5px 0 ;"></td>
           
         </tr>
       </table>
+
+      <div class="expand">
+        <div class="input-tile" style="margin-top: 0; width: 60%;">
+          <label>Referred By</label>
+          <input type="text">
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button>Pay Now</button>
+        <button>Complete porfile & Pay Later</button>
+      </div>
+
     </div>
   </main>
 
