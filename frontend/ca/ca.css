@@ -643,8 +643,8 @@ nav button:hover{
   justify-content: center;
   color: #FFF;
   background-image: url('../static/ca/bgmain4.png');
-
-  background-size: auto;
+  z-index: -2000;
+  background-size: cover;
   background-repeat: no-repeat;
   font-size: 100px;
 }
@@ -679,7 +679,7 @@ nav button:hover{
 
 .content_box_right{
   width: 100%;
-  height: 100%;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
 }
@@ -690,6 +690,7 @@ nav button:hover{
   padding-left: 10%;
   padding-right: 10%;
   margin-top: 13%;
+  z-index: 2000;
 }
 
 .content_box_right h1 span{
@@ -715,11 +716,22 @@ nav button:hover{
 #Section-2 .content_box_left .image2{
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+@media(max-width:569px){
+  #Section-2 .content_box_left .image2{
+    padding-top: 15%;
+    margin-top: 5%;
+    height: 85%;
+    align-items: none !important;
+  }
 }
 
 #Section-2 .content_box_left img{
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   border-radius: 15px;
 }
 @media(max-wdth:1249px){
@@ -755,6 +767,37 @@ nav button:hover{
   }
 }
 
+@media(max-height:506px){
+  .content_box_right p{
+    font-size: 15% !important;
+  }
+  .content_box_right ul{
+    font-size: 15% !important;
+  }
+}
+
+@media(max-height:457px){
+  .content_box_right p{
+    font-size: 13% !important;
+  }
+  .content_box_right h1{
+    font-size: 25% !important;
+  }
+  #Section-2 h1{
+    margin-top: -3% !important;
+    font-size: 25%;
+  }
+}
+  @media(max-height:347px){
+    .content_box_right h1{
+      font-size: 20% !important;
+    }
+
+  #Section-2 h1{
+    margin-top: -3% !important;
+    font-size: 25%;
+  }
+}
 @media(max-width:437px){
   #Section-2 .content_box_left{
     margin-top: 5%;
@@ -1087,6 +1130,7 @@ nav button:hover{
       align-items: center;
       display: flex;
       flex-direction: column;
+      z-index: -2010;
    }
 
    @media (max-width:1264px){
@@ -1182,8 +1226,8 @@ nav button:hover{
      }
      @media(max-width:308px){
       .card{
-       margin-left: 9%;
-       margin-right: 10%;
+        margin-left: 9%;
+        margin-right: 15%;
      }
     }
      @media(max-width:298px){
@@ -1319,7 +1363,39 @@ nav button:hover{
     .incentives{
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
+    .content_box_right p {
+      font-size: 25%;
+      padding: 5%;
+  }
+  .content_box_right h1 {
+    font-size: 40%;
+}
+
+  .left h1{
+    font-size: 400%;
+  }
+  .left p{
+    font-size: 450%;
+  }
+  .click_down{
+    font-size: 230%;
+  }
  }
+
+ @media(min-width:1700px){
+  .content_box_right ul{
+    font-size: 35%;
+  }
+  .content_box_right p {
+    font-size: 35%;
+    padding: 5%;
+}
+ }
+ @media(min-width:1927px){
+  .cards{
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  }
+}
 
  @media(min-width:2049px){
   .incentives{

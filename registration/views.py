@@ -1,35 +1,17 @@
-from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, RegisterSerializer, UserProfileSerializer, PreRegistrationSerializer
+from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer
 from django.contrib.auth.models import User
-from rest_framework.authentication import TokenAuthentication
-from rest_framework import generics, status
+from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
-import requests
 # from .utils import get_referral_code
-
-
-# class PreRegistrationAPIView(viewsets.ModelViewSet):
-#     serializer_class = PreRegistrationSerializer
-#     permission_classes = (AllowAny,)
-
-#     def create(self, request, *args, **kwargs):
-#         prereg = PreRegistration.objects.create(
-#             full_name=request.data['full_name'],
-#             email=request.data['email'],
-#             phone_number=request.data['phone_number'],
-#             college=request.data['college'],
-#             college_state=request.data['college_state'],
-#             current_year=request.data['current_year'],
-#             por=request.data['por'],
-#             por_holder_contact=request.data['por_holder_contact']
-#         )
-#         prereg.save()
-
-#         return Response({"message": "Pre-Registration Successful"}, status=status.HTTP_201_CREATED)
+from django.conf import settings
+from django.middleware import csrf
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
+from django.contrib.auth import authenticate
 
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):
@@ -37,14 +19,49 @@ class PreRegistrationAPIView(viewsets.ModelViewSet):
     serializer_class = PreRegistrationSerializer
 
 
-class UserDetailAPI(APIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
-    def get(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.user.id)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+
+class LoginView(APIView):
+    def post(self, request, format=None):
+        data = request.data
+        response = Response()
+        username = data.get('username', None)
+        password = data.get('password', None)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                data = get_tokens_for_user(user)
+
+                response.set_cookie(
+                    key='access',
+                    value=data["access"],
+                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=True,
+                    samesite='Lax'
+                )
+
+                response.set_cookie(
+                    key='refresh',
+                    value=data["refresh"],
+                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=True,
+                    samesite='Lax'
+                )
+                response["X-CSRFToken"] = csrf.get_token(request)
+                response.data = {"Success": "Login successfull", "data": data}
+                return response
+            else:
+                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
@@ -62,26 +79,89 @@ class RegisterUserAPIView(generics.CreateAPIView):
         user.set_password(request.data['password'])
         user.save()
 
-        r = requests.post(
-            url=request.build_absolute_uri(reverse('login')),
-            data={
-                'username': request.data['email'],
-                'password': request.data['password']
-            }
-        )
+        response = Response()
 
-        res = {
-            'message': 'User created successfully',
-            'token': r.json()['token'],
-            'email': user.email
-        }
+        user = authenticate(username=request.data['email'], password=request.data['password'])
+        if user is not None:
+            if user.is_active:
+                data = get_tokens_for_user(user)
+                response.set_cookie(
+                    key='access',
+                    value=data["access"],
+                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=True,
+                    samesite='Lax'
+                )
 
-        return Response(res, status=status.HTTP_201_CREATED)
+                response.set_cookie(
+                    key='refresh',
+                    value=data["refresh"],
+                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=True,
+                    samesite='Lax'
+                )
+
+                response["X-CSRFToken"] = csrf.get_token(request)
+                response.data = {"Success": "Registration successfull", "data": data}
+                return response
+            else:
+                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        try:
+            refreshToken = request.COOKIES.get('refresh')
+            token = RefreshToken(refreshToken)
+            token.blacklist()
+            res = Response()
+            res.delete_cookie('access')
+            res.delete_cookie('refresh')
+            res.delete_cookie("X-CSRFToken")
+            res.delete_cookie("csrftoken")
+            res["X-CSRFToken"] = None
+
+            return res
+        except Exception:
+            raise exceptions.ParseError("Invalid token")
+
+
+class CookieTokenRefreshView(TokenRefreshView):
+    serializer_class = CookieTokenRefreshSerializer
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get("refresh"):
+            response.set_cookie(
+                key='access',
+                value=response.data["access"],
+                expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                secure=False,
+                httponly=True,
+                samesite='Lax'
+            )
+
+            del response.data["refresh"]
+        response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
+        return super().finalize_response(request, response, *args, **kwargs)
+
+
+class UserDetailAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
 
 class UserProfileAPIView(generics.CreateAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
     def create(self, request, *args, **kwargs):
@@ -102,8 +182,7 @@ class UserProfileAPIView(generics.CreateAPIView):
 
 
 class UserProfileDetailsView(generics.RetrieveAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
     def get(self, request, *args, **kwargs):
@@ -116,8 +195,7 @@ class UserProfileDetailsView(generics.RetrieveAPIView):
 
 
 class CARegisterAPIView(generics.CreateAPIView):
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
