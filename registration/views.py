@@ -31,9 +31,10 @@ class LoginView(APIView):
     def post(self, request, format=None):
         data = request.data
         response = Response()
-        username = data.get('username', None)
+        username = data.get('email', None)
         password = data.get('password', None)
         user = authenticate(username=username, password=password)
+        print(user)
         if user is not None:
             if user.is_active:
                 data = get_tokens_for_user(user)
@@ -136,7 +137,9 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
 
     def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get("refresh"):
+        print("2")
+        if request.COOKIES.get("refresh"):
+            print("1")
             response.set_cookie(
                 key='access',
                 value=response.data["access"],
@@ -146,7 +149,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 samesite='Lax'
             )
 
-            del response.data["refresh"]
+            # del response.data["refresh"]
         response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
         return super().finalize_response(request, response, *args, **kwargs)
 
