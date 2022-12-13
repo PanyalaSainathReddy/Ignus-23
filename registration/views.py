@@ -30,7 +30,7 @@ def get_tokens_for_user(user):
 class LoginView(APIView):
     def post(self, request, format=None):
         data = request.data
-        response = Response()        
+        response = Response()
         username = data.get('username', None)
         password = data.get('password', None)
         user = authenticate(username=username, password=password)
@@ -56,12 +56,12 @@ class LoginView(APIView):
                     samesite='Lax'
                 )
                 response["X-CSRFToken"] = csrf.get_token(request)
-                response.data = {"Success" : "Login successfull","data":data}
+                response.data = {"Success": "Login successfull", "data": data}
                 return response
             else:
-                return Response({"Not active" : "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Invalid" : "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
@@ -104,12 +104,12 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 )
 
                 response["X-CSRFToken"] = csrf.get_token(request)
-                response.data = {"Success" : "Registration successfull","data":data}
+                response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
-                return Response({"Not active" : "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Invalid" : "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class LogoutView(APIView):
@@ -125,10 +125,10 @@ class LogoutView(APIView):
             res.delete_cookie('refresh')
             res.delete_cookie("X-CSRFToken")
             res.delete_cookie("csrftoken")
-            res["X-CSRFToken"]=None
-            
+            res["X-CSRFToken"] = None
+
             return res
-        except:
+        except Exception:
             raise exceptions.ParseError("Invalid token")
 
 
