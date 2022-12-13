@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/accounts/', include('registration.urls')),
     path('api/igmun/', include('igmun.urls')),
     path('api/api-token-auth/', views.obtain_auth_token, name='login'),
+    path("payments/", include('payments.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
