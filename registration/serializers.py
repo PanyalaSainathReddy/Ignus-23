@@ -1,14 +1,15 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import UserProfile, PreRegistration
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
 
-class UserSerializer(serializers.ModelSerializer):
+class PreRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ["id", "first_name", "last_name", "username", "email"]
+        model = PreRegistration
+        fields = ["full_name", "email", "phone_number", "college", "college_state", "current_year", "por", "por_holder_contact"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -28,6 +29,24 @@ class RegisterSerializer(serializers.ModelSerializer):
         }
 
 
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = None
+
+    def validate(self, attrs):
+        attrs['refresh'] = self.context['request'].COOKIES.get('refresh')
+        if attrs['refresh']:
+            return super().validate(attrs)
+        else:
+            raise exceptions.InvalidToken(
+                'No valid token found in cookie \'refresh\'')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "first_name", "last_name", "username", "email"]
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -38,9 +57,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CampusAmbassador
 #         fields = ["insta_link", "workshop_capability", "publicize_ignus", "past_experience", "description", "referral_code"]
-
-
-class PreRegistrationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PreRegistration
-        fields = ["full_name", "email", "phone_number", "college", "college_state", "current_year", "por", "por_holder_contact"]
