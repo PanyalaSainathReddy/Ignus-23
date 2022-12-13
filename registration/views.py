@@ -7,11 +7,12 @@ from django.contrib.auth.models import User
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
 # from .utils import get_referral_code
-from django.conf import settings
+# from django.conf import settings
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth import authenticate
+import datetime
 
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):
@@ -42,7 +43,8 @@ class LoginView(APIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=False,
                     httponly=True,
                     samesite='Lax'
@@ -51,7 +53,8 @@ class LoginView(APIView):
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
-                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=False,
                     httponly=True,
                     samesite='Lax'
@@ -89,7 +92,8 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=False,
                     httponly=True,
                     samesite='Lax'
@@ -98,7 +102,8 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
-                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=False,
                     httponly=True,
                     samesite='Lax'
@@ -137,13 +142,12 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
 
     def finalize_response(self, request, response, *args, **kwargs):
-        print("2")
         if request.COOKIES.get("refresh"):
-            print("1")
             response.set_cookie(
                 key='access',
                 value=response.data["access"],
-                expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
                 secure=False,
                 httponly=True,
                 samesite='Lax'

@@ -11,7 +11,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['http://*.ignus.co.in', 'https://*.ignus.co.in']
+CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
