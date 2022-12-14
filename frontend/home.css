@@ -556,7 +556,7 @@ iframe{
 
 .theme-vid{
   position: relative;
-  margin: 30vh 0 0 0;
+  margin: 42vh 0 0 0;
   width: 40vw;
   height: auto;
   left: 0;
@@ -573,8 +573,9 @@ iframe{
 }
 .theme-content{
   margin-left: 0;
-  margin-top: 30vh;
+  margin-top: 22vh;
 }
+
 
 
 
@@ -697,7 +698,7 @@ iframe{
     width: 100vw;
   }
   .theme-vid{margin: 0; width: 60vw;}
-  .theme-content{margin: 40vh 0 0 0;}
+  .theme-content{margin: 40vh 0 0 0 !important;}
 }
 @media screen and (max-width: 500px){ /*mobile*/
   .header-btn-cont{
@@ -827,7 +828,7 @@ iframe{
   }
 }
 
-@media screen and (max-height: 700px) and (min-width: 1000px){  /* small height desktop*/
+@media screen and (max-height: 750px) and (min-width: 1000px){  /* small height desktop*/
   .header img{
     width: 25vw !important;
   }
@@ -851,6 +852,10 @@ iframe{
     margin-top: 10vh;
     font-size: 0.8rem;
   }
+  .theme-vid{
+    margin-top: 20vh;
+  }
+  .theme-content{top: -5vh;}
 }
 
 @media screen and (max-width: 700px){
