@@ -43,8 +43,8 @@ class LoginView(APIView):
                     key='access',
                     value=data["access"],
                     # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=False,
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
                     httponly=True,
                     samesite='Lax'
                 )
@@ -54,8 +54,18 @@ class LoginView(APIView):
                     value=data["refresh"],
                     # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=False,
+                    secure=True,
                     httponly=True,
+                    samesite='Lax'
+                )
+
+                response.set_cookie(
+                    key='LoggedIn',
+                    value=True,
+                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    httponly=False,
                     samesite='Lax'
                 )
                 response["X-CSRFToken"] = csrf.get_token(request)
@@ -92,8 +102,8 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     key='access',
                     value=data["access"],
                     # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=False,
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
                     httponly=True,
                     samesite='Lax'
                 )
@@ -103,11 +113,20 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=data["refresh"],
                     # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=False,
+                    secure=True,
                     httponly=True,
                     samesite='Lax'
                 )
 
+                response.set_cookie(
+                    key='LoggedIn',
+                    value=True,
+                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    httponly=False,
+                    samesite='Lax'
+                )
                 response["X-CSRFToken"] = csrf.get_token(request)
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
@@ -128,6 +147,7 @@ class LogoutView(APIView):
             res = Response()
             res.delete_cookie('access')
             res.delete_cookie('refresh')
+            res.delete_cookie('LoggedIn')
             res.delete_cookie("X-CSRFToken")
             res.delete_cookie("csrftoken")
             res["X-CSRFToken"] = None
@@ -146,8 +166,8 @@ class CookieTokenRefreshView(TokenRefreshView):
                 key='access',
                 value=response.data["access"],
                 # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=5), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                secure=False,
+                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                secure=True,
                 httponly=True,
                 samesite='Lax'
             )
@@ -178,9 +198,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             gender=request.data['gender'],
             current_year=request.data['current_year'],
             college=request.data['college'],
-            address=request.data['address'],
             state=request.data['state'],
-            accommodation_required=request.data['accommodation_required']
         )
         userprofile.save()
 

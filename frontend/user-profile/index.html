@@ -23,7 +23,7 @@
     <meta name="twitter:url" content="https://ignus.co.in/"/>
     <meta name="theme-color" content="#FFB846"/>
     <meta name="keywords" content="Social, cultfest, IITJ, IIT Jodhpur, Indian Institute of Technology - Jodhpur, Socio-Cultural fest, Cultural fest, Cultural, Social fest, college festival, Jodhpur, Rajasthan, IIT Rajasthan, Cultfest 2023, Ignus, 2023, Ignus 2023, Paper Dance, Salsa, informals, prizes, prakriti, Bohemian Convoy, pronites, flagship, igmun, february, feb, pre-register, sponsors, film making, dance, drama, fine arts, quiz, literature, music, photography, speed dating, workshops, paintball, prom night, movie screening, poker royale, EDM, Indian Ocean, Benny Dayal, Antarang, Nrityansh, Nukkad, Aayaam, coming soon, desert, events, exhibitions, competetion, iitj, 2023, largest festival in Northwest India, friends, fun, enjoy, most awaited cultfest">
-    <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
     <link rel="stylesheet" type="text/css" href="./home.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
   </head>
 </head>
-<body>
+<body onload="getUserProfileDetails()">
 
   <nav>
     <a href="../index.html">
@@ -65,8 +65,8 @@
       <a href="../ca/ca.html" style="text-decoration: none" id="ca_or_login_button">
         <button>CA</button>
       </a>
-      <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
-        <button>PRE-REGISTER</button>
+      <a id="login_button" style="text-decoration: none">
+        <button>PROFILE</button>
       </a>
     </div>
 
@@ -102,8 +102,8 @@
       </li>
       <!-- <li><button> Contact Us </button></li> -->
       <li>
-        <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
-          <button>PRE-REGISTER</button>
+        <a id="login_button_mobile" style="text-decoration: none">
+          <button>PROFILE</button>
         </a>
       </li>
     </ul>
@@ -116,41 +116,40 @@
   <main>
     <h1>USER PROFILE</h1>
     <div class="name-cont">
-      <h2>John Doe</h2>
+      <h2 id="user_name">John Doe</h2>
       <span class="ca">CA</span>
     </div>
-    <p>2nd year <br> IIT Jodhpur </p>
-    <p id="address">Cecelia Havens
-      456 White Finch St.
-      North Augusta, SC 29860</p>
-    <span id="city">Jodhpur</span> <span id="state">Rajasthan</span>
-    <span id="contact">Contact No: 9571988888 </span>
+    <p id="year_and_college">2nd year <br> IIT Jodhpur </p>
+    <span id="state">Rajasthan</span>
+    <span id="email">Email ID: example@gmail.com </span>
+    <span id="phone">Contact No: 9999999999 </span>
     <span id="gender">Gender: Male </span>
 
     <div class="payment">
-      <img src="./../static/user-profile/Flat_tick_icon.svg.png" alt="tick">
-      <span>Payment Successfull</span>
+      <img id="payment_status_img" src="./../static/user-profile/Flat_tick_icon.svg.png" alt="tick">
+      <span id="payment_status">Payment Successfull</span>
     </div>
-    <button class="accomodation"> Accomodation Required </button>
+    <button class="accomodation"> Do you need any Accomodation? </button>
 
     <button class="makePayment">Pay Now</button>
 
     <div class="pass-container">
       <div class="details">
-        <h1> GOLD Lane</h1>
+        <h1 id="pass_name">GOLD Lane</h1>
         <h3>Pronites</h3>
-        <p>John Doe <br> DOE5293C0 </p>
+        <p id="pass_user_name_and_id">John Doe <br> DOE5293C0 </p>
       </div>
-      <img src="./../static/user-profile/qr-code-file-bangla-mobile-code-0.png" alt="qr">
+      <div id="qr_code"></div>
 
     </div>
 
+    <button id="logout_button" class="accomodation"> Logout </button>
     
   </main>
 
 
 
-
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src = "./script.js"></script>
 

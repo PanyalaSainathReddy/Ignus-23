@@ -225,7 +225,7 @@ label, input[type="text"], select{width: 100%;}
   display: flex; 
   justify-content: space-between; 
   align-items: center;
-  margin-top: 13%;
+  padding-top: 25px;
   margin-right: 5%;
 }
 

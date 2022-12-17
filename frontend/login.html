@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="login.css" />
     <title>Document</title>
   </head>
-  <body>
+  <body onload="checkLoggedIn()">
     <button id="home">
       <img src="./static/home.svg" />
     </button>
@@ -33,26 +33,12 @@
       <div class="form-container sign-up-container">
         <form action="#" id="sign_up_form">
           <h1>Create Account</h1>
-          <input
-            type="text"
-            placeholder="First Name"
-            id="first_name"
-            required
-          />
+          <input type="text" placeholder="First Name" id="first_name" required />
           <input type="text" placeholder="Last Name" id="last_name" />
           <input type="email" placeholder="Email" id="email_sign_up" required />
-          <input
-            type="password"
-            placeholder="Password"
-            id="password_sign_up"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            id="confirm_password_sign_up"
-            required
-          />
+          <input type="password" placeholder="Password" id="password_sign_up" required />
+          <input type="password" placeholder="Confirm Password" onkeyup="check()" id="confirm_password_sign_up" required />
+          <span id='message'></span>
           <br />
           <button>Sign Up</button>
         </form>
@@ -67,7 +53,7 @@
             id="password_sign_in"
             required
           />
-          <a href="#">Forgot your password?</a>
+          <br />
           <button>Login</button>
         </form>
       </div>

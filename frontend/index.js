@@ -8,21 +8,6 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 const res_nav = document.querySelector(".res-nav");
-var ca_or_login_button = document.getElementById("ca_or_login_button");
-// var logout_button = document.getElementById("logout_button");
-
-if(window.localStorage.getItem("token") != null){
-  ca_or_login_button.innerHTML = "<button>LOGOUT</button>";
-  ca_or_login_button.removeAttribute("href");
-  // logout_button.style.display = "block";
-}
-
-ca_or_login_button.addEventListener("click", function(){
-  if(window.localStorage.getItem("token") != null){
-    window.localStorage.removeItem("token");
-    window.location.replace("/index.html");
-  }
-});
 
 
 // code for setting section (scene) backgrounds
@@ -221,6 +206,3 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
 //     ctr = 1;
 //   }
 // })
-
-
-
