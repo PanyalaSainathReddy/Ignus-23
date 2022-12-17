@@ -144,10 +144,10 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
-    address = models.CharField(max_length=128)
+    # address = models.CharField(max_length=128)
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
-    id_issued = models.BooleanField(default=False)
-    accommodation_required = models.BooleanField(default=False)
+    # id_issued = models.BooleanField(default=False)
+    # accommodation_required = models.BooleanField(default=False)
     # registration_paid = models.BooleanField(default=False)
     # accommodation_paid = models.BooleanField(default=False)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
@@ -214,7 +214,7 @@ class UserProfile(models.Model):
 
     def qr_code(self):
         return mark_safe('<img src="https://chart.apis.google.com/chart?chs=150x150&cht=qr&chl={data}&choe=UTF-8" \
-                style="width: 120px; height: 120px" />'.format(data=self.uuid))
+                style="width: 120px; height: 120px" />'.format(data=self.registration_code))
 
     qr_code.short_description = 'qr code'
     qr_code.allow_tags = True

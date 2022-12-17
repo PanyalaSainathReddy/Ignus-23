@@ -430,20 +430,32 @@ section{
 .init-content{
   position: relative;
   min-width: 28vw;
-  top: 28vh;
+  top: 18vh;
   color: #1d3557;
   right: 15vw;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  row-gap: 20px;
+}
+.init-content img{
+  left: 0;
+  top: 0;
+  border: 2px solid white;
+  border-radius: 5px;
+  /* height: 20vh;
+  width: auto; */
+  width: 80%;
+  height: auto;
 }
 .init-content button{
   background-color: transparent;
   border: 2px solid #1d3557 ;
-  margin: 5% 0 ;
+  /* margin: 1% 0 ; */
   padding: 3% 6%;
   border-radius: 20px;
+  font-weight: 600;
 }
 .init-content button:hover{
   background-color: #1d3557;
@@ -556,7 +568,7 @@ iframe{
 
 .theme-vid{
   position: relative;
-  margin: 30vh 0 0 0;
+  margin: 42vh 0 0 0;
   width: 40vw;
   height: auto;
   left: 0;
@@ -573,8 +585,9 @@ iframe{
 }
 .theme-content{
   margin-left: 0;
-  margin-top: 30vh;
+  margin-top: 22vh;
 }
+
 
 
 
@@ -585,6 +598,7 @@ iframe{
 }
 
 @media screen and (max-width: 915px) {  /*tablet*/
+  .init-content img{display: none;}
   iframe{
     width: 90vw;
     border: 3px solid white !important;
@@ -594,11 +608,7 @@ iframe{
   nav{
     padding: 0 10vw;
   }
-  .initiative img{
-    width: 90vw;
-    max-height: 10vh;
-    left: 15vw;
-  }
+
   .initiative h1{
     font-size: 8vw;
   }
@@ -697,7 +707,7 @@ iframe{
     width: 100vw;
   }
   .theme-vid{margin: 0; width: 60vw;}
-  .theme-content{margin: 40vh 0 0 0;}
+  .theme-content{margin: 40vh 0 0 0 !important;}
 }
 @media screen and (max-width: 500px){ /*mobile*/
   .header-btn-cont{
@@ -827,7 +837,7 @@ iframe{
   }
 }
 
-@media screen and (max-height: 700px) and (min-width: 1000px){  /* small height desktop*/
+@media screen and (max-height: 750px) and (min-width: 1000px){  /* small height desktop*/
   .header img{
     width: 25vw !important;
   }
@@ -851,6 +861,10 @@ iframe{
     margin-top: 10vh;
     font-size: 0.8rem;
   }
+  .theme-vid{
+    margin-top: 20vh;
+  }
+  .theme-content{top: -5vh;}
 }
 
 @media screen and (max-width: 700px){

@@ -23,7 +23,7 @@
     <meta name="twitter:url" content="https://ignus.co.in/"/>
     <meta name="theme-color" content="#FFB846"/>
     <meta name="keywords" content="Social, cultfest, IITJ, IIT Jodhpur, Indian Institute of Technology - Jodhpur, Socio-Cultural fest, Cultural fest, Cultural, Social fest, college festival, Jodhpur, Rajasthan, IIT Rajasthan, Cultfest 2023, Ignus, 2023, Ignus 2023, Paper Dance, Salsa, informals, prizes, prakriti, Bohemian Convoy, pronites, flagship, igmun, february, feb, pre-register, sponsors, film making, dance, drama, fine arts, quiz, literature, music, photography, speed dating, workshops, paintball, prom night, movie screening, poker royale, EDM, Indian Ocean, Benny Dayal, Antarang, Nrityansh, Nukkad, Aayaam, coming soon, desert, events, exhibitions, competetion, iitj, 2023, largest festival in Northwest India, friends, fun, enjoy, most awaited cultfest">
-    <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
     <link rel="stylesheet" type="text/css" href="./home.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
   </head>
 </head>
-<body>
+<body onload="check()">
 
   <nav>
     <a href="../index.html">
@@ -49,24 +49,24 @@
 
     <div class="nav-btns">
       <!-- <button>CA PROGRAM</button> -->
-      <a href="../igmun/index.html" target="_blank" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../igmun/index.html" target="_blank" style="text-decoration: none">
         <button>IGMUN</button>
       </a>
-      <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../events/events.html" style="text-decoration: none">
         <button>PAST-EVENTS</button>
       </a>
-      <a style="text-decoration: none" id="ca_or_login_button">
+      <a href="../schedule/schedule.html" style="text-decoration: none">
         <button>SCHEDULE</button>
       </a>
-      <a href="../sponsors/sponsors.html" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../sponsors/sponsors.html" style="text-decoration: none">
         <button>PAST-SPONSORS</button>
       </a>
       <!-- <button>CONTACT US</button> -->
-      <a href="../ca/ca.html" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../ca/ca.html" style="text-decoration: none">
         <button>CA</button>
       </a>
-      <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
-        <button>PRE-REGISTER</button>
+      <a style="text-decoration: none">
+        <button>PROFILE</button>
       </a>
     </div>
 
@@ -76,34 +76,34 @@
     <ul>
       <!-- <li><button> CA Program </button></li> -->
       <li>
-        <a href="../igmun/index.html" target="_blank" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../igmun/index.html" target="_blank" style="text-decoration: none">
           <button>IGMUN</button>
         </a>
       </li>
       <li>
-        <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../events/events.html" style="text-decoration: none">
           <button>PAST-EVENTS</button>
         </a>
       </li>
       <li>
-        <a style="text-decoration: none" id="ca_or_login_button">
+        <a style="text-decoration: none">
           <button>SCHEDULE</button>
         </a>
       </li>
       <li>
-        <a href="../sponsors/sponsors.html" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../sponsors/sponsors.html" style="text-decoration: none">
           <button>PAST-SPONSORS</button>
         </a>
       </li>
       <li>
-        <a href="../ca/ca.html" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../ca/ca.html" style="text-decoration: none">
           <button>CA</button>
         </a>
       </li>
       <!-- <li><button> Contact Us </button></li> -->
       <li>
-        <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
-          <button>PRE-REGISTER</button>
+        <a style="text-decoration: none">
+          <button>PROFILE</button>
         </a>
       </li>
     </ul>
@@ -113,30 +113,29 @@
   <main>
     <div class="right-container">
       <H1>Complete your Profile</H1>
-      <form>
+      <form id="complete_profile_form">
         
         <div class="input-tile" style="width: 60%;">
-          <label>Phone No</label>
-          <input type="text">
+          <label>Phone No*</label>
+          <input type="text" id="phone_number" oninvalid="this.setCustomValidity('Please enter a valid 10-digit phone number')"
+          onchange="try{setCustomValidity('')}catch(e){}"
+          oninput="setCustomValidity(' ')" pattern="[6789][0-9]{9}" required>
         </div>
         <div class="input-tile" style="width: 20%;">
-          <label>Gender</label>
-          <select>
-            <option>Male</option>
-            <option>Female</option>
+          <label>Gender*</label>
+          <select id="gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="T">Others</option>
           </select>
         </div>
         <div class="input-tile" style="width: 80%;">
-          <label>Address</label>
-          <input type="text">
-        </div>
-        <div class="input-tile" style="width: 80%;">
-          <label>College</label>
-          <input type="text">
+          <label>College*</label>
+          <input type="text" id="college" required>
         </div>
         <div class="input-tile" style="width: 40%;">
-          <label>Current Year</label>
-          <select>
+          <label>Current Year*</label>
+          <select id="current_year" required>
             <option value="1">First Year</option>
             <option value="2">Second Year</option>
             <option value="3">Third Year</option>
@@ -146,9 +145,8 @@
           </select>
         </div>
         <div class="input-tile" style="width: 40%;">
-          <label>State</label>
-          <select>
-            <option value="22">Rajasthan</option>
+          <label>State*</label>
+          <select id="college_state" required>
             <option value="1">Andhra Pradesh</option>
             <option value="2">Arunachal Pradesh</option>
             <option value="3">Assam</option>
@@ -170,6 +168,7 @@
             <option value="19">Nagaland</option>
             <option value="20">Odisha</option>
             <option value="21">Punjab</option>
+            <option value="22" selected>Rajasthan</option>
             <option value="23">Sikkim</option>
             <option value="24">Tamil Nadu</option>
             <option value="25">Telangana</option>
@@ -186,83 +185,145 @@
             <option value="36">Puducherry</option>
           </select>
         </div>
+
+        <div class="input-tile" style="width: 60%;">
+          <label>Referred By (Enter the referral code, if someone referred you to Ignus / Igmun)</label>
+          <input type="text" id="referred_by">
+        </div>
+      
+
+        <div class="pass-container">
+          <div class="pass-tile">
+            <img src="./../static/complete-regis/GOLD.png" alt="gold">
+            <div class="pass-details">
+              <h3>Gold <br> Rs 1000</h3>
+
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
+            </div>
+          </div>
+          <div class="pass-tile">
+            <img src="./../static/complete-regis/GOLDIGMUN.png" alt="gold">
+            <div class="pass-details">
+              <h3>Gold Igmun <br> Rs 1500</h3>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
+            </div>
+          </div>
+          <div class="pass-tile">
+            <img src="./../static/complete-regis/SILVER.png" alt="gold">
+            <div class="pass-details">
+              <h3>Silver <br> Rs 500</h3>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
+              
+            </div>
+          </div>
+
+        </div>
+
+        <table>
+          <tr>
+            <th style="border-radius: 5px 0 0 0;"></th>
+            <th>All Events</th>
+            <th style="border-radius: 0 5px 0 0;">IGMUN</th>
+          </tr>
+          <tr>
+            <td>Gold</td>
+            <td><input type="radio" id="gold-radio-btn" name="pass" value="gold" class="radio-btn">Rs 1000</td>
+            <td><input type="radio" id="igmun-radio-btn" name="pass" value="igmun" class="radio-btn">Rs 1500</td>
+          </tr>
+          <tr>
+            <td style="border-radius: 0 5px;">Silver</td>
+            <td><input type="radio" id="silver-radio-btn" name="pass" value="silver" class="radio-btn" required>Rs 500</td>
+            <td style="border-radius: 0 0 5px 0 ;"></td>
+          </tr>
+        </table>
+
+        <div class="expand">
+          <div class="input-tile" style="width: 70%;">
+            <label>Committee Preference-1*</label>
+            <select id="committee_1" required>
+              <option value="DISEC">DISEC (Disarmament and International Security)</option>
+              <option value="UNHRC">UNHRC (United Nations Human Rights Council)</option>
+              <option value="ESS-UNGA">ESS-UNGA (Emergency Special Session UN General Assembly)</option>
+              <option value="LS">LOK SABHA</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-1*</label>
+            <select id="country_11" required>
+              <option value="A">Country-A</option>
+              <option value="B">Country-B</option>
+              <option value="C">Country-C</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-2*</label>
+            <select id="country_12" required>
+              <option value="A">Country-A</option>
+              <option value="B" selected>Country-B</option>
+              <option value="C">Country-C</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-3*</label>
+            <select id="country_13" required>
+              <option value="A">Country-A</option>
+              <option value="B">Country-B</option>
+              <option value="C" selected>Country-C</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 70%;">
+            <label>Committee Preference-2*</label>
+            <select id="committee_2" required>
+              <option value="DISEC">DISEC (Disarmament and International Security)</option>
+              <option value="UNHRC" selected>UNHRC (United Nations Human Rights Council)</option>
+              <option value="ESS-UNGA">ESS-UNGA (Emergency Special Session UN General Assembly)</option>
+              <option value="LS">LOK SABHA</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-1*</label>
+            <select id="country_21" required>
+              <option value="A">Country-A</option>
+              <option value="B">Country-B</option>
+              <option value="C">Country-C</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-2*</label>
+            <select id="country_22" required>
+              <option value="A">Country-A</option>
+              <option value="B" selected>Country-B</option>
+              <option value="C">Country-C</option>
+            </select>
+          </div>
+
+          <div class="input-tile" style="width: 25%;">
+            <label>Country Preference-3*</label>
+            <select id="country_23" required>
+              <option value="A">Country-A</option>
+              <option value="B">Country-B</option>
+              <option value="C" selected>Country-C</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-container">
+          <button type="submit">Pay Now</button>
+          <button type="submit">Complete porfile & Pay Later</button>
+        </div>
       </form>
-
-      <div class="pass-container">
-        <div class="pass-tile">
-          <img src="./../static/complete-regis/GOLD.png" alt="gold">
-          <div class="pass-details">
-            <h3>Gold <br> Rs 1000</h3>
-
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
-          </div>
-        </div>
-        <div class="pass-tile">
-          <img src="./../static/complete-regis/GOLDIGMUN.png" alt="gold">
-          <div class="pass-details">
-            <h3>Gold Igmun <br> Rs 1500</h3>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
-          </div>
-        </div>
-        <div class="pass-tile">
-          <img src="./../static/complete-regis/SILVER.png" alt="gold">
-          <div class="pass-details">
-            <h3>Silver <br> Rs 500</h3>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus recusandae ducimus, dignissimos beatae suscipit praesentium quaerat doloribus illum facilis quia corporis, temporibus
-            
-          </div>
-        </div>
-
-      </div>
-
-      <table>
-        <tr>
-          <th style="border-radius: 5px 0 0 0;"></th>
-          <th>All Events</th>
-          <th style="border-radius: 0 5px 0 0;">IGMUN</th>
-        </tr>
-        <tr>
-          <td>Gold</td>
-          <td>
-            <input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn">
-            Rs 1000
-          </td>
-          <td ><input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn">Rs 1500</td>
-        </tr>
-        <tr>
-          <td style="border-radius: 0 5px;">Silver</td>
-          <td><input type="radio" id="html" name="fav_language" value="HTML" class="radio-btn">Rs 500</td>
-          <td style="border-radius: 0 0 5px 0 ;"></td>
-          
-        </tr>
-      </table>
-
-      <div class="expand">
-        <div class="input-tile" style="margin-top: 0; width: 60%;">
-          <label>Referred By</label>
-          <input type="text">
-        </div>
-      </div>
-
-      <div class="btn-container">
-        <button>Pay Now</button>
-        <button>Complete porfile & Pay Later</button>
-      </div>
-
     </div>
   </main>
 
-
-
-
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src = "./script.js"></script>
-
-
-
-
-
-
 
 </body>
 </html>

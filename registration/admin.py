@@ -3,8 +3,8 @@ from .models import UserProfile, TeamRegistration, PreRegistration, CampusAmbass
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'phone', 'gender', 'college', 'id_issued', 'accommodation_required', 'qr_code', 'registration_code']
-    list_filter = ['gender', 'id_issued', 'accommodation_required']
+    list_display = ['__str__', 'phone', 'gender', 'college', 'qr_code', 'registration_code']
+    list_filter = ['gender']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 

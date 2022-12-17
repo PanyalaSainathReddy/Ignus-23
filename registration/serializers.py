@@ -37,7 +37,7 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
         if attrs['refresh']:
             return super().validate(attrs)
         else:
-            raise exceptions.InvalidToken(
+            raise exceptions.ParseError(
                 'No valid token found in cookie \'refresh\'')
 
 
@@ -50,7 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["phone", "gender", "current_year", "college", "address", "state", "id_issued", "accommodation_required", "uuid", "registration_code"]
+        fields = ["phone", "gender", "current_year", "college", "state", "uuid", "registration_code", "qr_code"]
 
 
 # class CASerializer(serializers.ModelSerializer):

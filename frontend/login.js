@@ -3,6 +3,16 @@ const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 const homeButton = document.getElementById('home');
 
+var check = function() {
+  if (document.getElementById('password_sign_up').value == document.getElementById('confirm_password_sign_up').value) {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'password matching';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'password not matching!';
+  }
+}
+
 homeButton.addEventListener('click', () => {
   window.location.replace("/index.html");
 });
@@ -31,7 +41,30 @@ function moveLogin() {
   button.style.left = "0";
 }
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+}
+
+function checkLoggedIn() {
+  if(getCookie("LoggedIn")){
+    window.location.replace("index.html");
+  }
+}
+
 // API
+const BASE_URL = "http://127.0.0.1:8000/";
 var sign_up_form=document.getElementById('sign_up_form')
 
 sign_up_form.addEventListener('submit', function(e){
@@ -41,7 +74,7 @@ sign_up_form.addEventListener('submit', function(e){
   var email_sign_up=document.getElementById('email_sign_up').value
   var password_sign_up=document.getElementById('password_sign_up').value
 
-  fetch('https://api.ignus.co.in/api/accounts/register/', {
+  fetch(BASE_URL + 'api/accounts/register/', {
     method: 'POST',
     body: JSON.stringify({
       first_name:first_name,
@@ -49,6 +82,7 @@ sign_up_form.addEventListener('submit', function(e){
       email:email_sign_up,
       password:password_sign_up,
     }),
+    credentials: 'include',
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     }
@@ -57,8 +91,7 @@ sign_up_form.addEventListener('submit', function(e){
     return response.json()})
     .then(function(data){
       console.log(data);
-      localStorage.setItem('token', data.token);
-      window.location.replace("/index.html");
+      window.location.replace("complete-profile/index.html");
   })
   .catch(error => console.error('Error:', error));
 });
@@ -70,12 +103,13 @@ sign_in_form.addEventListener('submit', function(e){
   var email_sign_in=document.getElementById('email_sign_in').value
   var password_sign_in=document.getElementById('password_sign_in').value
 
-  fetch('https://api.ignus.co.in/api/api-token-auth/', {
+  fetch(BASE_URL + 'api/accounts/login/', {
     method: 'POST',
     body: JSON.stringify({
       username:email_sign_in,
       password:password_sign_in,
     }),
+    credentials: 'include',
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     }
@@ -84,8 +118,8 @@ sign_in_form.addEventListener('submit', function(e){
     return response.json()})
     .then(function(data){
       console.log(data);
-      localStorage.setItem('token', data.token);
-      window.location.replace("/index.html");
+      // localStorage.setItem('token', data.token);
+      window.location.replace("index.html");
   })
   .catch(error => console.error('Error:', error));
 });
