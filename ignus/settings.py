@@ -105,7 +105,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str)) # type: ignore
+STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str))  # type: ignore
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
