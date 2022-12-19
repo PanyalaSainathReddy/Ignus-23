@@ -109,7 +109,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     httponly=True,
                     samesite='Lax'
                 )
-                
+
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
