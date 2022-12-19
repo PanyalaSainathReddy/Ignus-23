@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 
+RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -102,7 +105,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str))
+STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str)) # type: ignore
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
