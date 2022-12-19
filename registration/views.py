@@ -31,11 +31,12 @@ def get_tokens_for_user(user):
 class LoginView(APIView):
     def post(self, request, format=None):
         data = request.data
+
         response = Response()
-        username = data.get('email', None)
+        username = data.get('username', None)
         password = data.get('password', None)
         user = authenticate(username=username, password=password)
-        print(user)
+
         if user is not None:
             if user.is_active:
                 data = get_tokens_for_user(user)
@@ -108,7 +109,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     httponly=True,
                     samesite='Lax'
                 )
-
+                
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
