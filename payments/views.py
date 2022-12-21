@@ -1,6 +1,6 @@
 import razorpay
 from django.conf import settings
-from datetime import datetime
+from datetime import datetime, timedelta
 from .serializers import OrderSerializer
 from .models import Order, Transaction
 from rest_framework import generics, status
@@ -8,6 +8,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import json
+from django.middleware import csrf
+from django.http.response import HttpResponseRedirect
 
 razorpayClient = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 razorpayClient.set_app_details({"title": "IGNUS '23", "version": "1.0.0"})
@@ -39,7 +41,34 @@ class CreateOrderAPIView(generics.CreateAPIView):
 
         order = OrderSerializer(order)
 
-        return Response(data=order.data, status=status.HTTP_201_CREATED)
+        response = Response(status=status.HTTP_201_CREATED)
+        response.set_cookie(
+            key='order_id',
+            value=order.data["id"],
+            expires=datetime.strftime(datetime.utcnow() + timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='amount_due',
+            value=order.data["amount_due"],
+            expires=datetime.strftime(datetime.utcnow() + timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='currency',
+            value=order.data["currency"],
+            expires=datetime.strftime(datetime.utcnow() + timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response["X-CSRFToken"] = csrf.get_token(request)
+
+        return response
 
 
 class PaymentHandlerAPIView(APIView):
@@ -47,8 +76,14 @@ class PaymentHandlerAPIView(APIView):
         error = {}
         data = request.data
 
-        error = data.get('error', '')
-        if error:
+        error_code = data.get('error[code]', '')
+        if error_code:
+            error["code"] = error_code
+            error["description"] = data.get('error[description]', '')
+            error["source"] = data.get('error[source]', '')
+            error["step"] = data.get('error[step]', '')
+            error["reason"] = data.get('error[reason]', '')
+            error["metadata"] = json.loads(data.get('error[metadata]', ''))
             payment_id = error["metadata"]["payment_id"]
             razorpay_order_id = error["metadata"]["order_id"]
             signature = ''
@@ -70,6 +105,7 @@ class PaymentHandlerAPIView(APIView):
 
         Transaction.objects.create(
             payment_id=payment_id,
+            status=payment["status"],
             order=order,
             signature=signature,
             captured=payment["captured"],
@@ -92,11 +128,10 @@ class PaymentHandlerAPIView(APIView):
 
             if result:
                 print("Payment Successful!")
-                return Response(data={"status": "Payment Successful"}, status=status.HTTP_200_OK)
-
+                return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/success.html")
             else:
                 print("Payment Failed!")
-                return Response(data={"status": "Payment Failed", "error": json.dumps(error)}, status=status.HTTP_200_OK)
+                return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/failed.html")
         except Exception:
             print("Payment Failed!")
-            return Response(data={"status": "Payment Failed", "error": json.dumps(error)}, status=status.HTTP_200_OK)
+            return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/failed.html")
