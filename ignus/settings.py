@@ -175,3 +175,7 @@ CKEDITOR_CONFIGS = {
 ADMIN_SITE_HEADER = "Ignus'23 administration"
 ADMIN_SITE_TITLE = "Ignus'23 site admin"
 ADMIN_INDEX_TITLE = "Control Panel"
+
+# Google OAuth2 settings
+GOOGLE_OAUTH2_CLIENT_ID = config('DJANGO_GOOGLE_OAUTH2_CLIENT_ID', cast=str)
+GOOGLE_OAUTH2_CLIENT_SECRET = config('DJANGO_GOOGLE_OAUTH2_CLIENT_SECRET', cast=str)
