@@ -3,8 +3,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .models import EBForm, PreRegistrationForm, IGMUNCampusAmbassador
 from .serializers import EBFormSerializer, PreRegistrationFormSerializer
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from registration.models import UserProfile
+
+User = get_user_model()
 
 
 class EBFormAPIView(generics.CreateAPIView):
