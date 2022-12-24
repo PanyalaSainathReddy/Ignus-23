@@ -1,9 +1,11 @@
 from rest_framework import serializers, exceptions
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import UserProfile, PreRegistration
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+User = get_user_model()
 
 
 class PreRegistrationSerializer(serializers.ModelSerializer):

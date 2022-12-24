@@ -1,7 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, CARegisterAPIView
-from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, GoogleRegisterView, GoogleLoginView
+from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, GoogleRegisterView, GoogleLoginView, CARegisterAPIView
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)

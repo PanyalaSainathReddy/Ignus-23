@@ -1,15 +1,15 @@
 import uuid
 from django.db import models
-from django.db.models import Count
 from django.db.models.signals import pre_save
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.utils.safestring import mark_safe
-from events.models import Event
 from payments.models import Pass
-# from igmun.models import CampusAmbassador as IGMUNCA
-# from workshops.models import Workshop
 from .utils import generate_registration_code
+
+
+class User(AbstractUser):
+    is_google = models.BooleanField(default=False)
 
 
 class PreRegistration(models.Model):
@@ -181,7 +181,7 @@ def pre_save_user_profile(sender, instance, **kwargs):
         code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
         instance.registration_code = f"IG-{code}"
 
-        if instance.igmun == True:
+        if instance.igmun is True:
             instance.registration_code_igmun = f"IGMUN-{code}"
 
 

@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
 from django.middleware import csrf
@@ -14,6 +14,8 @@ import datetime
 from urllib.parse import urlencode
 from django.shortcuts import redirect
 from .utils import google_get_access_token, google_get_user_info
+
+User = get_user_model()
 
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):

@@ -1,7 +1,3 @@
-def generate_registration_code(name, lastRegCode):
-    return f"{name[:3].upper()}-{lastRegCode+3155}"
-# from django.core.mail import EmailMessage
-# from django.template.loader import get_template
 from django.conf import settings
 import requests
 from django.core.exceptions import ValidationError
@@ -11,6 +7,7 @@ from typing import Dict, Any
 GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
+
 
 def google_get_access_token(*, code: str, redirect_uri: str) -> str:
     # Reference: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
@@ -43,3 +40,7 @@ def google_get_user_info(*, access_token: str) -> Dict[str, Any]:
         raise ValidationError('Failed to obtain user info from Google.')
 
     return response.json()
+
+
+def generate_registration_code(name, lastRegCode):
+    return f"{name[:3].upper()}-{lastRegCode+3155}"
