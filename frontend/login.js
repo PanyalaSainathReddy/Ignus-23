@@ -3,7 +3,7 @@ const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 const homeButton = document.getElementById('home');
 
-var check = function() {
+var matchPassword = function() {
   if (document.getElementById('password_sign_up').value == document.getElementById('confirm_password_sign_up').value) {
     document.getElementById('message').style.color = 'green';
     document.getElementById('message').innerHTML = 'password matching';
@@ -69,31 +69,33 @@ var sign_up_form=document.getElementById('sign_up_form')
 
 sign_up_form.addEventListener('submit', function(e){
   e.preventDefault()
-  var first_name=document.getElementById('first_name').value
-  var last_name=document.getElementById('last_name').value
-  var email_sign_up=document.getElementById('email_sign_up').value
-  var password_sign_up=document.getElementById('password_sign_up').value
+  if(document.getElementById('password_sign_up').value == document.getElementById('confirm_password_sign_up').value){
+    var first_name=document.getElementById('first_name').value
+    var last_name=document.getElementById('last_name').value
+    var email_sign_up=document.getElementById('email_sign_up').value
+    var password_sign_up=document.getElementById('password_sign_up').value
 
-  fetch(BASE_URL + 'api/accounts/register/', {
-    method: 'POST',
-    body: JSON.stringify({
-      first_name:first_name,
-      last_name:last_name,
-      email:email_sign_up,
-      password:password_sign_up,
-    }),
-    credentials: 'include',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    }
+    fetch(BASE_URL + 'api/accounts/register/', {
+      method: 'POST',
+      body: JSON.stringify({
+        first_name:first_name,
+        last_name:last_name,
+        email:email_sign_up,
+        password:password_sign_up,
+      }),
+      credentials: 'include',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+      })
+      .then(function(response){
+      return response.json()})
+      .then(function(data){
+        console.log(data);
+        window.location.replace("complete-profile/index.html");
     })
-    .then(function(response){
-    return response.json()})
-    .then(function(data){
-      console.log(data);
-      window.location.replace("complete-profile/index.html");
-  })
-  .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error));
+  }
 });
 
 var sign_in_form=document.getElementById('sign_in_form')
@@ -122,4 +124,57 @@ sign_in_form.addEventListener('submit', function(e){
       window.location.replace("index.html");
   })
   .catch(error => console.error('Error:', error));
+});
+
+const CLIENT_ID = '';
+
+var google_sign_up_button=document.getElementById('google_sign_up_button');
+
+google_sign_up_button.addEventListener('click', function() {
+  const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+  const redirectUri = 'api/accounts/register/google/';
+
+  const scope = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
+  ].join(' ');
+
+  const params = {
+    response_type: 'code',
+    client_id: CLIENT_ID,
+    redirect_uri: BASE_URL + redirectUri,
+    prompt: 'select_account',
+    access_type: 'online',
+    scope
+  };
+
+  const urlParams = new URLSearchParams(params).toString();
+
+  window.location = `${googleAuthUrl}?${urlParams}`;
+});
+
+
+var google_sign_in_button=document.getElementById('google_sign_in_button');
+
+google_sign_in_button.addEventListener('click', function() {
+  const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+  const redirectUri = 'api/accounts/login/google/';
+
+  const scope = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
+  ].join(' ');
+
+  const params = {
+    response_type: 'code',
+    client_id: CLIENT_ID,
+    redirect_uri: BASE_URL + redirectUri,
+    prompt: 'select_account',
+    access_type: 'online',
+    scope
+  };
+
+  const urlParams = new URLSearchParams(params).toString();
+
+  window.location = `${googleAuthUrl}?${urlParams}`;
 });
