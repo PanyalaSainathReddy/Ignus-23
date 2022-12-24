@@ -1,8 +1,10 @@
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from .models import EBForm, PreRegistrationForm
+from .models import EBForm, PreRegistrationForm, IGMUNCampusAmbassador
 from .serializers import EBFormSerializer, PreRegistrationFormSerializer
+from django.contrib.auth.models import User
+from registration.models import UserProfile
 
 
 class EBFormAPIView(generics.CreateAPIView):
@@ -46,3 +48,17 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
         preregform.save()
 
         return Response({"message": "Pre Registered Successfully!"}, status=status.HTTP_201_CREATED)
+
+
+class IGMUNCARegisterAPIView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        userprofile = UserProfile.objects.get(user=user)
+        ca = IGMUNCampusAmbassador.objects.create(
+            ca_user=userprofile
+        )
+        ca.save()
+
+        return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
