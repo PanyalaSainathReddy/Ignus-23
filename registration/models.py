@@ -10,6 +10,7 @@ from .utils import generate_registration_code
 
 class User(AbstractUser):
     is_google = models.BooleanField(default=False)
+    profile_complete = models.BooleanField(default=False)
 
 
 class PreRegistration(models.Model):
@@ -143,7 +144,6 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
-    city = models.CharField(max_length=128)
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
     _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     igmun = models.BooleanField(default=False)
@@ -151,6 +151,9 @@ class UserProfile(models.Model):
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
     registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    is_ca = models.BooleanField(default=False)
+    is_igmun_ca = models.BooleanField(default=False)
+    amount_paid = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['user__first_name']
@@ -192,6 +195,7 @@ class CampusAmbassador(models.Model):
     ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     referral_code = models.CharField(max_length=12, editable=False, unique=True, primary_key=True)
+    verified = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Campus Ambassadors"

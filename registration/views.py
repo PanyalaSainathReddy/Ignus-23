@@ -6,6 +6,8 @@ from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTo
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
+from igmun.models import IGMUNCampusAmbassador
+from payments.models import Pass
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -357,15 +359,46 @@ class UserProfileAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
+        referral_code = request.data["referral_code"]
+        referral_code_igmun = request.data["referral_code_igmun"]
+        referred_by = None
+        referred_by_igmun = None
+
+        p = request.data["pass"]
+        p = Pass.objects.get(name=p)
+
+        if referral_code_igmun:
+            referred_by_igmun = IGMUNCampusAmbassador.objects.get(referral_code=referral_code_igmun)
+        else:
+            if referral_code:
+                referred_by = CampusAmbassador.objects.get(referral_code=referral_code)
+
         userprofile = UserProfile.objects.create(
             user=user,
+            referred_by=referred_by,
+            referred_by_igmun=referred_by_igmun,
             phone=request.data['phone'],
             gender=request.data['gender'],
             current_year=request.data['current_year'],
             college=request.data['college'],
             state=request.data['state'],
+            igmun=request.data["igmun"]
         )
+        userprofile._pass.add(p)
         userprofile.save()
+
+        user.profile_complete = True
+        user.save()
+
+        if referred_by_igmun:
+            if referred_by_igmun.number_referred == 20:
+                referred_by_igmun.verified = True
+                referred_by_igmun.save()
+        else:
+            if referred_by:
+                if referred_by.number_referred == 20:
+                    referred_by.verified = True
+                    referred_by.save()
 
         return Response({"message": "User Profile Created Successfully", "uuid": userprofile.uuid}, status=status.HTTP_201_CREATED)
 
@@ -393,5 +426,8 @@ class CARegisterAPIView(generics.CreateAPIView):
             ca_user=userprofile
         )
         ca.save()
+
+        userprofile.is_ca = True
+        userprofile.save()
 
         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
