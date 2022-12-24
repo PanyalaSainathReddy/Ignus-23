@@ -14,12 +14,53 @@ function getCookie(cname) {
     return "";
 }
 
+const BASE_URL = "http://127.0.0.1:8000/";
+const URL_USER_AUTHENTICATE = "api/accounts/login/";
+const URL_REFRESH_TOKEN = "api/accounts/refresh/";
+
+const miAPI = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true
+});
+
+miAPI.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    console.log("error :" + JSON.stringify(error));
+
+    const originalReq = error.config;
+
+    if (error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE) {
+        originalReq._retry = true;
+
+        return axios.post(BASE_URL + URL_REFRESH_TOKEN, null, {
+            withCredentials: true
+        }).then((res) => {
+            if (res.status == 200) {
+                console.log("token refreshed");
+                return axios(originalReq);
+            }
+        }).catch((error) => { window.location.href = "/frontend/login.html" });
+    }
+    console.log("Rest promise error");
+    return Promise.reject(error);
+});
+
 // This function not always working
 async function createOrder() {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/payments/pay/", null, { withCredentials: true });
         alert(document.cookie);
-
+        const response = await miAPI.post("http://127.0.0.1:8000/payments/pay/", null, {
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            withCredentials: true,
+        });
+        alert(document.cookie);
+        console.log(response);
+        sessionStorage.setItem("msg", `Order ${getCookie("order_id")} Created Successfully`);
+        alert(sessionStorage.getItem("msg"));
         // Doesn't redirect
         window.location.replace("pay.html");
     } catch (error) {
