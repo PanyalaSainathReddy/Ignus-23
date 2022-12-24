@@ -51,9 +51,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ["phone", "gender", "current_year", "college", "state", "uuid", "registration_code", "qr_code"]
-
-
-# class CASerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CampusAmbassador
-#         fields = ["insta_link", "workshop_capability", "publicize_ignus", "past_experience", "description", "referral_code"]

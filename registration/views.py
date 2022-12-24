@@ -6,8 +6,6 @@ from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTo
 from django.contrib.auth.models import User
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
-# from .utils import get_referral_code
-# from django.conf import settings
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -227,7 +225,7 @@ class CARegisterAPIView(generics.CreateAPIView):
         user = User.objects.get(id=request.user.id)
         userprofile = UserProfile.objects.get(user=user)
         ca = CampusAmbassador.objects.create(
-            ca_user=userprofile,
+            ca_user=userprofile
         )
         ca.save()
 
