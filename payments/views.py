@@ -4,35 +4,43 @@ from datetime import datetime, timedelta
 from .serializers import OrderSerializer
 from .models import Order, Transaction
 from rest_framework import generics, status
-# from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import json
 from django.middleware import csrf
+from django.contrib.auth import get_user_model
+from registration.models import UserProfile
 from django.http.response import HttpResponseRedirect
 
 razorpayClient = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 razorpayClient.set_app_details({"title": "IGNUS '23", "version": "1.0.0"})
 
+User = get_user_model()
+
 
 class CreateOrderAPIView(generics.CreateAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = OrderSerializer
 
     def create(self, request, *args, **kwargs):
-        # user = User.objects.get(id=request.user.id)
-        # userprofile = UserProfile.objects.get(user=user)
+        user = User.objects.get(id=request.user.id)
+        userprofile = UserProfile.objects.get(user=user)
         numOrders = Order.objects.count()
-        data = {"amount": 500, "currency": "INR", "receipt": f"order_rcptid_{numOrders+1}"}
+        data = {
+            "amount": userprofile.amount_due * 100,
+            "currency": "INR",
+            "receipt": f"order_rcptid_{numOrders+1}"
+        }
         paymentOrder = razorpayClient.order.create(data=data)
         paymentOrder["created_at"] = datetime.fromtimestamp(paymentOrder["created_at"])
 
         order = Order.objects.create(
             id=paymentOrder["id"],
-            # user=userprofile,
-            amount=paymentOrder["amount"],
-            amount_paid=paymentOrder["amount_paid"],
-            amount_due=paymentOrder["amount_due"],
+            user=userprofile,
+            amount=paymentOrder["amount"] // 100,
+            amount_paid=paymentOrder["amount_paid"] // 100,
+            amount_due=paymentOrder["amount_due"] // 100,
             currency=paymentOrder["currency"],
             receipt=paymentOrder["receipt"],
             attempts=paymentOrder["attempts"],
@@ -52,7 +60,7 @@ class CreateOrderAPIView(generics.CreateAPIView):
         )
         response.set_cookie(
             key='amount_due',
-            value=order.data["amount_due"],
+            value=order.data["amount_due"] * 100,
             expires=datetime.strftime(datetime.utcnow() + timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=False,
             httponly=False,
@@ -100,11 +108,14 @@ class PaymentHandlerAPIView(APIView):
         order.attempts = razorpayOrder["attempts"]
         order.save()
 
+        userprofile = order.user
+
         payment = razorpayClient.payment.fetch(payment_id)
         payment["created_at"] = datetime.fromtimestamp(payment["created_at"])
 
         Transaction.objects.create(
             payment_id=payment_id,
+            user=userprofile,
             status=payment["status"],
             order=order,
             signature=signature,

@@ -1,9 +1,11 @@
 from rest_framework import serializers, exceptions
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from .models import UserProfile, PreRegistration
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+User = get_user_model()
 
 
 class PreRegistrationSerializer(serializers.ModelSerializer):
@@ -51,9 +53,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ["phone", "gender", "current_year", "college", "state", "uuid", "registration_code", "qr_code"]
-
-
-# class CASerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CampusAmbassador
-#         fields = ["insta_link", "workshop_capability", "publicize_ignus", "past_experience", "description", "referral_code"]

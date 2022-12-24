@@ -1,5 +1,4 @@
 from django.db import models
-# from registration.models import UserProfile
 
 
 class Pass(models.Model):
@@ -23,7 +22,7 @@ class Pass(models.Model):
 
 class Order(models.Model):
     id = models.CharField(max_length=20, unique=True, primary_key=True)
-    # user = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, default=None)
+    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
     amount = models.IntegerField()
     amount_paid = models.IntegerField()
     amount_due = models.IntegerField()
@@ -41,14 +40,14 @@ class Order(models.Model):
 
 class Transaction(models.Model):
     payment_id = models.CharField(max_length=20, unique=True, primary_key=True)
-    # user = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, default=None)
+    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10, default="failed")
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
-    signature = models.CharField(max_length=100, blank=True, default="")
+    signature = models.CharField(max_length=100, blank=True)
     captured = models.BooleanField(default=False)
-    description = models.CharField(max_length=100, blank=True, default="")
-    email = models.EmailField(unique=False, blank=True, default="")
-    contact = models.CharField(max_length=15, blank=True, default="")
+    description = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(unique=False, blank=True)
+    contact = models.CharField(max_length=15, blank=True)
     fee = models.IntegerField(blank=True, null=True)
     tax = models.IntegerField(blank=True, null=True)
     timestamp = models.DateTimeField()
@@ -58,3 +57,7 @@ class Transaction(models.Model):
 
     def __str__(self) -> str:
         return self.payment_id
+
+    @property
+    def amount(self):
+        return self.order.amount_paid

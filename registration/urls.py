@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, GoogleRegisterView, GoogleLoginView
+from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, GoogleRegisterView, GoogleLoginView, CARegisterAPIView
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
@@ -12,8 +12,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('refresh/', CookieTokenRefreshView.as_view(), name="refresh"),
     path('user-details/', UserDetailAPI.as_view()),
-    path('user-profile/', UserProfileAPIView.as_view()),
-    path('user-profile-details/', UserProfileDetailsView.as_view()),
-    # path('ca-register/', CARegisterAPIView.as_view()),
+    path('user-profile/', UserProfileAPIView.as_view(), name="create-user-profile"),
+    path('user-profile-details/', UserProfileDetailsView.as_view(), name="user-details"),
+    path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),
     path('', include(router.urls)),
 ]

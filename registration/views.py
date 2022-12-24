@@ -3,11 +3,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
-# from .utils import get_referral_code
-# from django.conf import settings
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -16,6 +14,8 @@ import datetime
 from urllib.parse import urlencode
 from django.shortcuts import redirect
 from .utils import google_get_access_token, google_get_user_info
+
+User = get_user_model()
 
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):
@@ -390,7 +390,7 @@ class CARegisterAPIView(generics.CreateAPIView):
         user = User.objects.get(id=request.user.id)
         userprofile = UserProfile.objects.get(user=user)
         ca = CampusAmbassador.objects.create(
-            ca_user=userprofile,
+            ca_user=userprofile
         )
         ca.save()
 
