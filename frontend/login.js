@@ -131,7 +131,7 @@ sign_in_form.addEventListener('submit', function(e){
   .catch(error => console.error('Error:', error));
 });
 
-const CLIENT_ID = '';
+const CLIENT_ID = '590434107360-00fhk8vg36d7nsru0oo9n1rpbh9ot6k9.apps.googleusercontent.com';
 
 var google_sign_up_button=document.getElementById('google_sign_up_button');
 

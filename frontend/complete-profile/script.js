@@ -97,8 +97,8 @@ complete_profile_form.addEventListener('submit', function(e){
   var current_year=document.getElementById('current_year').value
   var gender=document.getElementById('gender').value
   var pass=getSelectedPass()
-  var referred_by=document.getElementById('referred_by').value
-  var referred_by_igmun=document.getElementById('referred_by_igmun').value
+  var referral_code=document.getElementById('referral_code').value
+  var referral_code_igmun=document.getElementById('referral_code_igmun').value
 
   if(pass == "igmun-pass"){
     var body = {
@@ -108,8 +108,8 @@ complete_profile_form.addEventListener('submit', function(e){
       current_year:current_year,
       state:college_state,
       pass:pass,
-      referred_by:'',
-      referred_by_igmun:referred_by_igmun,
+      referral_code:'',
+      referral_code_igmun:referral_code_igmun,
       igmun:true,
     }
   }
@@ -121,8 +121,8 @@ complete_profile_form.addEventListener('submit', function(e){
       current_year:current_year,
       state:college_state,
       pass:pass,
-      referred_by:referred_by,
-      referred_by_igmun:'',
+      referral_code:referral_code,
+      referral_code_igmun:'',
       igmun:false,
     }
   }
