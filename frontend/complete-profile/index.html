@@ -184,13 +184,7 @@
             <option value="35">Lakshadweep</option>
             <option value="36">Puducherry</option>
           </select>
-        </div>
-
-        <div class="input-tile" style="width: 60%;">
-          <label>Referred By (Enter the referral code, if someone referred you to Ignus / Igmun)</label>
-          <input type="text" id="referred_by">
-        </div>
-      
+        </div>      
 
         <div class="pass-container">
           <div class="pass-tile">
@@ -227,17 +221,28 @@
           </tr>
           <tr>
             <td>Gold</td>
-            <td><input type="radio" id="gold-radio-btn" name="pass" value="gold" class="radio-btn">Rs 1000</td>
-            <td><input type="radio" id="igmun-radio-btn" name="pass" value="igmun" class="radio-btn">Rs 1500</td>
+            <td><input type="radio" id="gold-radio-btn" name="pass" value="gold-pass" class="radio-btn">Rs 1000</td>
+            <td><input type="radio" id="igmun-radio-btn" name="pass" value="igmun-pass" class="radio-btn">Rs 1500</td>
           </tr>
           <tr>
             <td style="border-radius: 0 5px;">Silver</td>
-            <td><input type="radio" id="silver-radio-btn" name="pass" value="silver" class="radio-btn" required>Rs 500</td>
+            <td><input type="radio" id="silver-radio-btn" name="pass" value="silver-pass" class="radio-btn" required>Rs 500</td>
             <td style="border-radius: 0 0 5px 0 ;"></td>
           </tr>
         </table>
 
         <div class="expand">
+          <div class="input-tile" style="width: 60%;">
+            <label>Referred By [Format: <b>IG-ABC-1234</b>] (Enter the referral code, if someone referred you to IGNUS)</label>
+            <input type="text" id="referred_by">
+          </div>
+        </div>
+
+        <div class="expand_igmun">
+          <div class="input-tile" style="width: 60%;">
+            <label>Referred By [Format: <b>IGMUN-ABC-1234</b>] (Enter the referral code, if someone referred you to IGMUN)</label>
+            <input type="text" id="referred_by_igmun">
+          </div>
           <div class="input-tile" style="width: 70%;">
             <label>Committee Preference-1*</label>
             <select id="committee_1" required>

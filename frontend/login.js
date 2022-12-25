@@ -87,12 +87,15 @@ sign_up_form.addEventListener('submit', function(e){
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
-      })
-      .then(function(response){
-      return response.json()})
-      .then(function(data){
-        console.log(data);
+    })
+    .then(function(response){
+      if(response.status == 200){
         window.location.replace("complete-profile/index.html");
+      }
+      return response.json()
+    })
+    .then(function(data){
+      console.log(data);
     })
     .catch(error => console.error('Error:', error));
   }
@@ -115,13 +118,15 @@ sign_in_form.addEventListener('submit', function(e){
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     }
-    })
-    .then(function(response){
-    return response.json()})
-    .then(function(data){
-      console.log(data);
-      // localStorage.setItem('token', data.token);
+  })
+  .then(function(response){
+    if(response.status == 200){
       window.location.replace("index.html");
+    }
+    return response.json()
+  })
+  .then(function(data){
+      console.log(data);
   })
   .catch(error => console.error('Error:', error));
 });

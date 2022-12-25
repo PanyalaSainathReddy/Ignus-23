@@ -281,28 +281,20 @@ tr:nth-child(odd) {
 }
 .expand{
   width: 100%;
-  height: 0;
+  height: fit-content;
   transition: height 1s ease-in-out;
   -webkit-transition: height 1s ease-in-out;
   margin: 5% 0 7% 0;
+  display: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.expand_igmun{
+  width: 100%;
+  height: fit-content;
+  transition: height 1s ease-in-out;
+  -webkit-transition: height 1s ease-in-out;
+  margin: 5% 0 7% 0;
+  display: none;
+}
 
 @media screen and (max-width: 960px) {  /*tablet*/
   .vulture{display: none;}

@@ -6,15 +6,18 @@ $(document).ready(function(){
 });
 
 document.querySelector("#igmun-radio-btn").addEventListener("click", ()=>{
-  document.querySelector(".expand").style.height = "fit-content";
+  document.querySelector(".expand_igmun").style.display = "block";
+  document.querySelector(".expand").style.display = "none";
 })
 
 document.querySelector("#gold-radio-btn").addEventListener("click", ()=>{
-  document.querySelector(".expand").style.height = 0;
+  document.querySelector(".expand").style.display = "block";
+  document.querySelector(".expand_igmun").style.display = "none";
 })
 
 document.querySelector("#silver-radio-btn").addEventListener("click", ()=>{
-  document.querySelector(".expand").style.height = 0;
+  document.querySelector(".expand").style.display = "block";
+  document.querySelector(".expand_igmun").style.display = "none";
 })
 
 function getSelectedPass() {
@@ -94,18 +97,37 @@ complete_profile_form.addEventListener('submit', function(e){
   var current_year=document.getElementById('current_year').value
   var gender=document.getElementById('gender').value
   var pass=getSelectedPass()
-//   var referred_by=document.getElementById('referred_by').value
-  // var address=document.getElementById('address').value
+  var referred_by=document.getElementById('referred_by').value
+  var referred_by_igmun=document.getElementById('referred_by_igmun').value
 
-  miAPI.post(BASE_URL + 'api/accounts/user-profile/', {
+  if(pass == "igmun-pass"){
+    var body = {
       phone:phone_number,
       gender:gender,
-      // address:address,
       college:college,
       current_year:current_year,
       state:college_state,
-    },
-    {
+      pass:pass,
+      referred_by:'',
+      referred_by_igmun:referred_by_igmun,
+      igmun:true,
+    }
+  }
+  else{
+    var body = {
+      phone:phone_number,
+      gender:gender,
+      college:college,
+      current_year:current_year,
+      state:college_state,
+      pass:pass,
+      referred_by:referred_by,
+      referred_by_igmun:'',
+      igmun:false,
+    }
+  }
+
+  miAPI.post(BASE_URL + 'api/accounts/user-profile/', body, {
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
         'X-CSRFToken': getCookie('csrftoken'),
@@ -116,7 +138,9 @@ complete_profile_form.addEventListener('submit', function(e){
   .then(function (response) {
     console.log(response);
     sessionStorage.setItem("showmsg", "Successfully registered");
-    window.location.replace("/frontend/index.html");
+    if(response.status == 201){
+      window.location.replace("/frontend/index.html");
+    }
   })
   .catch(function (error) {
     // handle error

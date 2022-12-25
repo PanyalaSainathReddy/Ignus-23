@@ -37,47 +37,51 @@ class LoginView(APIView):
         response = Response()
         username = data.get('username', None)
         password = data.get('password', None)
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                data = get_tokens_for_user(user)
 
-                response.set_cookie(
-                    key='access',
-                    value=data["access"],
-                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=True,
-                    samesite='Lax'
-                )
-
-                response.set_cookie(
-                    key='refresh',
-                    value=data["refresh"],
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=True,
-                    samesite='Lax'
-                )
-
-                response.set_cookie(
-                    key='LoggedIn',
-                    value=True,
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=False,
-                    samesite='Lax'
-                )
-                response["X-CSRFToken"] = csrf.get_token(request)
-                response.data = {"Success": "Login successfull", "data": data}
-                return response
+        if User.objects.filter(username=username).exists():
+            if User.objects.filter(username=username).first().is_google:
+                return Response({"Error": "Please use Google Login"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    if user.is_active:
+                        data = get_tokens_for_user(user)
+
+                        response.set_cookie(
+                            key='access',
+                            value=data["access"],
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=True,
+                            samesite='Lax'
+                        )
+
+                        response.set_cookie(
+                            key='refresh',
+                            value=data["refresh"],
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=True,
+                            samesite='Lax'
+                        )
+
+                        response.set_cookie(
+                            key='LoggedIn',
+                            value=True,
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=False,
+                            samesite='Lax'
+                        )
+                        response["X-CSRFToken"] = csrf.get_token(request)
+                        response.data = {"Success": "Login successfull", "data": data}
+                        return response
+                    else:
+                        return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "User does not exist, please register!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
@@ -85,15 +89,18 @@ class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
     def create(self, request, *args, **kwargs):
-        user = User.objects.create(
-            username=request.data['email'],
-            email=request.data['email'],
-            first_name=request.data['first_name'],
-            last_name=request.data['last_name']
-        )
+        try:
+            user = User.objects.create(
+                username=request.data['email'],
+                email=request.data['email'],
+                first_name=request.data['first_name'],
+                last_name=request.data['last_name']
+            )
 
-        user.set_password(request.data['password'])
-        user.save()
+            user.set_password(request.data['password'])
+            user.save()
+        except Exception:
+            return Response({"Error": "User already exists, try to sign-in!!"}, status=status.HTTP_409_CONFLICT)
 
         response = Response()
 
@@ -104,7 +111,6 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
@@ -114,7 +120,6 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
@@ -124,7 +129,6 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='LoggedIn',
                     value=True,
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
@@ -164,18 +168,22 @@ class GoogleRegisterView(APIView):
         access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
 
         user_data = google_get_user_info(access_token=access_token)
-
-        user = User.objects.create(
-            username=user_data['email'],
-            email=user_data['email'],
-            first_name=user_data.get('given_name', ''),
-            last_name=user_data.get('family_name', ''),
-        )
-
-        user.set_password('google')
-        user.save()
-
         response = Response(status=302)
+
+        try:
+            user = User.objects.create(
+                username=user_data['email'],
+                email=user_data['email'],
+                first_name=user_data.get('given_name', ''),
+                last_name=user_data.get('family_name', ''),
+                is_google=True,
+            )
+            user.set_password('google')
+            user.save()
+        except Exception:
+            response.data = {"Error": "User already exists, try to sign-in!"}
+            response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
+            return response
 
         user = authenticate(username=user_data['email'], password='google')
         if user is not None:
@@ -184,7 +192,6 @@ class GoogleRegisterView(APIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
@@ -194,7 +201,6 @@ class GoogleRegisterView(APIView):
                 response.set_cookie(
                     key='refresh',
                     value=data["refresh"],
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
@@ -204,7 +210,6 @@ class GoogleRegisterView(APIView):
                 response.set_cookie(
                     key='LoggedIn',
                     value=True,
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
@@ -216,12 +221,10 @@ class GoogleRegisterView(APIView):
                 return response
             else:
                 response.data = {"Not active": "This account is not active!!"}
-                # response.status_code = status.HTTP_404_NOT_FOUND
                 response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
                 return response
         else:
             response.data = {"Invalid": "Invalid username or password!!"}
-            # response.status_code = status.HTTP_404_NOT_FOUND
             response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
             return response
 
@@ -252,52 +255,57 @@ class GoogleLoginView(APIView):
         user_data = google_get_user_info(access_token=access_token)
         response = Response(status=302)
 
-        user = authenticate(username=user_data['email'], password='google')
-        if user is not None:
-            if user.is_active:
-                data = get_tokens_for_user(user)
-                response.set_cookie(
-                    key='access',
-                    value=data["access"],
-                    # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=True,
-                    samesite='Lax'
-                )
+        if User.objects.filter(email=user_data['email']).exists():
+            if User.objects.get(email=user_data['email']).is_google:
+                user = authenticate(username=user_data['email'], password='google')
+                if user is not None:
+                    if user.is_active:
+                        data = get_tokens_for_user(user)
+                        response.set_cookie(
+                            key='access',
+                            value=data["access"],
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=True,
+                            samesite='Lax'
+                        )
 
-                response.set_cookie(
-                    key='refresh',
-                    value=data["refresh"],
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=True,
-                    samesite='Lax'
-                )
+                        response.set_cookie(
+                            key='refresh',
+                            value=data["refresh"],
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=True,
+                            samesite='Lax'
+                        )
 
-                response.set_cookie(
-                    key='LoggedIn',
-                    value=True,
-                    # expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    httponly=False,
-                    samesite='Lax'
-                )
-                response["X-CSRFToken"] = csrf.get_token(request)
-                response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
-                response.data = {"Success": "Login successfull", "data": data}
-                return response
+                        response.set_cookie(
+                            key='LoggedIn',
+                            value=True,
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=False,
+                            samesite='Lax'
+                        )
+                        response["X-CSRFToken"] = csrf.get_token(request)
+                        response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
+                        response.data = {"Success": "Login successfull", "data": data}
+                        return response
+                    else:
+                        response.data = {"Not active": "This account is not active!!"}
+                        response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
+                        return response
+                else:
+                    response.data = {"Invalid": "You are not registered!!"}
+                    response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
+                    return response
             else:
-                response.data = {"Not active": "This account is not active!!"}
-                # response.status_code = status.HTTP_404_NOT_FOUND
-                response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
+                response.data = {"Invalid": "You signed up using email!!"}
+                response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
                 return response
         else:
             response.data = {"Invalid": "You are not registered!!"}
-            # response.status_code = status.HTTP_404_NOT_FOUND
-            response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
+            response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
             return response
 
 
@@ -330,14 +338,12 @@ class CookieTokenRefreshView(TokenRefreshView):
             response.set_cookie(
                 key='access',
                 value=response.data["access"],
-                # expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                 secure=True,
                 httponly=True,
                 samesite='Lax'
             )
 
-            # del response.data["refresh"]
         response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
         return super().finalize_response(request, response, *args, **kwargs)
 
