@@ -50,7 +50,7 @@ miAPI.interceptors.response.use(function (response) {
 async function createOrder() {
     try {
         alert(document.cookie);
-        const response = await miAPI.post("http://127.0.0.1:8000/payments/pay/", null, {
+        const response = await miAPI.post(`${BASE_URL}payments/pay/`, null, {
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
                 'X-CSRFToken': getCookie('csrftoken'),
@@ -83,7 +83,7 @@ function pay() {
         description: "Test Transaction",
         image: "../static/ignus icon.png",
         order_id: order_id,
-        callback_url: "http://127.0.0.1:8000/payments/callback/",
+        callback_url: `${BASE_URL}payments/callback/`,
         prefill: {
             name: "SAAHIL BHAVSAR",
             email: "saahil.1609.bhavsar@gmail.com",

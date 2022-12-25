@@ -63,4 +63,7 @@ class IGMUNCARegisterAPIView(generics.CreateAPIView):
         )
         ca.save()
 
+        userprofile.is_igmun_ca = True
+        userprofile.save()
+
         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
