@@ -56,6 +56,7 @@ class IGMUNCampusAmbassador(models.Model):
     ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     referral_code = models.CharField(max_length=15, editable=False, unique=True, primary_key=True)
+    verified = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "IGMUN Campus Ambassadors"
