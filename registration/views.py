@@ -1,23 +1,25 @@
-from rest_framework import viewsets, serializers
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer
-from django.contrib.auth import get_user_model
-from rest_framework import generics, status, exceptions
-from .models import UserProfile, PreRegistration, CampusAmbassador
-from igmun.models import IGMUNCampusAmbassador
-from payments.models import Pass, Order
-from django.middleware import csrf
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView
-from django.contrib.auth import authenticate
 import datetime
 from urllib.parse import urlencode
+
+from django.contrib.auth import authenticate, get_user_model
+from django.middleware import csrf
 from django.shortcuts import redirect
-from .utils import google_get_access_token, google_get_user_info
+from rest_framework import exceptions, generics, serializers, status, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from igmun.models import IGMUNCampusAmbassador
+from payments.models import Order, Pass
 from payments.utils import setupRazorpay
-# from payments.serializers import OrderSerializer
+
+from .models import CampusAmbassador, PreRegistration, UserProfile
+from .serializers import (CookieTokenRefreshSerializer,
+                          PreRegistrationSerializer, RegisterSerializer,
+                          UserProfileSerializer, UserSerializer)
+from .utils import google_get_access_token, google_get_user_info
 
 User = get_user_model()
 

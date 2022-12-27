@@ -1,7 +1,8 @@
-from django.db import models
 from django.core.validators import RegexValidator
-from registration.models import UserProfile
+from django.db import models
 from django.db.models.signals import pre_save
+
+from registration.models import UserProfile
 
 COMMITTEE_CHOICES = (
     ("DISEC", "Disarmament and International Security"),

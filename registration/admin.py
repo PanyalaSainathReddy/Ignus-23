@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import UserProfile, PreRegistration, CampusAmbassador, User
+
+from .models import CampusAmbassador, PreRegistration, User, UserProfile
 
 
 class UserAdmin(admin.ModelAdmin):

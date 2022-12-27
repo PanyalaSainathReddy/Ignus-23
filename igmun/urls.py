@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import EBFormAPIView, PreRegistrationFormAPIView, IGMUNCARegisterAPIView
+
+from .views import (EBFormAPIView, IGMUNCARegisterAPIView,
+                    PreRegistrationFormAPIView)
 
 urlpatterns = [
     path("ebform/", EBFormAPIView.as_view()),
