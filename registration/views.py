@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, status, exceptions
 from .models import UserProfile, PreRegistration, CampusAmbassador
 from igmun.models import IGMUNCampusAmbassador
-from payments.models import Pass
+from payments.models import Pass, Order
 from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -16,6 +16,8 @@ import datetime
 from urllib.parse import urlencode
 from django.shortcuts import redirect
 from .utils import google_get_access_token, google_get_user_info
+from payments.utils import setupRazorpay
+# from payments.serializers import OrderSerializer
 
 User = get_user_model()
 
@@ -48,6 +50,33 @@ class LoginView(APIView):
                 if user is not None:
                     if user.is_active:
                         data = get_tokens_for_user(user)
+                        if user.profile_complete:
+                            userprofile = UserProfile.objects.get(user=user)
+                            order = Order.objects.get(user=userprofile)
+                            response.set_cookie(
+                                key='order_id',
+                                value=order.id,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='amount_due',
+                                value=order.amount_due * 100,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='currency',
+                                value=order.currency,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
 
                         response.set_cookie(
                             key='access',
@@ -75,6 +104,7 @@ class LoginView(APIView):
                             httponly=False,
                             samesite='Lax'
                         )
+
                         response["X-CSRFToken"] = csrf.get_token(request)
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
@@ -263,6 +293,35 @@ class GoogleLoginView(APIView):
                 if user is not None:
                     if user.is_active:
                         data = get_tokens_for_user(user)
+
+                        if user.profile_complete:
+                            userprofile = UserProfile.objects.get(user=user)
+                            order = Order.objects.get(user=userprofile)
+                            response.set_cookie(
+                                key='order_id',
+                                value=order.id,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='amount_due',
+                                value=order.amount_due * 100,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='currency',
+                                value=order.currency,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=False,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+
                         response.set_cookie(
                             key='access',
                             value=data["access"],
@@ -406,7 +465,56 @@ class UserProfileAPIView(generics.CreateAPIView):
                     referred_by.verified = True
                     referred_by.save()
 
-        return Response({"message": "User Profile Created Successfully", "uuid": userprofile.uuid}, status=status.HTTP_201_CREATED)
+        rzpClient = setupRazorpay()
+        numOrders = Order.objects.count()
+        data = {
+            "amount": userprofile.amount_due * 100,
+            "currency": "INR",
+            "receipt": f"order_rcptid_{numOrders+1}"
+        }
+        paymentOrder = rzpClient.order.create(data=data)
+        paymentOrder["created_at"] = datetime.datetime.fromtimestamp(paymentOrder["created_at"])
+
+        Order.objects.create(
+            id=paymentOrder["id"],
+            user=userprofile,
+            amount=paymentOrder["amount"] // 100,
+            amount_paid=paymentOrder["amount_paid"] // 100,
+            amount_due=paymentOrder["amount_due"] // 100,
+            currency=paymentOrder["currency"],
+            receipt=paymentOrder["receipt"],
+            attempts=paymentOrder["attempts"],
+            timestamp=paymentOrder["created_at"]
+        )
+
+        response = Response(data={"Message: Profile Created Successfully!"}, status=status.HTTP_201_CREATED)
+        response.set_cookie(
+            key='order_id',
+            value=paymentOrder["id"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='amount_due',
+            value=paymentOrder["amount_due"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='currency',
+            value=paymentOrder["currency"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response["X-CSRFToken"] = csrf.get_token(request)
+
+        return response
 
 
 class UserProfileDetailsView(generics.RetrieveAPIView):
