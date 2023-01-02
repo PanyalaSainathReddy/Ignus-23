@@ -64,7 +64,7 @@ function getUserProfileDetails() {
     withCredentials: true,
   }).then(function (response) {
     console.log(response);
-    document.getElementById("user_name").innerHTML = response.data.user.first_name + " " + response.data.user.last_name;
+    document.getElementById("user_name").innerHTML = response.data.user.first_name;
     if(response.data.userprofile.current_year == 1){
       document.getElementById("year_and_college").innerHTML = response.data.userprofile.current_year + "st year <br/>" + response.data.userprofile.college;
     }
@@ -93,7 +93,7 @@ function getUserProfileDetails() {
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
     document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
-    document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + " " + response.data.user.last_name + "<br/>" + response.data.userprofile.registration_code;
+    document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
   })
   .catch(function (error) {
     // handle error

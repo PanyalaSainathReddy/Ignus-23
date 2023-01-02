@@ -92,5 +92,73 @@ $(document).ready(function(){
 	});
 });
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+}
 
+var ca_register_btn = document.getElementById("ca_register_btn");
 
+if(!getCookie("LoggedIn")){
+  ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
+}
+
+// API
+const BASE_URL = "http://127.0.0.1:8000/"; 
+const URL_USER_AUTHENTICATE= "api/accounts/login/";
+const URL_REFRESH_TOKEN="api/accounts/refresh/";
+
+const miAPI = axios.create({
+    baseURL: BASE_URL,
+    withCredentials:true
+});
+
+miAPI.interceptors.response.use(function(response) {
+  return response;
+},function(error) {
+    console.log("error :" + JSON.stringify(error));
+
+    const originalReq = error.config;
+
+    if ( error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE ) {
+      originalReq._retry = true;
+
+      return axios.post(BASE_URL+URL_REFRESH_TOKEN, null, {
+        withCredentials:true
+      }).then((res) =>{
+          if ( res.status == 200) {
+              console.log("token refreshed");
+              return axios(originalReq);
+          }
+        }).catch((error) => {window.location.href="/frontend/login.html"});
+    }
+    console.log("Rest promise error");
+    return Promise.reject(error);
+});
+
+ca_register_btn.addEventListener("click", function(){
+  if(getCookie("LoggedIn")){
+    miAPI.post("api/accounts/ca-register/", null, {
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'X-CSRFToken': getCookie('csrftoken'),
+      },
+      withCredentials: true,
+    }
+    ).then(function(response){
+      console.log(response);
+      ca_register_btn.innerHTML = "<a>Registered!</a>";
+    })
+  }
+});
