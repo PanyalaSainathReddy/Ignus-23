@@ -152,6 +152,7 @@ def post_save_campus_ambassador_pre(sender, instance, created, **kwargs):
     if created:
         send_ca_confirmation_mail(instance=instance)
 
+
 post_save.connect(post_save_campus_ambassador_pre, sender=PreCA)
 
 
