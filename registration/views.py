@@ -504,59 +504,59 @@ class UserProfileAPIView(generics.CreateAPIView):
                     referred_by.verified = True
                     referred_by.save()
 
-        # rzpClient = setupRazorpay()
-        # numOrders = Order.objects.count()
-        # data = {
-        #     "amount": userprofile.amount_due * 100,
-        #     "currency": "INR",
-        #     "receipt": f"order_rcptid_{numOrders+1}"
-        # }
-        # paymentOrder = rzpClient.order.create(data=data)
-        # paymentOrder["created_at"] = datetime.datetime.fromtimestamp(paymentOrder["created_at"])
+        rzpClient = setupRazorpay()
+        numOrders = Order.objects.count()
+        data = {
+            "amount": userprofile.amount_due * 100,
+            "currency": "INR",
+            "receipt": f"order_rcptid_{numOrders+1}"
+        }
+        paymentOrder = rzpClient.order.create(data=data)
+        paymentOrder["created_at"] = datetime.datetime.fromtimestamp(paymentOrder["created_at"])
 
-        # Order.objects.create(
-        #     id=paymentOrder["id"],
-        #     user=userprofile,
-        #     amount=paymentOrder["amount"] // 100,
-        #     amount_paid=paymentOrder["amount_paid"] // 100,
-        #     amount_due=paymentOrder["amount_due"] // 100,
-        #     currency=paymentOrder["currency"],
-        #     receipt=paymentOrder["receipt"],
-        #     attempts=paymentOrder["attempts"],
-        #     timestamp=paymentOrder["created_at"]
-        # )
+        Order.objects.create(
+            id=paymentOrder["id"],
+            user=userprofile,
+            amount=paymentOrder["amount"] // 100,
+            amount_paid=paymentOrder["amount_paid"] // 100,
+            amount_due=paymentOrder["amount_due"] // 100,
+            currency=paymentOrder["currency"],
+            receipt=paymentOrder["receipt"],
+            attempts=paymentOrder["attempts"],
+            timestamp=paymentOrder["created_at"]
+        )
 
         response = Response(data={"Message: Profile Created Successfully!"}, status=status.HTTP_201_CREATED)
-        # response.set_cookie(
-        #     key='order_id',
-        #     value=paymentOrder["id"],
-        #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-        #     secure=False,
-        #     httponly=False,
-        #     samesite='Lax'
-        # )
-        # response.set_cookie(
-        #     key='amount_due',
-        #     value=paymentOrder["amount_due"],
-        #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-        #     secure=False,
-        #     httponly=False,
-        #     samesite='Lax'
-        # )
-        # response.set_cookie(
-        #     key='currency',
-        #     value=paymentOrder["currency"],
-        #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-        #     secure=False,
-        #     httponly=False,
-        #     samesite='Lax'
-        # )
-        # response["X-CSRFToken"] = csrf.get_token(request)
+        response.set_cookie(
+            key='order_id',
+            value=paymentOrder["id"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='amount_due',
+            value=paymentOrder["amount_due"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='currency',
+            value=paymentOrder["currency"],
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=False,
+            httponly=False,
+            samesite='Lax'
+        )
+        response["X-CSRFToken"] = csrf.get_token(request)
 
-        # max_age = request.COOKIES.get('refresh')
-        # print("max_age: ", max_age)
-        # expires = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
-        # print(expires)
+        max_age = request.COOKIES.get('refresh')
+        print("max_age: ", max_age)
+        expires = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
+        print(expires)
         response.set_cookie(
             key='isProfileComplete',
             value=user.profile_complete,)
