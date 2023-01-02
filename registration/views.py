@@ -2,10 +2,10 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer
+from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer, PreCARegistrationSerializer
 from django.contrib.auth.models import User
 from rest_framework import generics, status, exceptions
-from .models import UserProfile, PreRegistration, CampusAmbassador
+from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
 # from .utils import get_referral_code
 # from django.conf import settings
 from django.middleware import csrf
@@ -18,6 +18,11 @@ import datetime
 class PreRegistrationAPIView(viewsets.ModelViewSet):
     queryset = PreRegistration.objects.all()
     serializer_class = PreRegistrationSerializer
+
+
+class PreCARegistrationAPIView(viewsets.ModelViewSet):
+    queryset = PreCA.objects.all()
+    serializer_class = PreCARegistrationSerializer
 
 
 def get_tokens_for_user(user):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, TeamRegistration, PreRegistration, CampusAmbassador
+from .models import UserProfile, TeamRegistration, PreRegistration, CampusAmbassador, PreCA
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -39,3 +39,4 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(TeamRegistration, TeamRegistrationAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
+admin.site.register(PreCA)
