@@ -1,6 +1,6 @@
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.authentication import CSRFCheck
 from rest_framework import exceptions
+from rest_framework.authentication import CSRFCheck
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 def enforce_csrf(request):

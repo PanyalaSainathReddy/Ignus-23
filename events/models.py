@@ -1,7 +1,10 @@
-from django.db import models
-# from django.urls import reverse_lazy
-from django.utils.safestring import mark_safe
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.db import models
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from django.utils.text import slugify
+
+from registration.models import UserProfile
 
 
 class Location(models.Model):
@@ -21,22 +24,20 @@ class Location(models.Model):
 
 
 class EventType(models.Model):
-    # ETYPE_CHOICES = (
-    #     ('1', 'Cultural Event'),
-    #     ('2', 'Flagship Event'),
-    #     ('3', 'Technical Event'),
-    #     ('4', 'Prakriti'),
-    #     ('5', 'Informals Event')
+    ETYPE_CHOICES = (
+        ('1', 'Cultural Event'),
+        ('2', 'Flagship Event'),
+        ('3', 'Technical Event'),
+        ('4', 'Prakriti'),
+        ('5', 'Informals Event')
+    )
 
-    # )
-    name = models.CharField(max_length=128)
-    # parent_type = models.CharField(max_length=1, choices=ETYPE_CHOICES, verbose_name='event type')
+    name = models.CharField(max_length=2, choices=ETYPE_CHOICES, default='1')
     cover = models.ImageField(upload_to='event_type')
-    slug = models.SlugField()
-    about = RichTextUploadingField()
+    about = RichTextUploadingField(blank=True)
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
     class Meta:
         ordering = ['name']
@@ -45,25 +46,22 @@ class EventType(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=32)
-    # sub_name = models.CharField(max_length=32, blank=True)
-    slug = models.SlugField()
-    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True)
+    slug = models.SlugField(blank=True, default="")
+    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
     venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    unique_id = models.CharField(max_length=8)
     cover = models.ImageField(upload_to='event', null=True, blank=True)
     pdf = models.FileField(upload_to='pdf', null=True, blank=True)
-    # organisers = models.ManyToManyField(AdminProfile)
+    organizers = models.ManyToManyField(UserProfile)
+    team_event = models.BooleanField(default=False)
     max_team_size = models.PositiveSmallIntegerField(default=1, help_text='Leave 1 for single participant event')
     min_team_size = models.PositiveSmallIntegerField(default=1, help_text='Select minimum number of participants for event.')
-    about = RichTextUploadingField()
-    # about_plain = models.TextField(blank=True)
-    details = RichTextUploadingField(null=True, blank=True, default='')
-    # details_plain = models.TextField(blank=True)
-    results = models.TextField(blank=True)
-    # google_form = models.URLField(blank=True)
-    custom_html = models.TextField(blank=True, default='')
+    about = RichTextUploadingField(blank=True)
+    details = RichTextUploadingField(blank=True, default="")
+    results = models.TextField(blank=True, default="")
+    google_form = models.URLField(blank=True)
+    custom_html = models.TextField(blank=True, default="")
     published = models.BooleanField(default=False)
 
     class Meta:
@@ -72,30 +70,21 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse_lazy('events:event-category', kwargs={'slug': self.event_type.slug})
+    def get_organizers(self):
+        orgs = []
+        for organizer in self.organizers.all():
+            org = {
+                "name": organizer.user.get_full_name(),
+                "email": organizer.user.email,
+                "phone": organizer.phone
+            }
+            orgs.append(org)
 
-    # def get_register_api_url(self):
-    #     return reverse_lazy('api:events:register', kwargs={'unique_id': self.unique_id})
+        return orgs
 
-    # def get_admin_portal_url(self):
-    #     return reverse_lazy('adminportal:event-detail', kwargs={
-    #         'event_type': self.event_type.parent_type,
-    #         'slug': self.slug
-    #     })
+    def get_absolute_url(self):
+        return reverse("event", kwargs={"slug": self.slug})
 
-    # def get_csv_download_url(self):
-    #     return reverse_lazy('adminportal:event-registration-download', kwargs={
-    #         'event_type': self.event_type.parent_type,
-    #         'slug': self.slug
-    #     })
-
-    # def get_fa_icon(self):
-    #     """Simple hack to get font awesome icon for an event object"""
-    #     _map = {
-    #         '1': 'fa-music',
-    #         '2': 'fa-bolt',
-    #         '3': 'fa-code',
-    #         '4': 'fa-globe',
-    #     }
-    #     return _map.get(self.event_type.parent_type, 'fa-question')
+    def save(self) -> None:
+        self.slug = slugify(self.name)
+        return super().save()

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Order, Transaction, Pass
+
+from .models import Order, Pass, Transaction
 
 
 class OrderAdmin(admin.ModelAdmin):

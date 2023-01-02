@@ -1,8 +1,8 @@
-from django.conf import settings
-import requests
-from django.core.exceptions import ValidationError
-from typing import Dict, Any
+from typing import Any, Dict
 
+import requests
+from django.conf import settings
+from django.core.exceptions import ValidationError
 
 GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'

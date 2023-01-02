@@ -1,10 +1,12 @@
+from django.contrib.auth import get_user_model
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from .models import EBForm, PreRegistrationForm, IGMUNCampusAmbassador
-from .serializers import EBFormSerializer, PreRegistrationFormSerializer
-from django.contrib.auth import get_user_model
+
 from registration.models import UserProfile
+
+from .models import EBForm, IGMUNCampusAmbassador, PreRegistrationForm
+from .serializers import EBFormSerializer, PreRegistrationFormSerializer
 
 User = get_user_model()
 

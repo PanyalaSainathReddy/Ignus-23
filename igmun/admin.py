@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import EBForm, PreRegistrationForm, IGMUNCampusAmbassador
 from import_export.admin import ExportActionMixin
+
+from .models import EBForm, IGMUNCampusAmbassador, PreRegistrationForm
 
 
 class EBFormAdmin(ExportActionMixin, admin.ModelAdmin):

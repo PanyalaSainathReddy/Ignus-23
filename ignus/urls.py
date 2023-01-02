@@ -1,8 +1,8 @@
+from django.conf import settings
+from django.conf.urls import include
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path
-from django.conf.urls import include
-from django.conf import settings
-from django.conf.urls.static import static
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/accounts/', include('registration.urls')),
     path('api/igmun/', include('igmun.urls')),
     path("payments/", include('payments.urls')),
+    path("events/", include('events.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
