@@ -4,7 +4,7 @@ from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserP
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
-router.register(r'ca-register-pre', PreCARegistrationAPIView)
+router.register(r'ca-pre-register', PreCARegistrationAPIView)
 urlpatterns = [
     path('register/', RegisterUserAPIView.as_view(), name="register"),
     path('login/', LoginView.as_view(), name="login"),
@@ -14,6 +14,6 @@ urlpatterns = [
     path('user-profile/', UserProfileAPIView.as_view()),
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     # path('ca-register/', CARegisterAPIView.as_view()),
-    # path('ca-register-pre/', PreCARegistrationAPIView.as_view()),
+    # path('ca-pre-register/', PreCARegistrationAPIView.as_view()),
     path('', include(router.urls)),
 ]

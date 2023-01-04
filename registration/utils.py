@@ -8,12 +8,12 @@ def generate_registration_code(name, lastRegCode):
 
 def send_ca_confirmation_mail(instance=None):
     if instance:
-        subject, to = "[Ignus'23] Successfully registered as Campus Ambassador for Ignus", str(instance.email)
+        subject, to = "Welcome On Board " + str(instance.full_name) + "!", str(instance.email)
         ctx = {
             'object': instance,
         }
         body_content = get_template('ca/ca_registration_email.html').render(ctx)
-        
+
         confirmation_mail = EmailMessage(subject=subject, body=body_content, to=[to])
         confirmation_mail.content_subtype = 'html'
         num_sent = confirmation_mail.send()
