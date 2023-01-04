@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, TeamRegistration, PreRegistration, CampusAmbassador, PreCA
+from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -17,14 +17,14 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
         model = CampusAmbassador
 
 
-class TeamRegistrationAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['leader', 'members']
-    list_display = ['__str__', 'event', 'leader']
-    list_filter = ['event']
-    search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
+# class TeamRegistrationAdmin(admin.ModelAdmin):
+#     autocomplete_fields = ['leader', 'members']
+#     list_display = ['__str__', 'event', 'leader']
+#     list_filter = ['event']
+#     search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
 
-    class Meta:
-        model = TeamRegistration
+#     class Meta:
+#         model = TeamRegistration
 
 
 class PreRegistrationAdmin(admin.ModelAdmin):
@@ -37,6 +37,6 @@ class PreRegistrationAdmin(admin.ModelAdmin):
 
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
-admin.site.register(TeamRegistration, TeamRegistrationAdmin)
+# admin.site.register(TeamRegistration, TeamRegistrationAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
 admin.site.register(PreCA)
