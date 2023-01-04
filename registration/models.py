@@ -1,16 +1,12 @@
 import uuid
-# import re
-from django.db import models
-from django.db.models import Count
-from django.db.models.signals import pre_save
-from django.db.models.signals import post_save
-# from django.db.models import Sum, Q
+
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.db import models
+from django.db.models.signals import post_save, pre_save
 from django.shortcuts import reverse
 from django.utils.safestring import mark_safe
-from events.models import Event
-# from workshops.models import Workshop
+
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -239,9 +235,9 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
-    @property
-    def team_events_registered(self):
-        return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
+    # @property
+    # def team_events_registered(self):
+    #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
 
     def team_registrations(self):
         result = self.teamregistration_set.all() | self.team_leader.all()
@@ -340,18 +336,18 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
 
 
-class TeamRegistrationManager(models.Manager):
-    def user_profiles_count(self):
-        return self.aggregate(members_count=Count('members'))['members_count'] + \
-               self.aggregate(leader_count=Count('leader'))['leader_count']
+# class TeamRegistrationManager(models.Manager):
+#     def user_profiles_count(self):
+#         return self.aggregate(members_count=Count('members'))['members_count'] + \
+#                self.aggregate(leader_count=Count('leader'))['leader_count']
 
 
-class TeamRegistration(models.Model):
-    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
-    members = models.ManyToManyField(UserProfile, blank=True)
+# class TeamRegistration(models.Model):
+#     leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
+#     event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
+#     members = models.ManyToManyField(UserProfile, blank=True)
 
-    objects = TeamRegistrationManager()
+#     objects = TeamRegistrationManager()
 
-    def __str__(self):
-        return "{event} - {leader}".format(leader=self.leader, event=self.event)
+#     def __str__(self):
+#         return "{event} - {leader}".format(leader=self.leader, event=self.event)
