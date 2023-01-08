@@ -137,7 +137,7 @@ class PreCA(models.Model):
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
 
     def __str__(self):
-        return self.email
+        return self.full_name
 
     class Meta:
         verbose_name = 'CA Pre Registration'

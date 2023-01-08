@@ -1,8 +1,28 @@
+from rest_framework import viewsets
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from .models import EBForm, PreRegistrationForm
-from .serializers import EBFormSerializer, PreRegistrationFormSerializer
+from .models import EBForm, PreRegistrationForm, PreCA
+from .serializers import EBFormSerializer, PreRegistrationFormSerializer, PreCARegistrationSerializer
+
+
+class PreCARegistrationAPIView(generics.CreateAPIView):
+    serializer_class = PreCARegistrationSerializer
+    permission_classes = (AllowAny,)
+
+    def create(self, request, *args, **kwargs):
+        precaform = PreCA.objects.create(
+            full_name=request.data['full_name'],
+            phone_number=request.data['phone_number'],
+            email=request.data['email'],
+            college=request.data['college'],
+            city=request.data['city'],
+            college_state=request.data['college_state'],
+            current_year=request.data['current_year']
+        )
+        precaform.save()
+
+        return Response({"message": "Form Filled Successfully!"}, status=status.HTTP_201_CREATED)
 
 
 class EBFormAPIView(generics.CreateAPIView):
