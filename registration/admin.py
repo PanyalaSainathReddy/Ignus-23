@@ -37,7 +37,7 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
 
 
 class PreRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email', 'phone_number', 'college')
+    list_display = ('full_name', 'email', 'phone_number', 'college', 'current_year', 'college_state')
     list_filter = ('college', 'current_year', 'college_state')
 
     class Meta:

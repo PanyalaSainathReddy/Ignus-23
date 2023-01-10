@@ -9,7 +9,7 @@ class EventInLine(admin.StackedInline):
 
 class EventCategoryAdmin(admin.ModelAdmin):
     inlines = (EventInLine,)
-    list_display = ['type']
+    list_display = ['reference_name', 'type']
 
     class Meta:
         model = EventType

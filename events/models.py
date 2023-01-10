@@ -1,9 +1,7 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import RegexValidator
 from django.db import models
-from django.urls import reverse
 from django.utils.safestring import mark_safe
-from django.utils.text import slugify
 
 
 class Organizer(models.Model):
@@ -36,18 +34,18 @@ class Location(models.Model):
 class EventType(models.Model):
     ETYPE_CHOICES = (
         ('1', 'Cultural Event'),
-        ('2', 'Flagship Event'),
-        ('3', 'Technical Event'),
-        ('4', 'Prakriti'),
-        ('5', 'Informals Event')
+        ('2', 'Informal Event'),
+        ('3', 'Pronites'),
+        ('4', 'Flagship Event')
     )
 
     type = models.CharField(max_length=2, choices=ETYPE_CHOICES, default='1')
-    cover = models.ImageField(upload_to='event_type')
-    about = RichTextUploadingField(blank=True)
+    reference_name = models.CharField(max_length=20, unique=False, default="")
+    pdf = models.FileField(upload_to='pdf', null=True, blank=True)
+    organizers = models.ManyToManyField(Organizer)
 
     def __str__(self):
-        return self.get_type_display()
+        return self.reference_name
 
     class Meta:
         ordering = ['type']
@@ -55,34 +53,6 @@ class EventType(models.Model):
 
     def name(self):
         return self.get_type_display()
-
-
-class Event(models.Model):
-    name = models.CharField(max_length=32)
-    reference_name = models.CharField(max_length=20, unique=False, default="")
-    slug = models.SlugField(blank=True, default="")
-    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
-    venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
-    start_time = models.DateTimeField(blank=True, null=True)
-    end_time = models.DateTimeField(blank=True, null=True)
-    cover = models.ImageField(upload_to='event', null=True, blank=True)
-    pdf = models.FileField(upload_to='pdf', null=True, blank=True)
-    organizers = models.ManyToManyField(Organizer)
-    team_event = models.BooleanField(default=False)
-    max_team_size = models.PositiveSmallIntegerField(default=1, help_text='Leave 1 for single participant event')
-    min_team_size = models.PositiveSmallIntegerField(default=1, help_text='Select minimum number of participants for event.')
-    about = RichTextUploadingField(blank=True)
-    details = RichTextUploadingField(blank=True, default="")
-    results = models.TextField(blank=True, default="")
-    google_form = models.URLField(blank=True)
-    custom_html = models.TextField(blank=True, default="")
-    published = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
 
     def get_organizers(self):
         orgs = []
@@ -95,6 +65,32 @@ class Event(models.Model):
             orgs.append(org)
 
         return orgs
+
+
+class Event(models.Model):
+    name = models.CharField(max_length=32)
+    # slug = models.SlugField(blank=True, default="")
+    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
+    venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    cover = models.ImageField(upload_to='event', null=True, blank=True)
+    team_event = models.BooleanField(default=False)
+    max_team_size = models.PositiveSmallIntegerField(default=1, help_text='Leave 1 for single participant event')
+    min_team_size = models.PositiveSmallIntegerField(default=1, help_text='Select minimum number of participants for event.')
+    about = RichTextUploadingField(blank=True)
+    rank = models.PositiveSmallIntegerField(default=0, help_text='Rank of event in event type')
+    # details = RichTextUploadingField(blank=True, default="")
+    # results = models.TextField(blank=True, default="")
+    # google_form = models.URLField(blank=True)
+    # custom_html = models.TextField(blank=True, default="")
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['rank']
+
+    def __str__(self):
+        return self.name
 
     def get_event_type(self):
         return self.event_type.name()
@@ -110,9 +106,9 @@ class Event(models.Model):
 
             return venue
 
-    def get_absolute_url(self):
-        return reverse("event", kwargs={"slug": self.slug})
+    # def get_absolute_url(self):
+    #     return reverse("event", kwargs={"slug": self.slug})
 
-    def save(self) -> None:
-        self.slug = slugify(self.reference_name)
-        return super().save()
+    # def save(self) -> None:
+    #     self.slug = slugify(self.reference_name)
+    #     return super().save()

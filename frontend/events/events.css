@@ -101,9 +101,9 @@ h1{
 .cult .btn-container button:hover{
   color: #F1C270;
 }
-.informal .btn-container button:hover{
+/* .informal .btn-container button:hover{
   color: #32AFA5;
-}
+} */
 .inf-img{
   position: absolute;
   top:115vh;
@@ -128,8 +128,9 @@ h1{
   margin: 10vh 0 0 10vw;
   width: 90vw;
 }
-.pronite .btn-container{
+.pronite .btn-container, .informal .btn-container{
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
   width: 25%;
 }
 
@@ -148,11 +149,11 @@ h1{
 }
 .flagship .btn-container{
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
-  width: 15%;
-  height: 25vh;
-  row-gap: 10%;
+  width: 20%;
+  height: 30vh;
+  row-gap: 5%;
   z-index: 1;
   top: 355vh;;
   left: 70vw;
@@ -446,7 +447,7 @@ nav button:hover{
     margin-top: -10vh;
     width: 30vw;
   }
-  .cult .btn-container, .informal .btn-container{
+  .cult .btn-container{
     transform: translate(0, -5vh);
   }
   
@@ -464,6 +465,9 @@ nav button:hover{
   }
   .bottom-nav button{
     font-size: 13px !important;
+  }
+  .coming-soon{
+    font-size: large !important;
   }
 }
 
@@ -508,7 +512,7 @@ nav button:hover{
   #cult-img, .inf-img, .pronite-img, .flagship-img{
     max-height: 42vh;
   }
-  .cult .btn-container, .informal .btn-container{
+  .cult .btn-container{
     transform: translate(-50%, -7vh);
     left: 50vw !important;
   }
@@ -530,7 +534,7 @@ nav button:hover{
   .informal{
     padding: 2vh 0 0 0;
   }
-  .pronite .btn-container, .flagship .btn-container{
+  .pronite .btn-container, .flagship .btn-container, .informal .btn-container{
     width: 55vw;
     margin-top: -20vh  !important;
   }

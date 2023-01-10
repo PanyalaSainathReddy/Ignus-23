@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import EventTypeView, EventView
+from .views import AllEventsView, EventTypeView
 
 urlpatterns = [
-    path('', EventTypeView.as_view(), name="events"),
-    path('<slug:slug>/', EventView.as_view(), name="event"),
+    path('', AllEventsView.as_view(), name="events"),
+    path('<slug:reference_name>/', EventTypeView.as_view(), name="event"),
+    # path('<slug:slug>/', EventView.as_view(), name="event"),
 ]
