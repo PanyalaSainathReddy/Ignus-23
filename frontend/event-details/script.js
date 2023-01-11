@@ -92,6 +92,9 @@ function createEventDetails(data){
 	desDiv.innerHTML = desDivHtml;
 	desDivMob.innerHTML = desDivMobHtml;
 
+	pdfEmbed = document.getElementById("pdfEmbed");
+	pdfEmbed.setAttribute("src", data.pdf);
+
 	evOrg = document.getElementById("evOrg");
 	orgCount = data.get_organizers.length;
 	evOrgHtml = "<h1>Event Organisers</h1> <br>";
