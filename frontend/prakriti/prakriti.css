@@ -174,7 +174,7 @@ body {
     border-bottom: 3px solid #1d3557;
   }
     
-    @media screen and (max-width: 968px) {  /*tablet*/
+    @media screen and (max-width: 1070px) {  /*tablet*/
       .nav-btns{
         display: none;
       }
@@ -436,7 +436,7 @@ header .parallax .five {
 .main .info {
     
     color: #192a2e;
-    height: 85vh;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     background-color: #e8f4f8;
@@ -560,19 +560,19 @@ header .parallax .five {
   }
 }
 .stats{
-  height: 100vh;
+  background-color: rgb(232, 244, 248);
+  height: fit-content;
   width: 100%;
 }
 .stats-sec{
-  background-color: rgb(232, 244, 248);
-  height: 100vh;
+  height: fit-content;
   width: 100%;
   
 
 }
 @media(max-width:657px){
   .stats-sec{
-    height: auto !important;
+    height: fit-content !important;
   
   }
 }
@@ -623,7 +623,7 @@ header .parallax .five {
 }
 }
 
-@media screen and (max-width: 400px){
+@media screen and (max-width: 410px){
 .stats-cont{
   /* top:15vh; */
   grid-template-columns: 1fr;
@@ -643,6 +643,16 @@ header .parallax .five {
 .stats-tile span{
   font-size: 11px;
 }
+}
+
+@media screen and (max-width: 310px){
+  .stats-tile {
+    width: 250px;
+  }
+  
+  .stats-tile h2{
+    width: 250px;
+  }
 }
 
 footer{

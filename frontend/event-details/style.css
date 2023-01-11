@@ -277,7 +277,7 @@ embed{
 .fa{font-size: 1.8rem;}
 /* .event-org span, .event-org p{font-family: 'Rozha One', serif;} */
 
-@media screen and (max-width: 960px) {  /*tablet*/
+@media screen and (max-width: 1070px) {  /*tablet*/
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}

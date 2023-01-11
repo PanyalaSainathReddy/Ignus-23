@@ -176,7 +176,7 @@ nav button:hover{
   border-bottom: 3px solid #1d3557;
 }
   
-  @media screen and (max-width: 915px) {  /*tablet*/
+  @media screen and (max-width: 1090px) {  /*tablet*/
     .nav-btns{
       display: none;
     }
