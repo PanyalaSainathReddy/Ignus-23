@@ -87,3 +87,17 @@ window.addEventListener("scroll", (e)=>{
 
 
 
+const cards = document.querySelectorAll(".card")
+cards.forEach((card)=>{
+  card.addEventListener("click", ()=>{
+    document.querySelector(".person-details").style.display = "flex";
+  })
+})
+
+const lightbx = document.querySelector(".person-details")
+document.querySelector("#close-btn").addEventListener("click", ()=>{
+  if(lightbx.style.display == "flex"){
+    lightbx.style.display = "none"
+  }
+})
+

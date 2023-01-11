@@ -213,6 +213,36 @@ button:hover a{
   color: #616161;
   margin-top: 40px;
   padding: 40px 20px;
+  transition: height 0.5s ease-in-out;
+  -webkit-transition: height 0.5s ease-in-out;
+}
+.card-container{
+  display: flex;
+  margin: 10% 0;
+  display: none;
+  transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+}
+.committee-container:hover .card-container{
+  display: flex;
+}
+.committee-container:hover{
+  height: fit-content;;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card img{
+  border-radius: 50%;
+  min-width: 48%;
+  aspect-ratio: 1/1;
+  margin-bottom: 10%;
+}
+.card h4:nth-child(3){
+  font-weight: 100;
+  margin-top: 2%;
 }
 .committee-container-mobile{
   display: none;
@@ -224,9 +254,51 @@ button:hover a{
   font-size: 35px;
 }
 .committee-container img{
-  max-height: 80%;
-  max-width: 30%;
+  /* max-height: 80%; */
+  max-width: 20%;
 }
+
+.person-details{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  transform: translate(-50%, -50%);
+  height: max-content;
+  display: none;
+  padding: 40px 38px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #36597A;
+  /* background: rgba( 255, 255, 255, 0.25 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 100px );
+  -webkit-backdrop-filter: blur( 100px ); */
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  color: #E5E5E5;
+  row-gap: 20px;
+}
+#close-btn{
+  width: 5%;
+  aspect-ratio: 1/1;
+  border-radius: 0;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+.person-details img{
+  width: 40%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+.person-details p{
+  text-align: justify;
+  width: 85%;
+}
+
 footer{
   background-color: #616161;
   height: 30vh;
@@ -346,7 +418,7 @@ footer img{
   }
 }
 
-
+/* tablet  */
 @media screen and (max-width: 900px) {
     .table{
       display: none;
@@ -401,6 +473,10 @@ footer img{
     .commitee-info div{
       font-size: 18px !important;
     }
+    .card-container{display: flex;}
+    .card img{
+      min-width: 30%
+    }
     footer{
       flex-direction: column;
       height: fit-content;
@@ -422,6 +498,13 @@ footer img{
     }
     .scrollmagic-pin-spacer{
       display: none;
+    }
+    .person-details{
+      width: 80%;
+      padding: 5% 7%;
+    }
+    .person-details p{
+      width: 90%;
     }
 }
 
@@ -469,6 +552,9 @@ footer img{
     column-gap: 10px;
     margin-right: 0;
   }
+  .card img{
+    min-width: 50%;
+  }
   
 
 }
@@ -476,6 +562,10 @@ footer img{
 @media screen and (max-width: 415px) {
   .about-us{
     margin: 20px !important;
+  }
+  .person-details{
+    width: 95%;
+    padding: 7% 5%;
   }
 }
 
