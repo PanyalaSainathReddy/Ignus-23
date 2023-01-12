@@ -149,7 +149,8 @@ lightBox.addEventListener("click", ()=>{
 })
 
 document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
-  lightBox.style.display = "block"
+  // lightBox.style.display = "block"
+  window.location.href = "prakriti/prakriti.html";
 })
 
 

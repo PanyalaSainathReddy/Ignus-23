@@ -1,14 +1,13 @@
 import uuid
-
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import pre_save
 from django.utils.safestring import mark_safe
-
 from payments.models import Pass
-
-from .utils import generate_registration_code
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save, pre_save
+from django.shortcuts import reverse
+from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
 class User(AbstractUser):
@@ -82,6 +81,80 @@ class PreRegistration(models.Model):
     class Meta:
         verbose_name = 'Pre Registration'
         verbose_name_plural = 'Pre Registrations'
+
+
+class PreCA(models.Model):
+    YEAR_CHOICES = (
+        ('1', 'First Year'),
+        ('2', 'Second Year'),
+        ('3', 'Third Year'),
+        ('4', 'Fourth Year'),
+        ('5', 'Fifth Year'),
+        ('6', 'Other')
+    )
+    STATE_CHOICES = (
+        ('1', 'Andhra Pradesh'),
+        ('2', 'Arunachal Pradesh'),
+        ('3', 'Assam'),
+        ('4', 'Bihar'),
+        ('5', 'Chhattisgarh'),
+        ('6', 'Goa'),
+        ('7', 'Gujarat'),
+        ('8', 'Haryana'),
+        ('9', 'Himachal Pradesh'),
+        ('10', 'Jammu & Kashmir'),
+        ('11', 'Jharkhand'),
+        ('12', 'Karnataka'),
+        ('13', 'Kerala'),
+        ('14', 'Madhya Pradesh'),
+        ('15', 'Maharashtra'),
+        ('16', 'Manipur'),
+        ('17', 'Meghalaya'),
+        ('18', 'Mizoram'),
+        ('19', 'Nagaland'),
+        ('20', 'Odisha'),
+        ('21', 'Punjab'),
+        ('22', 'Rajasthan'),
+        ('23', 'Sikkim'),
+        ('24', 'Tamil Nadu'),
+        ('25', 'Telangana'),
+        ('26', 'Tripura'),
+        ('27', 'Uttarakhand'),
+        ('28', 'Uttar Pradesh'),
+        ('29', 'West Bengal'),
+        ('30', 'Andaman & Nicobar Islands'),
+        ('31', 'Delhi'),
+        ('32', 'Chandigarh'),
+        ('33', 'Dadra & Naagar Haveli'),
+        ('34', 'Daman & Diu'),
+        ('35', 'Lakshadweep'),
+        ('36', 'Puducherry'),
+    )
+    # Validators
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+    # Model
+    full_name = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
+    city = models.CharField(max_length=50)
+    college = models.CharField(max_length=100)
+    college_state = models.CharField(max_length=2, choices=STATE_CHOICES, default='22')
+    current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+        verbose_name = 'CA Pre Registration'
+        verbose_name_plural = 'CA Pre Registrations'
+
+
+def post_save_campus_ambassador_pre(sender, instance, created, **kwargs):
+    if created:
+        send_ca_confirmation_mail(instance=instance)
+
+
+post_save.connect(post_save_campus_ambassador_pre, sender=PreCA)
 
 
 class UserProfile(models.Model):
@@ -168,6 +241,31 @@ class UserProfile(models.Model):
     def passes(self):
         return ', '.join([p.name for p in self._pass.all()])
 
+    # @property
+    # def team_events_registered(self):
+    #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
+
+    def team_registrations(self):
+        result = self.teamregistration_set.all() | self.team_leader.all()
+        return result.distinct()
+
+    def get_absolute_url(self):
+        return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
+
+    # @property
+    # def amount_paid(self):
+    #     amount = self.transactiondetail_set.aggregate(amount_paid=Sum('amount'))['amount_paid']
+    #     return 0 if amount is None else amount
+
+    def get_event_string(self):
+        return 'Events-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
+
+    def get_accommodation_string(self):
+        return 'Accommodation-{ig_no}-{uuidhalf}'.format(uuidhalf=str(self.uuid)[-12:], ig_no=self.user.username)
+
+    def get_igmun_string(self):
+        return 'Igmun-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
+
     @property
     def amount_due(self):
         return sum([p.amount for p in self._pass.all()])
@@ -217,3 +315,20 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 
 
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
+
+
+# class TeamRegistrationManager(models.Manager):
+#     def user_profiles_count(self):
+#         return self.aggregate(members_count=Count('members'))['members_count'] + \
+#                self.aggregate(leader_count=Count('leader'))['leader_count']
+
+
+# class TeamRegistration(models.Model):
+#     leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
+#     event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
+#     members = models.ManyToManyField(UserProfile, blank=True)
+
+#     objects = TeamRegistrationManager()
+
+#     def __str__(self):
+#         return "{event} - {leader}".format(leader=self.leader, event=self.event)

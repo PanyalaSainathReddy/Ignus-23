@@ -178,6 +178,10 @@ nav button:hover{
 
 section{width: 100vw; min-height: max-content;}
 
+#desDivMob{
+  display: none;
+}
+
 .details{
   display: flex;
   justify-content: center;
@@ -196,9 +200,9 @@ section{width: 100vw; min-height: max-content;}
   font-family: 'Rozha One', serif;
 }
 .details h1{
-  font-size: 5rem;
+  font-size: 3.5rem;
   letter-spacing: 0.3rem;
-  line-height: 5rem;
+  line-height: 3.5rem;
   min-height: fit-content;
   overflow: hidden;
 }
@@ -245,7 +249,7 @@ section{width: 100vw; min-height: max-content;}
   top: 150vh !important;
   left: 30vw;
 }
-.rulebook{
+#rulebook{
   width: 100%;
   padding: 10% 5%;
   display: flex;
@@ -273,33 +277,23 @@ embed{
 .fa{font-size: 1.8rem;}
 /* .event-org span, .event-org p{font-family: 'Rozha One', serif;} */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media screen and (max-width: 960px) {  /*tablet*/
+@media screen and (max-width: 1070px) {  /*tablet*/
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
 
-  .content h1, .event-org h1{font-size: 2.3rem;}
+  .content h1, .event-org h1{font-size: 2rem;}
   .content span, .event-org h3{font-size: 1.1rem}
   .content p, .event-org span, .event-org p{font-size: 0.8rem;}
 }
 
 @media screen and (max-width: 575px){
+  #desDiv{
+    display: none;
+  }
+  #desDivMob{
+    display: block;
+  }
   .details{
     flex-direction: column;
     row-gap: 6vh;
@@ -308,7 +302,7 @@ embed{
   .details img{min-width: 50vw; max-width: 55vw;}
   .content{text-align: center;}
   .content p{min-width: 100%}
-  .rulebook{
+  #rulebook{
     flex-direction: column;
     width: 100%;
     align-items: center;

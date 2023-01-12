@@ -71,11 +71,6 @@ ScrollReveal().reveal(".right", {
     delay: 500,
   });
 
-
-
-
-
-
 ScrollReveal().reveal("", {
   duration: 2000,
   origin: "right",
@@ -162,3 +157,10 @@ ca_register_btn.addEventListener("click", function(){
     })
   }
 });
+
+if(sessionStorage.getItem("showmsg")=='Successfully Registered as CA'){
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+  sessionStorage.removeItem("showmsg");
+}

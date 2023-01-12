@@ -1,11 +1,19 @@
 from django.contrib import admin
-
-from .models import CampusAmbassador, PreRegistration, User, UserProfile
+from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA
 
 
 class UserAdmin(admin.ModelAdmin):
     class Meta:
         model = User
+
+
+class PreCAAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "email", "phone_number", "college", "college_state", "current_year"]
+    list_filter = ['current_year', 'college_state']
+    search_fields = ['__str__', 'college', 'college_state', 'phone_number']
+
+    class Meta:
+        model = PreCA
 
 
 class UserProfileAdmin(admin.ModelAdmin):
@@ -23,8 +31,18 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
         model = CampusAmbassador
 
 
+# class TeamRegistrationAdmin(admin.ModelAdmin):
+#     autocomplete_fields = ['leader', 'members']
+#     list_display = ['__str__', 'event', 'leader']
+#     list_filter = ['event']
+#     search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
+
+#     class Meta:
+#         model = TeamRegistration
+
+
 class PreRegistrationAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email', 'phone_number', 'college')
+    list_display = ('full_name', 'email', 'phone_number', 'college', 'current_year', 'college_state')
     list_filter = ('college', 'current_year', 'college_state')
 
     class Meta:
@@ -34,4 +52,6 @@ class PreRegistrationAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
+# admin.site.register(TeamRegistration, TeamRegistrationAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
+admin.site.register(PreCA, PreCAAdmin)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Event, EventType, Location
+from .models import Event, EventType, Location, Organizer
 
 
 class EventInLine(admin.StackedInline):
@@ -9,7 +9,7 @@ class EventInLine(admin.StackedInline):
 
 class EventCategoryAdmin(admin.ModelAdmin):
     inlines = (EventInLine,)
-    list_display = ['name']
+    list_display = ['reference_name', 'type']
 
     class Meta:
         model = EventType
@@ -22,5 +22,13 @@ class LocationAdmin(admin.ModelAdmin):
         model = Location
 
 
+class OrganizerAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'phone']
+
+    class Meta:
+        model = Organizer
+
+
 admin.site.register(EventType, EventCategoryAdmin)
 admin.site.register(Location, LocationAdmin)
+admin.site.register(Organizer, OrganizerAdmin)

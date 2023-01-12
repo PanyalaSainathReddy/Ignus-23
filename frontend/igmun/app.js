@@ -62,7 +62,7 @@ resNavBtns.forEach((btn)=>{
 //   })
 // }
 
-if(sessionStorage.getItem("showmsg")=='Successfully EB-Registered' || sessionStorage.getItem("showmsg")=='Successfully Pre-Registered for IGMUN'){
+if(sessionStorage.getItem("showmsg")=='Successfully EB-Registered' || sessionStorage.getItem("showmsg")=='Successfully Pre-Registered for IGMUN' || sessionStorage.getItem("showmsg")=='Successfully Registered as Igmun CA!'){
   var x = document.getElementById("snackbar");
   x.innerHTML = sessionStorage.getItem("showmsg");
   x.className = "show";
@@ -86,4 +86,18 @@ window.addEventListener("scroll", (e)=>{
 })
 
 
+
+const cards = document.querySelectorAll(".card")
+cards.forEach((card)=>{
+  card.addEventListener("click", ()=>{
+    document.querySelector(".person-details").style.display = "flex";
+  })
+})
+
+const lightbx = document.querySelector(".person-details")
+document.querySelector("#close-btn").addEventListener("click", ()=>{
+  if(lightbx.style.display == "flex"){
+    lightbx.style.display = "none"
+  }
+})
 

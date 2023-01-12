@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import exceptions, serializers
 from rest_framework.validators import UniqueValidator
+from .models import UserProfile, PreRegistration, PreCA
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
 from .models import PreRegistration, UserProfile
@@ -13,6 +14,12 @@ class PreRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreRegistration
         fields = ["full_name", "email", "phone_number", "college", "college_state", "current_year", "por", "por_holder_contact"]
+
+
+class PreCARegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PreCA
+        fields = ["full_name", "email", "phone_number", "college", "city", "college_state", "current_year"]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
