@@ -263,11 +263,18 @@ class UserProfile(models.Model):
 
 def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
-        code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        if(len(instance.user.get_full_name().split()) > 2):
+            code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif(len(instance.user.get_full_name().split()) == 2):
+            code = generate_registration_code('X' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif(len(instance.user.get_full_name().split()) == 1):
+            code = generate_registration_code('XX' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif(len(instance.user.get_full_name().split()) == 0):
+            code = generate_registration_code('XXX', instance.__class__.objects.count())
         instance.registration_code = f"IG-{code}"
 
-        if instance.igmun is True:
-            instance.registration_code_igmun = f"IGMUN-{code}"
+        # if instance.igmun is True:
+        #     instance.registration_code_igmun = f"IGMUN-{code}"
 
 
 pre_save.connect(pre_save_user_profile, sender=UserProfile)

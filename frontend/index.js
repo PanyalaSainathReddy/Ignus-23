@@ -153,7 +153,28 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
   window.location.href = "prakriti/prakriti.html";
 })
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+}
 
+var reg_get_pass_btn = document.querySelector("#reg_get_pass_btn");
+
+if(getCookie("LoggedIn")){
+  reg_get_pass_btn.innerHTML = "<button> Get Passes </button>";
+  reg_get_pass_btn.href = "user-profile/index.html";
+}
 
 
 // aftermovie js

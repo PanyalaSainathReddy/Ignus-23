@@ -416,7 +416,10 @@ class UserProfileAPIView(generics.CreateAPIView):
         referred_by = None
 
         if referral_code:
-            referred_by = CampusAmbassador.objects.get(referral_code=referral_code)
+            try:
+                referred_by = CampusAmbassador.objects.get(referral_code=referral_code)
+            except Exception:
+                pass
 
         userprofile = UserProfile.objects.create(
             user=user,
@@ -441,10 +444,10 @@ class UserProfileAPIView(generics.CreateAPIView):
         response = Response(data={"Message: Profile Created Successfully!"}, status=status.HTTP_201_CREATED)
         response["X-CSRFToken"] = csrf.get_token(request)
 
-        max_age = request.COOKIES.get('refresh')
-        print("max_age: ", max_age)
-        expires = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
-        print(expires)
+        # max_age = request.COOKIES.get('refresh')
+        # print("max_age: ", max_age)
+        # expires = datetime.datetime.now() + datetime.timedelta(seconds=max_age)
+        # print(expires)
         response.set_cookie(
             key='isProfileComplete',
             value=user.profile_complete,)
