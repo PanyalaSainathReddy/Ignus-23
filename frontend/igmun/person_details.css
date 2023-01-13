@@ -125,11 +125,12 @@ section{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 15vh 0 0 0;
+  margin: 0vh 0 0 0;
   height: fit-content;
   flex-direction: column;
+  padding: 15vh 0 0 0;
 }
-h2{font-size: 34px;}
+h2{font-size: 34px; text-align: center;}
 .person-container{
   width: 70vw;
   margin: 2% 0;
@@ -155,7 +156,9 @@ h2{font-size: 34px;}
   text-align: justify;
   line-height: 25px;
 }
-
+.profile-pic h3, .profile-pic h4{
+  text-align: center;
+}
 
 @media screen and (max-width: 690px){
   ul{display: none;}
