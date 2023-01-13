@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 # from payments.models import Pass
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from .utils import generate_registration_code, send_ca_confirmation_mail
 

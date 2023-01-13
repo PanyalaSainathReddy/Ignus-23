@@ -71,7 +71,7 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
 
         return Response({"message": "Pre Registered Successfully!"}, status=status.HTTP_201_CREATED)
 
-# 
+#
 # class IGMUNCARegisterAPIView(generics.CreateAPIView):
 #     permission_classes = [IsAuthenticated]
 

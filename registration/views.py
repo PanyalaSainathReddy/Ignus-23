@@ -9,12 +9,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer, PreCARegistrationSerializer
-from django.contrib.auth.models import User
-from rest_framework import generics, status, exceptions
+# from django.contrib.auth.models import User
 from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
 # from .utils import get_referral_code
 # from django.conf import settings
-from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -22,10 +20,6 @@ from rest_framework_simplejwt.views import TokenRefreshView
 # from payments.models import Order, Pass
 # from payments.utils import setupRazorpay
 
-from .models import CampusAmbassador, PreRegistration, UserProfile
-from .serializers import (CookieTokenRefreshSerializer,
-                          PreRegistrationSerializer, RegisterSerializer,
-                          UserProfileSerializer, UserSerializer)
 from .utils import google_get_access_token, google_get_user_info
 
 User = get_user_model()

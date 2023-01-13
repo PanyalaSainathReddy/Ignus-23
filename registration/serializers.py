@@ -5,8 +5,6 @@ from rest_framework.validators import UniqueValidator
 from .models import UserProfile, PreRegistration, PreCA
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
-from .models import PreRegistration, UserProfile
-
 User = get_user_model()
 
 

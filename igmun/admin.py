@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import EBForm, PreRegistrationForm, PreCA
 from import_export.admin import ExportActionMixin
 
-from .models import EBForm, PreRegistrationForm
-
 
 class PreCAAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ("__str__", "email", "phone_number", "college", "college_state", "current_year")
