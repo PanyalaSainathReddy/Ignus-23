@@ -222,6 +222,7 @@ button:hover a{
   /* display: none; */
   transition: all 0.5s ease-in-out;
   -webkit-transition: all 0.5s ease-in-out;
+  column-gap: 15px;
 }
 .commitee-info a{
   color: #4F4F4F !important;
@@ -235,8 +236,12 @@ button:hover a{
 .card img{
   border-radius: 50%;
   min-width: 38%;
+  max-width: 38%;
   aspect-ratio: 1/1;
   margin-bottom: 10%;
+}
+.card h4{
+  text-align: center;
 }
 .card h4:nth-child(3){
   font-weight: 100;
