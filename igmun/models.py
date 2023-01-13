@@ -1,8 +1,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import pre_save
+# from django.db.models.signals import pre_save
 
-from registration.models import UserProfile
+# from registration.models import UserProfile
 
 
 class PreCA(models.Model):
@@ -120,26 +120,26 @@ class PreRegistrationForm(models.Model):
         return self.full_name
 
 
-class IGMUNCampusAmbassador(models.Model):
-    ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    referral_code = models.CharField(max_length=15, editable=False, unique=True, primary_key=True)
-    verified = models.BooleanField(default=False)
+# class IGMUNCampusAmbassador(models.Model):
+#     ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     referral_code = models.CharField(max_length=15, editable=False, unique=True, primary_key=True)
+#     verified = models.BooleanField(default=False)
 
-    class Meta:
-        verbose_name_plural = "IGMUN Campus Ambassadors"
+#     class Meta:
+#         verbose_name_plural = "IGMUN Campus Ambassadors"
 
-    @property
-    def number_referred(self):
-        return self.referred_igmun_users.count()
+#     @property
+#     def number_referred(self):
+#         return self.referred_igmun_users.count()
 
-    def __str__(self):
-        return self.ca_user.user.get_full_name()
-
-
-def pre_save_campus_ambassador(sender, instance, **kwargs):
-    if instance._state.adding is True:
-        instance.referral_code = instance.ca_user.registration_code_igmun
+#     def __str__(self):
+#         return self.ca_user.user.get_full_name()
 
 
-pre_save.connect(pre_save_campus_ambassador, sender=IGMUNCampusAmbassador)
+# def pre_save_campus_ambassador(sender, instance, **kwargs):
+#     if instance._state.adding is True:
+#         instance.referral_code = instance.ca_user.registration_code_igmun
+
+
+# pre_save.connect(pre_save_campus_ambassador, sender=IGMUNCampusAmbassador)

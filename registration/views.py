@@ -18,9 +18,9 @@ from django.middleware import csrf
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from igmun.models import IGMUNCampusAmbassador
-from payments.models import Order, Pass
-from payments.utils import setupRazorpay
+# from igmun.models import IGMUNCampusAmbassador
+# from payments.models import Order, Pass
+# from payments.utils import setupRazorpay
 
 from .models import CampusAmbassador, PreRegistration, UserProfile
 from .serializers import (CookieTokenRefreshSerializer,
@@ -64,34 +64,6 @@ class LoginView(APIView):
                 if user is not None:
                     if user.is_active:
                         data = get_tokens_for_user(user)
-                        if user.profile_complete:
-                            userprofile = UserProfile.objects.get(user=user)
-                            order = Order.objects.get(user=userprofile)
-                            response.set_cookie(
-                                key='order_id',
-                                value=order.id,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-                            response.set_cookie(
-                                key='amount_due',
-                                value=order.amount_due * 100,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-                            response.set_cookie(
-                                key='currency',
-                                value=order.currency,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-
                         response.set_cookie(
                             key='access',
                             value=data["access"],
@@ -334,35 +306,6 @@ class GoogleLoginView(APIView):
                 if user is not None:
                     if user.is_active:
                         data = get_tokens_for_user(user)
-
-                        if user.profile_complete:
-                            userprofile = UserProfile.objects.get(user=user)
-                            order = Order.objects.get(user=userprofile)
-                            response.set_cookie(
-                                key='order_id',
-                                value=order.id,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-                            response.set_cookie(
-                                key='amount_due',
-                                value=order.amount_due * 100,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-                            response.set_cookie(
-                                key='currency',
-                                value=order.currency,
-                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                                secure=False,
-                                httponly=False,
-                                samesite='Lax'
-                            )
-
                         response.set_cookie(
                             key='access',
                             value=data["access"],
@@ -476,23 +419,14 @@ class UserProfileAPIView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
         referral_code = request.data["referral_code"]
-        referral_code_igmun = request.data["referral_code_igmun"]
         referred_by = None
-        referred_by_igmun = None
 
-        p = request.data["pass"]
-        p = Pass.objects.get(name=p)
-
-        if referral_code_igmun:
-            referred_by_igmun = IGMUNCampusAmbassador.objects.get(referral_code=referral_code_igmun)
-        else:
-            if referral_code:
-                referred_by = CampusAmbassador.objects.get(referral_code=referral_code)
+        if referral_code:
+            referred_by = CampusAmbassador.objects.get(referral_code=referral_code)
 
         userprofile = UserProfile.objects.create(
             user=user,
             referred_by=referred_by,
-            referred_by_igmun=referred_by_igmun,
             phone=request.data['phone'],
             gender=request.data['gender'],
             current_year=request.data['current_year'],
@@ -500,69 +434,17 @@ class UserProfileAPIView(generics.CreateAPIView):
             state=request.data['state'],
             igmun=request.data["igmun"]
         )
-        userprofile._pass.add(p)
         userprofile.save()
 
         user.profile_complete = True
         user.save()
 
-        if referred_by_igmun:
-            if referred_by_igmun.number_referred == 20:
-                referred_by_igmun.verified = True
-                referred_by_igmun.save()
-        else:
-            if referred_by:
-                if referred_by.number_referred == 20:
-                    referred_by.verified = True
-                    referred_by.save()
-
-        rzpClient = setupRazorpay()
-        numOrders = Order.objects.count()
-        data = {
-            "amount": userprofile.amount_due * 100,
-            "currency": "INR",
-            "receipt": f"order_rcptid_{numOrders+1}"
-        }
-        paymentOrder = rzpClient.order.create(data=data)
-        paymentOrder["created_at"] = datetime.datetime.fromtimestamp(paymentOrder["created_at"])
-
-        Order.objects.create(
-            id=paymentOrder["id"],
-            user=userprofile,
-            amount=paymentOrder["amount"] // 100,
-            amount_paid=paymentOrder["amount_paid"] // 100,
-            amount_due=paymentOrder["amount_due"] // 100,
-            currency=paymentOrder["currency"],
-            receipt=paymentOrder["receipt"],
-            attempts=paymentOrder["attempts"],
-            timestamp=paymentOrder["created_at"]
-        )
+        if referred_by:
+            if referred_by.number_referred == 20:
+                referred_by.verified = True
+                referred_by.save()
 
         response = Response(data={"Message: Profile Created Successfully!"}, status=status.HTTP_201_CREATED)
-        response.set_cookie(
-            key='order_id',
-            value=paymentOrder["id"],
-            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-            secure=False,
-            httponly=False,
-            samesite='Lax'
-        )
-        response.set_cookie(
-            key='amount_due',
-            value=paymentOrder["amount_due"],
-            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-            secure=False,
-            httponly=False,
-            samesite='Lax'
-        )
-        response.set_cookie(
-            key='currency',
-            value=paymentOrder["currency"],
-            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-            secure=False,
-            httponly=False,
-            samesite='Lax'
-        )
         response["X-CSRFToken"] = csrf.get_token(request)
 
         max_age = request.COOKIES.get('refresh')

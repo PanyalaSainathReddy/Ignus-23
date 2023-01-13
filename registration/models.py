@@ -3,10 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.safestring import mark_safe
-from payments.models import Pass
+# from payments.models import Pass
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
-from django.shortcuts import reverse
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -157,6 +156,16 @@ def post_save_campus_ambassador_pre(sender, instance, created, **kwargs):
 post_save.connect(post_save_campus_ambassador_pre, sender=PreCA)
 
 
+class Pass(models.Model):
+    name = models.CharField(max_length=50, default="")
+
+    class Meta:
+        verbose_name_plural = "Passes"
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class UserProfile(models.Model):
     # choices
     GENDER_CHOICES = (
@@ -214,7 +223,7 @@ class UserProfile(models.Model):
     contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
     # Model
     referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_users", related_query_name="referred_user")
-    referred_by_igmun = models.ForeignKey("igmun.IGMUNCampusAmbassador", blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_igmun_users", related_query_name="referred_igmun_user")
+    # referred_by_igmun = models.ForeignKey("igmun.IGMUNCampusAmbassador", blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_igmun_users", related_query_name="referred_igmun_user")
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10, validators=[contact])
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
@@ -222,13 +231,14 @@ class UserProfile(models.Model):
     college = models.CharField(max_length=128)
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
     _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
+    main_pronite = models.BooleanField(default=False)
     igmun = models.BooleanField(default=False)
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
-    registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
+    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_ca = models.BooleanField(default=False)
-    is_igmun_ca = models.BooleanField(default=False)
+    # is_igmun_ca = models.BooleanField(default=False)
     amount_paid = models.BooleanField(default=False)
 
     class Meta:
@@ -240,35 +250,6 @@ class UserProfile(models.Model):
     @property
     def passes(self):
         return ', '.join([p.name for p in self._pass.all()])
-
-    # @property
-    # def team_events_registered(self):
-    #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
-
-    def team_registrations(self):
-        result = self.teamregistration_set.all() | self.team_leader.all()
-        return result.distinct()
-
-    def get_absolute_url(self):
-        return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
-
-    # @property
-    # def amount_paid(self):
-    #     amount = self.transactiondetail_set.aggregate(amount_paid=Sum('amount'))['amount_paid']
-    #     return 0 if amount is None else amount
-
-    def get_event_string(self):
-        return 'Events-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
-
-    def get_accommodation_string(self):
-        return 'Accommodation-{ig_no}-{uuidhalf}'.format(uuidhalf=str(self.uuid)[-12:], ig_no=self.user.username)
-
-    def get_igmun_string(self):
-        return 'Igmun-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
-
-    @property
-    def amount_due(self):
-        return sum([p.amount for p in self._pass.all()])
 
     def qr_code(self):
         base_url = "https://chart.apis.google.com/chart?chs=150x150&cht=qr"
@@ -315,20 +296,3 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 
 
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
-
-
-# class TeamRegistrationManager(models.Manager):
-#     def user_profiles_count(self):
-#         return self.aggregate(members_count=Count('members'))['members_count'] + \
-#                self.aggregate(leader_count=Count('leader'))['leader_count']
-
-
-# class TeamRegistration(models.Model):
-#     leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
-#     event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
-#     members = models.ManyToManyField(UserProfile, blank=True)
-
-#     objects = TeamRegistrationManager()
-
-#     def __str__(self):
-#         return "{event} - {leader}".format(leader=self.leader, event=self.event)

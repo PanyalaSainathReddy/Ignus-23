@@ -60,4 +60,4 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["referred_by", "referred_by_igmun", "user", "phone", "gender", "current_year", "college", "state", "passes", "registration_code", "registration_code_igmun", "is_ca", "is_igmun_ca", "amount_paid", "amount_due", "qr_code"]
+        fields = ["referred_by", "user", "phone", "gender", "current_year", "college", "state", "passes", "registration_code", "is_ca", "amount_paid", "qr_code"]

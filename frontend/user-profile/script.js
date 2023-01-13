@@ -65,6 +65,7 @@ function getUserProfileDetails() {
   }).then(function (response) {
     console.log(response);
     document.getElementById("user_name").innerHTML = response.data.user.first_name;
+    document.getElementById("ignus_id").innerHTML = response.data.userprofile.registration_code;
     if(response.data.userprofile.current_year == 1){
       document.getElementById("year_and_college").innerHTML = response.data.userprofile.current_year + "st year <br/>" + response.data.userprofile.college;
     }

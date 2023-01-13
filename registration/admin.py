@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA
+from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA, Pass
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -16,8 +16,12 @@ class PreCAAdmin(admin.ModelAdmin):
         model = PreCA
 
 
+class PassAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'phone', 'gender', 'college', 'passes', 'amount_due', 'qr_code', 'registration_code', 'registration_code_igmun']
+    list_display = ['__str__', 'phone', 'gender', 'college', 'passes', 'qr_code', 'registration_code']
     list_filter = ['gender']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
@@ -31,16 +35,6 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
         model = CampusAmbassador
 
 
-# class TeamRegistrationAdmin(admin.ModelAdmin):
-#     autocomplete_fields = ['leader', 'members']
-#     list_display = ['__str__', 'event', 'leader']
-#     list_filter = ['event']
-#     search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
-
-#     class Meta:
-#         model = TeamRegistration
-
-
 class PreRegistrationAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email', 'phone_number', 'college', 'current_year', 'college_state')
     list_filter = ('college', 'current_year', 'college_state')
@@ -52,6 +46,6 @@ class PreRegistrationAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
-# admin.site.register(TeamRegistration, TeamRegistrationAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
 admin.site.register(PreCA, PreCAAdmin)
+admin.site.register(Pass, PassAdmin)

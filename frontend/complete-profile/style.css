@@ -279,20 +279,19 @@ tr:nth-child(odd) {
   background-color: #123f7d;
   color: white;
 }
-.expand{
+.referral{
   width: 100%;
   height: fit-content;
   transition: height 1s ease-in-out;
   -webkit-transition: height 1s ease-in-out;
-  margin: 5% 0 7% 0;
-  display: none;
+  margin: 5% 0 5% 0;
 }
 .expand_igmun{
   width: 100%;
   height: fit-content;
   transition: height 1s ease-in-out;
   -webkit-transition: height 1s ease-in-out;
-  margin: 5% 0 7% 0;
+  margin: 3% 0 7% 0;
   display: none;
 }
 

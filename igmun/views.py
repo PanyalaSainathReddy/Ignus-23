@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from registration.models import UserProfile
+# from registration.models import UserProfile
 
-from .models import EBForm, IGMUNCampusAmbassador, PreRegistrationForm, PreCA
+from .models import EBForm, PreRegistrationForm, PreCA
 from .serializers import EBFormSerializer, PreRegistrationFormSerializer, PreCARegistrationSerializer
+
+User = get_user_model()
 
 
 class PreCARegistrationAPIView(generics.CreateAPIView):
@@ -25,8 +27,6 @@ class PreCARegistrationAPIView(generics.CreateAPIView):
         precaform.save()
 
         return Response({"message": "Form Filled Successfully!"}, status=status.HTTP_201_CREATED)
-
-User = get_user_model()
 
 
 class EBFormAPIView(generics.CreateAPIView):
@@ -71,19 +71,19 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
 
         return Response({"message": "Pre Registered Successfully!"}, status=status.HTTP_201_CREATED)
 
+# 
+# class IGMUNCARegisterAPIView(generics.CreateAPIView):
+#     permission_classes = [IsAuthenticated]
 
-class IGMUNCARegisterAPIView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+#     def create(self, request, *args, **kwargs):
+#         user = User.objects.get(id=request.user.id)
+#         userprofile = UserProfile.objects.get(user=user)
+#         ca = IGMUNCampusAmbassador.objects.create(
+#             ca_user=userprofile
+#         )
+#         ca.save()
 
-    def create(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.user.id)
-        userprofile = UserProfile.objects.get(user=user)
-        ca = IGMUNCampusAmbassador.objects.create(
-            ca_user=userprofile
-        )
-        ca.save()
+#         userprofile.is_igmun_ca = True
+#         userprofile.save()
 
-        userprofile.is_igmun_ca = True
-        userprofile.save()
-
-        return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+#         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)

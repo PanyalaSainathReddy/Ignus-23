@@ -5,31 +5,43 @@ $(document).ready(function () {
   });
 });
 
-document.querySelector("#igmun-radio-btn").addEventListener("click", () => {
-  document.querySelector(".expand_igmun").style.display = "block";
-  document.querySelector(".expand").style.display = "none";
-})
+// document.querySelector("#igmun-radio-btn").addEventListener("click", () => {
+//   document.querySelector(".expand_igmun").style.display = "block";
+//   document.querySelector(".expand").style.display = "none";
+// })
 
-document.querySelector("#gold-radio-btn").addEventListener("click", () => {
-  document.querySelector(".expand").style.display = "block";
-  document.querySelector(".expand_igmun").style.display = "none";
-})
+// document.querySelector("#gold-radio-btn").addEventListener("click", () => {
+//   document.querySelector(".expand").style.display = "block";
+//   document.querySelector(".expand_igmun").style.display = "none";
+// })
 
-document.querySelector("#silver-radio-btn").addEventListener("click", () => {
-  document.querySelector(".expand").style.display = "block";
-  document.querySelector(".expand_igmun").style.display = "none";
-})
+// document.querySelector("#silver-radio-btn").addEventListener("click", () => {
+//   document.querySelector(".expand").style.display = "block";
+//   document.querySelector(".expand_igmun").style.display = "none";
+// })
 
-function getSelectedPass() {
-  var ele = document.getElementsByName('pass');
+var igmun_checkbox = document.querySelector("#igmun_checkbox");
+var expand_igmun = document.querySelector(".expand_igmun");
 
-  for (i = 0; i < ele.length; i++) {
-    if (ele[i].checked) {
-      console.log(ele[i].value);
-      return ele[i].value;
-    }
+igmun_checkbox.addEventListener("click", () => {
+  if(expand_igmun.style.display == "block"){
+    document.querySelector(".expand_igmun").style.display = "none";
   }
-}
+  else{
+    document.querySelector(".expand_igmun").style.display = "block";
+  }
+})
+
+// function getSelectedPass() {
+//   var ele = document.getElementsByName('pass');
+
+//   for (i = 0; i < ele.length; i++) {
+//     if (ele[i].checked) {
+//       console.log(ele[i].value);
+//       return ele[i].value;
+//     }
+//   }
+// }
 
 function getCookie(cname) {
   let name = cname + "=";
@@ -96,35 +108,18 @@ complete_profile_form.addEventListener('submit', function (e) {
   var college_state = document.getElementById('college_state').value
   var current_year = document.getElementById('current_year').value
   var gender = document.getElementById('gender').value
-  var pass = getSelectedPass()
+  // var pass = getSelectedPass()
   var referral_code = document.getElementById('referral_code').value
-  var referral_code_igmun = document.getElementById('referral_code_igmun').value
-
-  if (pass == "igmun-pass") {
-    var body = {
-      phone: phone_number,
-      gender: gender,
-      college: college,
-      current_year: current_year,
-      state: college_state,
-      pass: pass,
-      referral_code: '',
-      referral_code_igmun: referral_code_igmun,
-      igmun: true,
-    }
-  }
-  else {
-    var body = {
-      phone: phone_number,
-      gender: gender,
-      college: college,
-      current_year: current_year,
-      state: college_state,
-      pass: pass,
-      referral_code: referral_code,
-      referral_code_igmun: '',
-      igmun: false,
-    }
+  const igmun_checkbox = document.querySelector('#igmun_checkbox');
+  
+  var body = {
+    phone: phone_number,
+    gender: gender,
+    college: college,
+    current_year: current_year,
+    state: college_state,
+    referral_code: referral_code,
+    igmun: igmun_checkbox.checked,
   }
 
   miAPI.post(BASE_URL + 'api/accounts/user-profile/', body, {
@@ -139,7 +134,7 @@ complete_profile_form.addEventListener('submit', function (e) {
       console.log(response);
       sessionStorage.setItem("showmsg", "Successfully registered");
       if (response.status == 201) {
-        window.location.replace("/frontend/payments/pay.html");
+        window.location.replace("/frontend/user-profile/index.html");
       }
     })
     .catch(function (error) {
