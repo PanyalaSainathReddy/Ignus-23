@@ -93,7 +93,7 @@ function createEventDetails(data){
 	desDivMob.innerHTML = desDivMobHtml;
 
 	pdfEmbed = document.getElementById("pdfEmbed");
-	pdfEmbed.setAttribute("src", data.pdf);
+	pdfEmbed.setAttribute("src", 'https://api.ignus.co.in' + data.pdf);
 
 	evOrg = document.getElementById("evOrg");
 	orgCount = data.get_organizers.length;
@@ -106,4 +106,5 @@ function createEventDetails(data){
 		`;
 	}
 	evOrg.innerHTML = evOrgHtml;
+	document.getElementById('download_rulebook').innerHTML = `<button style="margin-top: 15%;">Download Rulebook</button>`
 }
