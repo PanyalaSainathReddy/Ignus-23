@@ -25,11 +25,11 @@ body {
   }
    */
 
-.res-nav{
+   .res-nav{
     width: 100vw;
     height: 0vh;
     z-index: 55;
-    position: absolute;
+    position: fixed;
     background-color: orange;
     transition: height 1s ease-in-out;
     -webkit-transition: height 1s ease-in-out;
@@ -154,7 +154,6 @@ body {
     padding: 0 3.5%;
     justify-content: space-between;
     width: 100vw;
-    top: 0;
     height: fit-content;
     background: rgba( 255, 255, 255, 0.3 );
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -181,7 +180,7 @@ body {
     border-bottom: 3px solid #1d3557;
   }
     
-    @media screen and (max-width: 1057px) {  /*tablet*/
+    @media screen and (max-width: 1070px) {  /*tablet*/
       .nav-btns{
         display: none;
       }
@@ -238,7 +237,7 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     padding-left: 5%;
     font-size: 400%;
     color: #fff;
@@ -345,7 +344,7 @@ body {
     .heading_button1{
       width: 100%;
       justify-content: start;
-      padding-left: 15px;
+      /* padding-left: 15px; */
     }
 
     .heading_button2{
@@ -358,7 +357,8 @@ body {
       width: 60%;
       margin-top: -30px;
       padding-bottom: 15px;
-      padding-left: 5%;
+      padding-top: 5px;
+      /* padding-left: 5%; */
     }
 
 @media(max-width:489px){
@@ -392,7 +392,7 @@ body {
 
     .heading a{
       /* justify-content: start; */
-      padding-left: 5%;
+      /* padding-left: 5%; */
   }
 }
 .pass-container{
@@ -437,6 +437,7 @@ body {
 
   .pass-details p{
     line-height: 1.5rem;
+    height: 15px;
   }
   @media(min-width:1160px){
     .pass-details p{
@@ -526,6 +527,7 @@ body {
   @media(max-width:667px){
     .details{
         font-size: 100%;
+        line-height: 1.3rem;
     }
   }
 
@@ -593,9 +595,18 @@ body {
   }
 
   .bottom_info p{
-  line-height: 1rem;
+  line-height: 1.5rem;
   font-weight: 600;
   font-size: 110%;
+  }
+
+  @media(max-width:400px){
+    .main h1{
+      padding-left: 0%;
+      font-size: 250% !important;
+      padding-bottom: 10px;
+    }
+
   }
   
   

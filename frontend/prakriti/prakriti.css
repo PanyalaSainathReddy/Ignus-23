@@ -23,7 +23,7 @@ body {
     width: 100vw;
     height: 0vh;
     z-index: 55;
-    position: absolute;
+    position: fixed;
     background-color: orange;
     transition: height 1s ease-in-out;
     -webkit-transition: height 1s ease-in-out;
