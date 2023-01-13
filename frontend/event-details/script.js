@@ -106,4 +106,5 @@ function createEventDetails(data){
 		`;
 	}
 	evOrg.innerHTML = evOrgHtml;
+	document.getElementById('download_rulebook').innerHTML = `<button style="margin-top: 15%;">Download Rulebook</button>`
 }
