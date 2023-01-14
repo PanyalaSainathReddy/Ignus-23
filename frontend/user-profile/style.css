@@ -18,7 +18,7 @@
   width: 100vw;
   height: 0vh;
   z-index: 2;
-  position: absolute;
+  position: fixed;
   background-color: orange;
   transition: height 1s ease-in-out;
   -webkit-transition: height 1s ease-in-out;
@@ -171,7 +171,7 @@ nav button:hover{
 /* navbar ends here  */
 body{background-color: #F66C40;}
 .skulls{
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 50%;
   max-width: 48vw;
@@ -216,14 +216,66 @@ h2{
   font-weight: 600;
   font-size: 1.8rem;
 }
+
+.pic-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+}
+.pic-container img{
+  min-width: 15%;
+  max-width: 15%;
+  border-radius: 50%;
+  margin-bottom: 5vh;
+  transform: translate(0, 20%);
+}
+
+#question{
+  max-width: 10px !important;
+  aspect-ratio: 1/1;
+  transform: scale(50%);
+}
+#year_and_college, #state, #email, #phone, #gender{font-size: 19px !important; font-weight: 600;}
+
 .name-cont{
   display: flex;
-  justify-content: baseline;
+  justify-content: center;
   width: 100%;
-  align-items: center;
-  column-gap: 5%;
   margin-bottom: 3%;
+  flex-direction: column;
+  height: 100%;
+  row-gap: 3px;
 }
+.name-cont h2{font-size: 37px;}
+.name-cont h3{overflow: visible; font-size: 22px;}
+.name-cont h3 sup{
+  border: 1px solid white;
+  font-weight: 300;
+  border-radius: 50%;
+  font-size: 13px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+.tooltip-text{
+  font-size: small;
+  background: grey;
+  color: white;
+  border-radius: 5px;
+  padding: 2px 5px;
+  text-align: center;
+  visibility: hidden;
+  display: inline-block;
+  /* max-width: 100% */
+  margin-top: 7px;
+}
+
+.ques:hover .tooltip-text{
+  visibility: visible;
+}
+
+
+
 .ca{
   padding: 7px 17px;
   background-color: rgb(188, 188, 188);
@@ -253,7 +305,7 @@ button{
   background: transparent;
   font-weight: 600;
 }
-.makePayment, .accomodation{
+.makePayment, .accomodation, .get_pass_btn{
   border: 3px solid #1d3557;
   color: #1d3557;
   padding: 10px 13px;
@@ -261,12 +313,13 @@ button{
   min-width: min-content;
   border-radius: 50px;
   margin: 20px 0;
+  cursor: pointer;
 }
-.makePayment:hover, .accomodation:hover{
+.makePayment:hover, .accomodation:hover, .get_pass_btn:hover{
   background-color: #1d3557;
   color: white;
 }
-.accomodation{margin: 3% 0; padding: 10px 14px; width: fit-content;}
+.accomodation{padding: 0px 20px; width: fit-content;}
 .makePayment{display: none;}
 
 .pass-container{
@@ -282,7 +335,28 @@ button{
   justify-content: space-between;
   align-items: center;
   min-width: fit-content;
+  column-gap: 30px;
 }
+#qr_code img{
+  width: 100%;
+}
+.acc-yes, .acc-no{
+  display: flex;
+  justify-content: baseline;
+  align-items: center;
+  margin-top: 10px;
+  column-gap: 10px;
+}
+.acc-yes img, .acc-no img{
+  height: 17px;
+}
+.acc-yes p, .acc-no p{
+  margin: 0 !important;
+  font-size: 14px;
+}
+.acc-yes p{color: green !important;}
+.acc-no p{color: red !important;}
+.acc-no{display: none;}
 
 .details{
   width: 60%;
@@ -302,8 +376,24 @@ button{
   font-size: 30px;
   margin: 0;
   font-family: 'Roboto Mono', monospace;
+  line-height: normal;
 
 }
+#pass_user_name_and_id{
+  line-height: normal;
+}
+
+.btn-cont{
+  display: flex;
+  column-gap: 15px;
+  justify-content: stretch;
+}
+
+.get_pass_btn{
+  background-color: #1d3557;
+  color: white;
+}
+
 .details h3{color: #E1B616; margin: 0;   font-family: 'Roboto Mono', monospace;}
 .details P{color: #1d3557; font-weight: 600; margin-top: 10%;}
 
@@ -317,7 +407,7 @@ button{
   scrollbar-width: none;  /* Firefox */
 }
 
-@media screen and (max-width: 1070px) {  /*tablet*/
+@media screen and (max-width: 900px) {  /*tablet*/
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
@@ -331,5 +421,36 @@ button{
   .details p{font-size: 13px; overflow: hidden;}
 }
 
+@media screen and (max-width: 900px){
+  .pic-container{ flex-direction: column; margin-top: 5vh;}
+  .name-cont{ text-align: center; }
+  .name-cont h2{font-size: 22px;}
+  .name-cont h3{font-size: 16px;}
+  #year_and_college, #email, #phone, #state, #gender{
+    text-align: center;
+    font-size: 14px !important;
+  }
+  main{padding-top: 9vh;}
+  #pass_name{font-size: 18px;}
+  .details h3{font-size: 13px !important; }
+  .acc-yes img, .acc-no img{width: 10px; height: auto;}
+  .acc-yes, .acc-no{margin-top: 3px;}
+  .pass-container p{
+    font-size: 12px !important;
+  }
+  #pass_user_name_and_email{
+    margin-top: 0 !important;
+  }
+  .btn-cont{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .get_pass_btn, .accomodation{
+    width: max-content;
+    padding: 10px 13px;
+    margin: 10px 0;
+  }
+}
 
 
