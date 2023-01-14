@@ -122,12 +122,20 @@
   <div class="circle second"></div>
 
   <main>
-    <h1>USER PROFILE</h1>
-    <div class="name-cont">
-      <h2 id="user_name">John Doe</h2>
-      <!-- <span class="ca">CA</span> -->
+    <!-- <h1>USER PROFILE</h1> -->
+    <div class="pic-container">
+      <img src = "./../static/user-profile/blank-profile-picture-973460_1280.webp" alt="profile-pic">
+
+      <div class="name-cont">
+        <h2 id="user_name">John Doe</h2>
+        <!-- <span class="ca">CA</span> -->
+        <h3 id="ignus_id">
+          Ignus Id: IG-ABC-1234
+          <!-- <sup class="ques">?</sup> -->
+          <!-- <span class="tooltip-text"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias adipisci provident tenetur id, assumenda repudiandae culpa minima tempore nihil in at consectetur nostrum commodi explicabo ad dolorum. Aut, maiores adipisci. </span> -->
+        </h3>
+      </div>
     </div>
-    <h3 id="ignus_id" style="margin-bottom: 10px;">IG-ABC-1234</h3>
     <p id="year_and_college">2nd year <br> IIT Jodhpur </p>
     <span id="state">Rajasthan</span>
     <span id="email">Email ID: example@gmail.com </span>
@@ -145,14 +153,52 @@
     <div class="pass-container">
       <div class="details">
         <h1 id="pass_name">GOLD Lane</h1>
-        <h3>Pronites</h3>
+        <h3>2 Pronites</h3>
+        
+        <div class="acc-yes">
+          <img src="./../static/user-profile/acc_yes.png" alt="acc-yes">
+          <p>Accomodation</p>
+        </div>
+        <div class="acc-no">
+          <img src="./../static/user-profile/acc_close.png" alt="acc-no">
+          <p>No Accomodation</p>
+        </div>
+
         <p id="pass_user_name_and_id">John Doe <br> DOE5293C0 </p>
       </div>
-      <div id="qr_code"></div>
+      <div id="qr_code">
+        <img src="./../static/user-profile/qr-code-file-bangla-mobile-code-0.png" alt="qr">
+      </div>
+
+    </div>
+    <div class="pass-container">
+      <div class="details">
+        <h1 id="pass_name">GOLD Lane</h1>
+        <h3>All Events</h3>
+        
+        <div class="acc-yes">
+          <img src="./../static/user-profile/acc_yes.png" alt="acc-yes">
+          <p>Accomodation</p>
+        </div>
+        <div class="acc-no">
+          <img src="./../static/user-profile/acc_close.png" alt="acc-no">
+          <p>No Accomodation</p>
+        </div>
+
+        <p id="pass_user_name_and_id">John Doe <br> DOE5293C0 </p>
+      </div>
+      <div id="qr_code">
+        <img src="./../static/user-profile/qr-code-file-bangla-mobile-code-0.png" alt="qr">
+      </div>
 
     </div>
 
-    <button id="logout_button" class="accomodation"> Logout </button>
+    <div class="btn-cont">
+
+      
+      <button id="get_pass" class="get_pass_btn">Get Passes</button>
+      <button id="logout_button" class="accomodation"> Logout </button>
+    </div>
     
   </main>
 
