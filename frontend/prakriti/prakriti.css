@@ -23,7 +23,7 @@ body {
     width: 100vw;
     height: 0vh;
     z-index: 55;
-    position: absolute;
+    position: fixed;
     background-color: orange;
     transition: height 1s ease-in-out;
     -webkit-transition: height 1s ease-in-out;
@@ -302,23 +302,23 @@ header .parallax div {
     background-size: 100%;
 }
 header .parallax .one {
-    background-image: url("https://raw.githubusercontent.com/joshuaward/codepen-images/master/mountains-1.svg");
+    background-image: url("../static/prakriti/mountains-1.svg");
     z-index: 4;
 }
 header .parallax .two {
-    background-image: url("https://raw.githubusercontent.com/joshuaward/codepen-images/master/mountains-2.svg");
+    background-image: url("../static/prakriti//mountains-2.svg");
     z-index: 3;
 }
 header .parallax .three {
-    background-image: url("https://raw.githubusercontent.com/joshuaward/codepen-images/master/mountains-3.svg");
+    background-image: url("../static/prakriti//mountains-3.svg");
     z-index: 2;
 }
 header .parallax .four {
-    background-image: url("https://raw.githubusercontent.com/joshuaward/codepen-images/master/mountains-4.svg");
+    background-image: url("../static/prakriti//mountains-4.svg");
     z-index: 1;
 }
 header .parallax .five {
-    background-image: url("https://raw.githubusercontent.com/joshuaward/codepen-images/master/mountains-5.svg");
+    background-image: url("../static/prakriti//mountains-5.svg");
     z-index: 0;
 }
 
