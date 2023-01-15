@@ -243,7 +243,7 @@ class GoogleRegisterView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'https://www.ignus.co.in/login.html'
+        login_url = 'https://ignus.co.in/login.html'
 
         if error or not code:
             params = urlencode({'Error': error})
@@ -348,7 +348,7 @@ class GoogleRegisterView(APIView):
                     )
 
                 response["X-CSRFToken"] = csrf.get_token(request)
-                response['Location'] = 'https://www.ignus.co.in/complete-profile/index.html'
+                response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
@@ -373,7 +373,7 @@ class GoogleLoginView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'https://www.ignus.co.in/login.html'
+        login_url = 'https://ignus.co.in/login.html'
 
         if error or not code:
             params = urlencode({'Error': error})
@@ -465,7 +465,7 @@ class GoogleLoginView(APIView):
                                 samesite='None'
                             )
                         response["X-CSRFToken"] = csrf.get_token(request)
-                        response['Location'] = 'https://www.ignus.co.in/index.html'
+                        response['Location'] = 'https://ignus.co.in/index.html'
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
