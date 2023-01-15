@@ -64,7 +64,7 @@ class LoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -73,7 +73,7 @@ class LoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -82,7 +82,7 @@ class LoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -91,7 +91,7 @@ class LoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -100,7 +100,7 @@ class LoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
                         if user.profile_complete:
                             userprofile = UserProfile.objects.get(user=user)
@@ -110,7 +110,7 @@ class LoginView(APIView):
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
                                 httponly=False,
-                                samesite='Lax'
+                                samesite='None'
                             )
                             response.set_cookie(
                                 key='ignusID',
@@ -118,7 +118,7 @@ class LoginView(APIView):
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
                                 httponly=False,
-                                samesite='Lax'
+                                samesite='None'
                             )
 
                         response["X-CSRFToken"] = csrf.get_token(request)
@@ -162,7 +162,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -171,7 +171,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -180,7 +180,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -189,7 +189,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -198,7 +198,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 if user.profile_complete:
@@ -209,7 +209,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
                         httponly=False,
-                        samesite='Lax'
+                        samesite='None'
                     )
                     response.set_cookie(
                         key='ignusID',
@@ -217,7 +217,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
                         httponly=False,
-                        samesite='Lax'
+                        samesite='None'
                     )
 
                 response["X-CSRFToken"] = csrf.get_token(request)
@@ -289,7 +289,7 @@ class GoogleRegisterView(APIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -298,7 +298,7 @@ class GoogleRegisterView(APIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -307,7 +307,7 @@ class GoogleRegisterView(APIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -316,7 +316,7 @@ class GoogleRegisterView(APIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 response.set_cookie(
@@ -325,7 +325,7 @@ class GoogleRegisterView(APIView):
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=False,
-                    samesite='Lax'
+                    samesite='None'
                 )
 
                 if user.profile_complete:
@@ -336,7 +336,7 @@ class GoogleRegisterView(APIView):
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
                         httponly=False,
-                        samesite='Lax'
+                        samesite='None'
                     )
                     response.set_cookie(
                         key='ignusID',
@@ -344,7 +344,7 @@ class GoogleRegisterView(APIView):
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
                         httponly=False,
-                        samesite='Lax'
+                        samesite='None'
                     )
 
                 response["X-CSRFToken"] = csrf.get_token(request)
@@ -407,7 +407,7 @@ class GoogleLoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -416,7 +416,7 @@ class GoogleLoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -425,7 +425,7 @@ class GoogleLoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -434,7 +434,7 @@ class GoogleLoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         response.set_cookie(
@@ -443,7 +443,7 @@ class GoogleLoginView(APIView):
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=False,
-                            samesite='Lax'
+                            samesite='None'
                         )
 
                         if user.profile_complete:
@@ -454,7 +454,7 @@ class GoogleLoginView(APIView):
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
                                 httponly=False,
-                                samesite='Lax'
+                                samesite='None'
                             )
                             response.set_cookie(
                                 key='ignusID',
@@ -462,7 +462,7 @@ class GoogleLoginView(APIView):
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
                                 httponly=False,
-                                samesite='Lax'
+                                samesite='None'
                             )
                         response["X-CSRFToken"] = csrf.get_token(request)
                         response['Location'] = 'https://www.ignus.co.in/index.html'
@@ -518,7 +518,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                 secure=True,
                 httponly=True,
-                samesite='Lax'
+                samesite='None'
             )
 
         response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
@@ -583,7 +583,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
             httponly=False,
-            samesite='Lax'
+            samesite='None'
         )
 
         response.set_cookie(
@@ -592,7 +592,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
             httponly=False,
-            samesite='Lax'
+            samesite='None'
         )
         response.set_cookie(
             key='ignusID',
@@ -600,7 +600,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
             httponly=False,
-            samesite='Lax'
+            samesite='None'
         )
 
         return response
@@ -641,6 +641,6 @@ class CARegisterAPIView(generics.CreateAPIView):
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
             httponly=False,
-            samesite='Lax'
+            samesite='None'
         )
         return res
