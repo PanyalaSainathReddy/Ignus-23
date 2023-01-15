@@ -455,11 +455,8 @@ nav button:hover{
   .right {
     width: 52%;
   }
-}
-
-@media(max-width: 1063px){
-  .right {
-    width: 52%;
+  #referral_code{
+    padding-left: 20px !important;
   }
 }
 
@@ -509,6 +506,9 @@ nav button:hover{
     height: 40%;
     width: 95%;
   }
+  #referral_code{
+    padding-left: 10px !important;
+  }
 }
 
 @media(max-width: 479px){
@@ -520,6 +520,13 @@ nav button:hover{
 
 
 @media(max-width: 419px){
+  #referral_code{
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0px !important;
+  }
   .right{
     width: 100%;
     justify-content: center;

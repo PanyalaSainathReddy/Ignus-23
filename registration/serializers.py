@@ -1,9 +1,11 @@
-from rest_framework import serializers, exceptions
-from django.contrib.auth.models import User
-from rest_framework.validators import UniqueValidator
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from rest_framework import exceptions, serializers
+from rest_framework.validators import UniqueValidator
 from .models import UserProfile, PreRegistration, PreCA
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+User = get_user_model()
 
 
 class PreRegistrationSerializer(serializers.ModelSerializer):
@@ -43,23 +45,18 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
         if attrs['refresh']:
             return super().validate(attrs)
         else:
-            raise exceptions.InvalidToken(
+            raise exceptions.ParseError(
                 'No valid token found in cookie \'refresh\'')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "username", "email"]
+        fields = ["id", "first_name", "last_name", "username", "email", "google_picture", "is_google", "profile_complete"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["phone", "gender", "current_year", "college", "address", "state", "id_issued", "accommodation_required", "uuid", "registration_code"]
-
-
-# class CASerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CampusAmbassador
-#         fields = ["insta_link", "workshop_capability", "publicize_ignus", "past_experience", "description", "referral_code"]
+        fields = ["referred_by", "user", "profile_pic", "phone", "gender", "current_year", "college", "state", "registration_code", "is_ca", "amount_paid", "pronites", "igmun", "accomodation", "main_pronite",
+                  "flagship", "igmun_pref", "qr_code", "pronites_qr"]

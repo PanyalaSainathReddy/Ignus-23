@@ -1,7 +1,8 @@
-from pathlib import Path
-from decouple import config
 import os
 from datetime import timedelta
+from pathlib import Path
+
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +33,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders'
 ]
+
+RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+
+AUTH_USER_MODEL = "registration.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,12 +76,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ignus.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if config('SQLITE_DB', cast=bool):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', cast=int, default=5432),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -111,7 +129,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str))
+STATIC_ROOT = os.path.join(BASE_DIR, config('STATIC_PATH', default='staticfiles', cast=str))  # type: ignore
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
@@ -128,7 +146,7 @@ REST_FRAMEWORK = {
 
 # Simple JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
     'ROTATE_REFRESH_TOKENS': False,
 }
@@ -181,3 +199,7 @@ CKEDITOR_CONFIGS = {
 ADMIN_SITE_HEADER = "Ignus'23 administration"
 ADMIN_SITE_TITLE = "Ignus'23 site admin"
 ADMIN_INDEX_TITLE = "Control Panel"
+
+# Google OAuth2 settings
+GOOGLE_OAUTH2_CLIENT_ID = config('DJANGO_GOOGLE_OAUTH2_CLIENT_ID', cast=str)
+GOOGLE_OAUTH2_CLIENT_SECRET = config('DJANGO_GOOGLE_OAUTH2_CLIENT_SECRET', cast=str)

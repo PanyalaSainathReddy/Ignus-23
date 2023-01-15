@@ -8,21 +8,6 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 const res_nav = document.querySelector(".res-nav");
-var ca_or_login_button = document.getElementById("ca_or_login_button");
-// var logout_button = document.getElementById("logout_button");
-
-if(window.localStorage.getItem("token") != null){
-  ca_or_login_button.innerHTML = "<button>LOGOUT</button>";
-  ca_or_login_button.removeAttribute("href");
-  // logout_button.style.display = "block";
-}
-
-ca_or_login_button.addEventListener("click", function(){
-  if(window.localStorage.getItem("token") != null){
-    window.localStorage.removeItem("token");
-    window.location.replace("/index.html");
-  }
-});
 
 
 // code for setting section (scene) backgrounds
@@ -168,7 +153,28 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
   window.location.href = "prakriti/prakriti.html";
 })
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+}
 
+var reg_get_pass_btn = document.querySelector("#reg_get_pass_btn");
+
+if(getCookie("LoggedIn")){
+  reg_get_pass_btn.innerHTML = "<button> Get Passes </button>";
+  reg_get_pass_btn.href = "payment_steps/steps.html";
+}
 
 
 // aftermovie js
@@ -222,6 +228,3 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
 //     ctr = 1;
 //   }
 // })
-
-
-

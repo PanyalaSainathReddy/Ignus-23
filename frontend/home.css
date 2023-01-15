@@ -323,7 +323,7 @@ section:nth-child(1) a{
 .social-media{
   display: flex;
   flex-direction: row;
-  margin: 20px 0;
+  margin: 10px 0 15px;
   column-gap: 20px;
 
 }
@@ -920,6 +920,8 @@ iframe{
     font-size: 11px;
   }
 }
+
+/* Snackbar */
 
 #snackbar {
   visibility: hidden;

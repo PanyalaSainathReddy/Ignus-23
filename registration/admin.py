@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA, TeamRegistration
+
+from .models import (CampusAmbassador, PreCA, PreRegistration,
+                     TeamRegistration, User, UserProfile)
+
+
+class UserAdmin(admin.ModelAdmin):
+    class Meta:
+        model = User
 
 
 class PreCAAdmin(admin.ModelAdmin):
@@ -12,8 +19,8 @@ class PreCAAdmin(admin.ModelAdmin):
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'phone', 'gender', 'college', 'id_issued', 'accommodation_required', 'qr_code', 'registration_code']
-    list_filter = ['gender', 'id_issued', 'accommodation_required']
+    list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
+    list_filter = ['gender']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 
@@ -44,6 +51,7 @@ class PreRegistrationAdmin(admin.ModelAdmin):
         model = PreRegistration
 
 
+admin.site.register(User, UserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(TeamRegistration, TeamRegistrationAdmin)

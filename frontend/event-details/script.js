@@ -23,7 +23,6 @@ function getEventDetails(){
 		return response.json()
 	})
 	.then(function(data){
-		console.log(data);
 		createEventDetails(data);
 	})
 	.catch(error => console.error('Error:', error));
@@ -36,6 +35,10 @@ function createEventDetails(data){
 	desDivHtml = "";
 	desDivMobHtml = "";
 	for(i=0; i<evCount; i++){
+		imgSrc = "./../static/event-details/dance.svg";
+		if(data.events[i].cover != null){
+			imgSrc = 'https://api.ignus.co.in' + data.events[i].cover;
+		}
 		if(i%2 == 0){
 			desDivHtml += `
 			<section class="details">
@@ -50,14 +53,14 @@ function createEventDetails(data){
 			desDivHtml += `
 					${data.events[i].about}
 				</div>
-				<img src="./../static/event-details/dance.svg" alt="dance">
+				<img src="${imgSrc}" alt="dance">
 			</section>
 			`;
 		}
 		else{
 			desDivHtml += `
 			<section class="details">
-				<img src="./../static/event-details/dance.svg" alt="dance">
+				<img src="${imgSrc}" alt="dance">
 				<div class="content">
 					<h1>${data.events[i].name}</h1>
 			`;
@@ -74,7 +77,7 @@ function createEventDetails(data){
 		}
 		desDivMobHtml += `
 		<section class="details">
-			<img src="./../static/event-details/dance.svg" alt="dance">
+			<img src="${imgSrc}" alt="dance">
 			<div class="content">
 				<h1>${data.events[i].name}</h1>
 		`;
@@ -93,7 +96,7 @@ function createEventDetails(data){
 	desDivMob.innerHTML = desDivMobHtml;
 
 	pdfEmbed = document.getElementById("pdfEmbed");
-	pdfEmbed.setAttribute("src", data.pdf);
+	pdfEmbed.setAttribute("src", 'https://api.ignus.co.in' + data.pdf);
 
 	evOrg = document.getElementById("evOrg");
 	orgCount = data.get_organizers.length;
@@ -106,4 +109,5 @@ function createEventDetails(data){
 		`;
 	}
 	evOrg.innerHTML = evOrgHtml;
+	document.getElementById('download_rulebook').innerHTML = `<button style="margin-top: 15%;">Download Rulebook</button>`
 }

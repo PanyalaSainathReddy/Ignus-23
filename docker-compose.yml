@@ -9,11 +9,14 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
+      - DB_HOST=postgresqldb
       - CHOKIDAR_USEPOLLING=true
     ports:
       - 8000:8000
     volumes:
       - .:/app
+    depends_on:
+      - postgresqldb
     networks:
       - app-network
     command:
@@ -22,6 +25,24 @@ services:
       - |
         python manage.py migrate
         python manage.py runserver 0.0.0.0:8000
+  postgresqldb:
+      image: 'bitnami/postgresql:latest'
+      container_name: postgresqldb
+      restart: unless-stopped
+      env_file: .env
+      environment:
+        - POSTGRESQL_USERNAME=$DB_USER
+        - POSTGRESQL_PASSWORD=$DB_PASSWORD
+        - POSTGRESQL_DATABASE=$DB_NAME
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $DB_USER"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      volumes:
+        - dbdata:/bitnami/postgresql
+      networks:
+        - app-network
 
 networks:
   app-network:

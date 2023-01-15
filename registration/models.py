@@ -1,15 +1,22 @@
 import uuid
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
+# from payments.models import Pass
+# from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
-from django.shortcuts import reverse
 from django.utils.safestring import mark_safe
 
 from events.models import Event
 
 from .utils import generate_registration_code, send_ca_confirmation_mail
+
+
+class User(AbstractUser):
+    google_picture = models.TextField(default='', blank=True)
+    is_google = models.BooleanField(default=False)
+    profile_complete = models.BooleanField(default=False)
 
 
 class PreRegistration(models.Model):
@@ -210,30 +217,37 @@ class UserProfile(models.Model):
     # Validators
     contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
     # Model
-    referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
+    referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_users", related_query_name="referred_user")
+    # referred_by_igmun = models.ForeignKey("igmun.IGMUNCampusAmbassador", blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_igmun_users", related_query_name="referred_igmun_user")
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     phone = models.CharField(max_length=10, validators=[contact])
     # avatar = models.ImageField(upload_to="user-avatars/", null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
-    address = models.CharField(max_length=128)
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
-    id_issued = models.BooleanField(default=False)
-    accommodation_required = models.BooleanField(default=False)
-    # registration_paid = models.BooleanField(default=False)
-    # accommodation_paid = models.BooleanField(default=False)
+    # _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
     # timestamp = models.DateTimeField(auto_now_add=True)
     events_registered = models.ManyToManyField(Event, blank=True)
     # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
     #                                             through_fields=('userprofile', 'workshop'), blank=True)
+    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_ca = models.BooleanField(default=False)
+    # is_igmun_ca = models.BooleanField(default=False)
+    amount_paid = models.BooleanField(default=False)
+    pronites = models.BooleanField(default=False)
+    igmun = models.BooleanField(default=False)
+    accomodation = models.BooleanField(default=False)
+    main_pronite = models.BooleanField(default=False)
+    flagship = models.BooleanField(default=False)
+    igmun_pref = models.CharField(max_length=1000, default='')
 
     class Meta:
         ordering = ['user__first_name']
-
-    # objects = UserProfileManager()
 
     def __str__(self):
         return self.user.get_full_name()
@@ -250,8 +264,8 @@ class UserProfile(models.Model):
         result = self.teamregistration_set.all() | self.team_leader.all()
         return result.distinct()
 
-    def get_absolute_url(self):
-        return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
+    # def get_absolute_url(self):
+    #     return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
 
     # @property
     # def amount_paid(self):
@@ -288,32 +302,42 @@ class UserProfile(models.Model):
     #     if not self.igmunregistration.paid:
     #         data['igmun_fee'] = self.get_igmun_string()
     #     return data
+    # def passes(self):
+    #     return ', '.join([p.name for p in self._pass.all()])
 
     def qr_code(self):
-        return mark_safe('<img src="https://chart.apis.google.com/chart?chs=150x150&cht=qr&chl={data}&choe=UTF-8" \
-                style="width: 120px; height: 120px" />'.format(data=self.uuid))
+        base_url = "https://chart.apis.google.com/chart?chs=150x150&cht=qr"
+        data = self.registration_code
+        return mark_safe(
+            f'<img src="{base_url}&chl={data}&choe=UTF-8" \
+            style="width: 150px; height: 150px" />'
+        )
+    qr_code.short_description = 'QR Code'
 
-    qr_code.short_description = 'qr code'
-    qr_code.allow_tags = True
-
-    # @property
-    # def registration_amount_paid(self):
-    #     approved = False
-    #     transaction = self.transactiondetail_set.filter(description__contains=self.get_event_string(),
-    #                                                     transaction__confirmed=True)
-    #     igmun_paid = self.igmunregistration.paid
-    #     workshop_paid = False
-    #     for workshop in self.workshopregistration_set.all():
-    #         if workshop.get_payment_status():
-    #             workshop_paid = True
-    #     if transaction or igmun_paid or workshop_paid:
-    #         approved = True
-    #     return True if approved else False
+    def pronites_qr(self):
+        base_url = "https://chart.apis.google.com/chart?chs=150x150&cht=qr"
+        data = self.uuid
+        return mark_safe(
+            f'<img src="{base_url}&chl={data}&choe=UTF-8" \
+            style="width: 150px; height: 150px" />'
+        )
+    pronites_qr.short_description = 'Pronites QR'
 
 
 def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
-        instance.registration_code = generate_registration_code(instance.user.first_name, instance.__class__.objects.count())
+        if (len(instance.user.get_full_name().split()) > 2):
+            code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif (len(instance.user.get_full_name().split()) == 2):
+            code = generate_registration_code('X' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif (len(instance.user.get_full_name().split()) == 1):
+            code = generate_registration_code('XX' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
+        elif (len(instance.user.get_full_name().split()) == 0):
+            code = generate_registration_code('XXX', instance.__class__.objects.count())
+        instance.registration_code = f"IG-{code}"
+
+        # if instance.igmun is True:
+        #     instance.registration_code_igmun = f"IGMUN-{code}"
 
 
 pre_save.connect(pre_save_user_profile, sender=UserProfile)
@@ -324,19 +348,20 @@ class Avatar(models.Model):
 
     
 class CampusAmbassador(models.Model):
-    ca_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ca_user')
+    ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     referral_code = models.CharField(max_length=12, editable=False, unique=True, primary_key=True)
+    verified = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-timestamp']
+        verbose_name_plural = "Campus Ambassadors"
 
     @property
     def number_referred(self):
-        return self.userprofile_set.count()
+        return self.referred_users.count()
 
     def __str__(self):
-        return self.ca_user.user.first_name + " " + self.ca_user.user.last_name
+        return self.ca_user.user.get_full_name()
 
 
 def pre_save_campus_ambassador(sender, instance, **kwargs):
