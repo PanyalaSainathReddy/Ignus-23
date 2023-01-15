@@ -173,7 +173,7 @@ var reg_get_pass_btn = document.querySelector("#reg_get_pass_btn");
 
 if(getCookie("LoggedIn")){
   reg_get_pass_btn.innerHTML = "<button> Get Passes </button>";
-  reg_get_pass_btn.href = "user-profile/index.html";
+  reg_get_pass_btn.href = "payment_steps/steps.html";
 }
 
 

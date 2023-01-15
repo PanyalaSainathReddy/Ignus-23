@@ -74,10 +74,10 @@ class PaymentHandlerAPIView(APIView):
                 print("Payment Successful!")
                 userprofile.amount_paid = True
                 userprofile.save()
-                return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/success.html")
+                return HttpResponseRedirect(redirect_to="https://www.ignus.co.in/frontend/payments/success.html")
             else:
                 print("Payment Failed!")
-                return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/failed.html")
+                return HttpResponseRedirect(redirect_to="https://www.ignus.co.in/frontend/payments/failed.html")
         except Exception:
             print("Payment Failed!")
-            return HttpResponseRedirect(redirect_to="http://127.0.0.1:5500/frontend/payments/failed.html")
+            return HttpResponseRedirect(redirect_to="https://www.ignus.co.in/frontend/payments/failed.html")

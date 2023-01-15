@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA, Pass
+from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -16,12 +16,8 @@ class PreCAAdmin(admin.ModelAdmin):
         model = PreCA
 
 
-class PassAdmin(admin.ModelAdmin):
-    list_display = ['name']
-
-
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'phone', 'gender', 'college', 'passes', 'qr_code', 'registration_code']
+    list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
     list_filter = ['gender']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
@@ -48,4 +44,3 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
 admin.site.register(PreCA, PreCAAdmin)
-admin.site.register(Pass, PassAdmin)

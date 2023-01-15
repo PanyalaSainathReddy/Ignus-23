@@ -63,8 +63,21 @@ function checkLoggedIn() {
   }
 }
 
+const params = new Proxy(new URLSearchParams(window.location.search), {
+	get: (searchParams, prop) => searchParams.get(prop),
+});
+
+let error = params.Error;
+
+if(error){
+  var x = document.getElementById("snackbar");
+  x.innerHTML = error;
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+
 // API
-const BASE_URL = "http://127.0.0.1:8000/";
+const BASE_URL = "https://api.ignus.co.in/";
 var sign_up_form=document.getElementById('sign_up_form')
 
 sign_up_form.addEventListener('submit', function(e){
@@ -92,10 +105,15 @@ sign_up_form.addEventListener('submit', function(e){
       if(response.status == 200){
         window.location.replace("complete-profile/index.html");
       }
-      return response.json()
+      else{
+        return response.json()
+      }
     })
     .then(function(data){
-      console.log(data);
+      var x = document.getElementById("snackbar");
+      x.innerHTML = data.Error;
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
     })
     .catch(error => console.error('Error:', error));
   }
@@ -121,17 +139,27 @@ sign_in_form.addEventListener('submit', function(e){
   })
   .then(function(response){
     if(response.status == 200){
-      window.location.replace("index.html");
+      if(getCookie("isProfileComplete") == "True"){
+        window.location.replace("index.html");
+      }
+      else{
+        window.location.replace("complete-profile/index.html");
+      }
     }
-    return response.json()
+    else{
+      return response.json()
+    }
   })
   .then(function(data){
-      console.log(data);
+    var x = document.getElementById("snackbar");
+    x.innerHTML = data.Error;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
   })
   .catch(error => console.error('Error:', error));
 });
 
-const CLIENT_ID = '590434107360-00fhk8vg36d7nsru0oo9n1rpbh9ot6k9.apps.googleusercontent.com';
+const CLIENT_ID = '37422384939-2d3r237achmdifp8hujd120h0bthbrr4.apps.googleusercontent.com';
 
 var google_sign_up_button=document.getElementById('google_sign_up_button');
 

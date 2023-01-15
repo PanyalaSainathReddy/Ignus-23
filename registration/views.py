@@ -61,7 +61,7 @@ class LoginView(APIView):
                         response.set_cookie(
                             key='access',
                             value=data["access"],
-                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
                             samesite='Lax'
@@ -94,15 +94,42 @@ class LoginView(APIView):
                             samesite='Lax'
                         )
 
+                        response.set_cookie(
+                            key='isGoogle',
+                            value=user.is_google,
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=False,
+                            samesite='Lax'
+                        )
+                        if user.profile_complete:
+                            userprofile = UserProfile.objects.get(user=user)
+                            response.set_cookie(
+                                key='isCA',
+                                value=userprofile.is_ca,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=True,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='ignusID',
+                                value=userprofile.registration_code,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=True,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+
                         response["X-CSRFToken"] = csrf.get_token(request)
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
-                        return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                        return Response({"Error": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
                 else:
-                    return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({"Error": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Error": "User does not exist, please register!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "User does not exist, please Signup!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
@@ -132,7 +159,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
                     samesite='Lax'
@@ -164,13 +191,42 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     httponly=False,
                     samesite='Lax'
                 )
+
+                response.set_cookie(
+                    key='isGoogle',
+                    value=user.is_google,
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    httponly=False,
+                    samesite='Lax'
+                )
+
+                if user.profile_complete:
+                    userprofile = UserProfile.objects.get(user=user)
+                    response.set_cookie(
+                        key='isCA',
+                        value=userprofile.is_ca,
+                        expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        secure=True,
+                        httponly=False,
+                        samesite='Lax'
+                    )
+                    response.set_cookie(
+                        key='ignusID',
+                        value=userprofile.registration_code,
+                        expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        secure=True,
+                        httponly=False,
+                        samesite='Lax'
+                    )
+
                 response["X-CSRFToken"] = csrf.get_token(request)
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
-                return Response({"Not active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"Error": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Error": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class GoogleRegisterView(APIView):
@@ -187,18 +243,25 @@ class GoogleRegisterView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'http://127.0.0.1:5500/frontend/login.html'
+        login_url = 'https://www.ignus.co.in/frontend/login.html'
 
         if error or not code:
-            params = urlencode({'error': error})
+            params = urlencode({'Error': error})
             return redirect(f'{login_url}?{params}')
 
-        redirect_uri = 'http://127.0.0.1:8000/api/accounts/register/google/'
+        redirect_uri = 'https://api.ignus.co.in/api/accounts/register/google/'
 
-        access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
+        try:
+            access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
+        except Exception:
+            params = urlencode({'Error': "Failed to obtain access token from Google."})
+            return redirect(f'{login_url}?{params}')
 
-        user_data = google_get_user_info(access_token=access_token)
-        response = Response(status=302)
+        try:
+            user_data = google_get_user_info(access_token=access_token)
+        except Exception:
+            params = urlencode({'Error': "Failed to obtain user info from Google."})
+            return redirect(f'{login_url}?{params}')
 
         try:
             user = User.objects.create(
@@ -206,15 +269,16 @@ class GoogleRegisterView(APIView):
                 email=user_data['email'],
                 first_name=user_data.get('given_name', ''),
                 last_name=user_data.get('family_name', ''),
+                google_picture=user_data.get('picture', ''),
                 is_google=True,
             )
             user.set_password('google')
             user.save()
         except Exception:
-            response.data = {"Error": "User already exists, try to sign-in!"}
-            response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
-            return response
+            params = urlencode({'Error': "User already exists, try to sign-in!"})
+            return redirect(f'{login_url}?{params}')
 
+        response = Response(status=302)
         user = authenticate(username=user_data['email'], password='google')
         if user is not None:
             if user.is_active:
@@ -222,7 +286,7 @@ class GoogleRegisterView(APIView):
                 response.set_cookie(
                     key='access',
                     value=data["access"],
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
                     httponly=True,
                     samesite='Lax'
@@ -254,18 +318,45 @@ class GoogleRegisterView(APIView):
                     httponly=False,
                     samesite='Lax'
                 )
+
+                response.set_cookie(
+                    key='isGoogle',
+                    value=user.is_google,
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    httponly=False,
+                    samesite='Lax'
+                )
+
+                if user.profile_complete:
+                    userprofile = UserProfile.objects.get(user=user)
+                    response.set_cookie(
+                        key='isCA',
+                        value=userprofile.is_ca,
+                        expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        secure=True,
+                        httponly=False,
+                        samesite='Lax'
+                    )
+                    response.set_cookie(
+                        key='ignusID',
+                        value=userprofile.registration_code,
+                        expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        secure=True,
+                        httponly=False,
+                        samesite='Lax'
+                    )
+
                 response["X-CSRFToken"] = csrf.get_token(request)
-                response['Location'] = 'http://127.0.0.1:5500/frontend/complete-profile/index.html'
+                response['Location'] = 'https://www.ignus.co.in/frontend/complete-profile/index.html'
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
-                response.data = {"Not active": "This account is not active!!"}
-                response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
-                return response
+                params = urlencode({'Error': "This account is not active!!"})
+                return redirect(f'{login_url}?{params}')
         else:
-            response.data = {"Invalid": "Invalid username or password!!"}
-            response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
-            return response
+            params = urlencode({'Error': "Invalid username or password!!"})
+            return redirect(f'{login_url}?{params}')
 
 
 class GoogleLoginView(APIView):
@@ -282,16 +373,26 @@ class GoogleLoginView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'http://127.0.0.1:5500/frontend/login.html'
+        login_url = 'https://www.ignus.co.in/frontend/login.html'
 
         if error or not code:
-            params = urlencode({'error': error})
+            params = urlencode({'Error': error})
             return redirect(f'{login_url}?{params}')
 
-        redirect_uri = 'http://127.0.0.1:8000/api/accounts/login/google/'
+        redirect_uri = 'https://api.ignus.co.in/api/accounts/login/google/'
 
-        access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
-        user_data = google_get_user_info(access_token=access_token)
+        try:
+            access_token = google_get_access_token(code=code, redirect_uri=redirect_uri)
+        except Exception:
+            params = urlencode({'Error': "Failed to obtain access token from Google."})
+            return redirect(f'{login_url}?{params}')
+
+        try:
+            user_data = google_get_user_info(access_token=access_token)
+        except Exception:
+            params = urlencode({'Error': "Failed to obtain user info from Google."})
+            return redirect(f'{login_url}?{params}')
+
         response = Response(status=302)
 
         if User.objects.filter(email=user_data['email']).exists():
@@ -303,7 +404,7 @@ class GoogleLoginView(APIView):
                         response.set_cookie(
                             key='access',
                             value=data["access"],
-                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
                             httponly=True,
                             samesite='Lax'
@@ -335,26 +436,50 @@ class GoogleLoginView(APIView):
                             httponly=False,
                             samesite='Lax'
                         )
+
+                        response.set_cookie(
+                            key='isGoogle',
+                            value=user.is_google,
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            httponly=False,
+                            samesite='Lax'
+                        )
+
+                        if user.profile_complete:
+                            userprofile = UserProfile.objects.get(user=user)
+                            response.set_cookie(
+                                key='isCA',
+                                value=userprofile.is_ca,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=True,
+                                httponly=False,
+                                samesite='Lax'
+                            )
+                            response.set_cookie(
+                                key='ignusID',
+                                value=userprofile.registration_code,
+                                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                                secure=True,
+                                httponly=False,
+                                samesite='Lax'
+                            )
                         response["X-CSRFToken"] = csrf.get_token(request)
-                        response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
+                        response['Location'] = 'https://www.ignus.co.in/frontend/index.html'
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
-                        response.data = {"Not active": "This account is not active!!"}
-                        response['Location'] = 'http://127.0.0.1:5500/frontend/index.html'
-                        return response
+                        params = urlencode({'Error': "This account is not active!!"})
+                        return redirect(f'{login_url}?{params}')
                 else:
-                    response.data = {"Invalid": "You are not registered!!"}
-                    response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
-                    return response
+                    params = urlencode({'Error': "Please Signup first!!"})
+                    return redirect(f'{login_url}?{params}')
             else:
-                response.data = {"Invalid": "You signed up using email!!"}
-                response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
-                return response
+                params = urlencode({'Error': "You signed up using email & password!!"})
+                return redirect(f'{login_url}?{params}')
         else:
-            response.data = {"Invalid": "You are not registered!!"}
-            response['Location'] = 'http://127.0.0.1:5500/frontend/login.html'
-            return response
+            params = urlencode({'Error': "Please Signup first!!"})
+            return redirect(f'{login_url}?{params}')
 
 
 class LogoutView(APIView):
@@ -372,6 +497,9 @@ class LogoutView(APIView):
             res.delete_cookie("X-CSRFToken")
             res.delete_cookie("csrftoken")
             res.delete_cookie("isProfileComplete")
+            res.delete_cookie("isCA")
+            res.delete_cookie("ignusID")
+            res.delete_cookie("isGoogle")
             res["X-CSRFToken"] = None
 
             return res
@@ -387,7 +515,7 @@ class CookieTokenRefreshView(TokenRefreshView):
             response.set_cookie(
                 key='access',
                 value=response.data["access"],
-                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                 secure=True,
                 httponly=True,
                 samesite='Lax'
@@ -429,7 +557,8 @@ class UserProfileAPIView(generics.CreateAPIView):
             current_year=request.data['current_year'],
             college=request.data['college'],
             state=request.data['state'],
-            igmun=request.data["igmun"]
+            igmun=request.data["igmun"],
+            igmun_pref=request.data["igmun_pref"]
         )
         userprofile.save()
 
@@ -450,7 +579,29 @@ class UserProfileAPIView(generics.CreateAPIView):
         # print(expires)
         response.set_cookie(
             key='isProfileComplete',
-            value=user.profile_complete,)
+            value=user.profile_complete,
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=True,
+            httponly=False,
+            samesite='Lax'
+        )
+
+        response.set_cookie(
+            key='isCA',
+            value=userprofile.is_ca,
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=True,
+            httponly=False,
+            samesite='Lax'
+        )
+        response.set_cookie(
+            key='ignusID',
+            value=userprofile.registration_code,
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=True,
+            httponly=False,
+            samesite='Lax'
+        )
 
         return response
 
@@ -482,4 +633,14 @@ class CARegisterAPIView(generics.CreateAPIView):
         userprofile.is_ca = True
         userprofile.save()
 
-        return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+        res = Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+
+        res.set_cookie(
+            key='isCA',
+            value=userprofile.is_ca,
+            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
+            secure=True,
+            httponly=False,
+            samesite='Lax'
+        )
+        return res

@@ -276,11 +276,13 @@ h2{
 
 
 
-.ca{
-  padding: 7px 17px;
+#ca{
+  padding: 3px 7px;
   background-color: rgb(188, 188, 188);
-  font-weight: 600;
+  font-weight: 400;
   border-radius: 50px;
+  font-size: 13px;
+  display: none;
 }
 main h2, main p, main span{
   font-family: 'Roboto Mono', monospace;
@@ -323,7 +325,7 @@ button{
 .makePayment{display: none;}
 
 .pass-container{
-  background: url('./../static/user-profile/gold.png');
+  background: url('./../static/user-profile/SILVER.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -331,7 +333,7 @@ button{
   aspect-ratio: 2/1;
   margin: 5% 0;
   padding: 0 10%;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   min-width: fit-content;
@@ -340,23 +342,23 @@ button{
 #qr_code img{
   width: 100%;
 }
-.acc-yes, .acc-no{
+#acc_yes, #acc_no{
   display: flex;
   justify-content: baseline;
   align-items: center;
   margin-top: 10px;
   column-gap: 10px;
 }
-.acc-yes img, .acc-no img{
+#acc_yes img, #acc_no img{
   height: 17px;
 }
-.acc-yes p, .acc-no p{
+#acc_yes p, #acc_no p{
   margin: 0 !important;
   font-size: 14px;
 }
-.acc-yes p{color: green !important;}
-.acc-no p{color: red !important;}
-.acc-no{display: none;}
+#acc_yes p{color: rgb(108, 183, 108) !important;}
+#acc_no p{color: rgb(193, 112, 112) !important;}
+#acc_no{display: none;}
 
 .details{
   width: 60%;
@@ -372,7 +374,7 @@ button{
 
 }
 .details h1{
-  color: #E1B616;
+  color: rgb(149, 144, 144);
   font-size: 30px;
   margin: 0;
   font-family: 'Roboto Mono', monospace;
@@ -394,7 +396,7 @@ button{
   color: white;
 }
 
-.details h3{color: #E1B616; margin: 0;   font-family: 'Roboto Mono', monospace;}
+.details h3{color: rgb(149, 144, 144); margin: 0;   font-family: 'Roboto Mono', monospace;}
 .details P{color: #1d3557; font-weight: 600; margin-top: 10%;}
 
 *::-webkit-scrollbar {
@@ -407,10 +409,23 @@ button{
   scrollbar-width: none;  /* Firefox */
 }
 
-@media screen and (max-width: 900px) {  /*tablet*/
+@media screen and (max-width: 1070px) {
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
+  #user_name_span{
+    max-width: 80% !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .pic-container{
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 900px) {  /*tablet*/
   .circle{display: none;}
   main{width: 100%; align-items: center; ;}
   .skulls{right: 50%; top: 0%; transform: translate(50%, 0); display: none;}
@@ -419,6 +434,7 @@ button{
   .details h1{font-size: 19px; overflow: hidden;}
   .details h3{font-size: 15px; overflow: hidden;}
   .details p{font-size: 13px; overflow: hidden;}
+  #name_cont_span{margin-left: auto; margin-right: auto;}
 }
 
 @media screen and (max-width: 900px){
@@ -433,8 +449,8 @@ button{
   main{padding-top: 9vh;}
   #pass_name{font-size: 18px;}
   .details h3{font-size: 13px !important; }
-  .acc-yes img, .acc-no img{width: 10px; height: auto;}
-  .acc-yes, .acc-no{margin-top: 3px;}
+  #acc_yes img, #acc_no img{width: 10px; height: auto;}
+  #acc_yes, #acc_no{margin-top: 3px;}
   .pass-container p{
     font-size: 12px !important;
   }

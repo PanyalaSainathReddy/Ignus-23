@@ -52,10 +52,11 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "first_name", "last_name", "username", "email", "is_google", "profile_complete"]
+        fields = ["id", "first_name", "last_name", "username", "email", "google_picture", "is_google", "profile_complete"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["referred_by", "user", "phone", "gender", "current_year", "college", "state", "passes", "registration_code", "is_ca", "amount_paid", "qr_code"]
+        fields = ["referred_by", "user", "profile_pic", "phone", "gender", "current_year", "college", "state", "registration_code", "is_ca", "amount_paid", "pronites", "igmun", "accomodation", "main_pronite",
+                  "flagship", "igmun_pref", "qr_code", "pronites_qr"]

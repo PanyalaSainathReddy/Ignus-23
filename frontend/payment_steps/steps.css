@@ -335,10 +335,16 @@ body {
 
 @media(max-width:1096px){
     .heading{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    justify-content: center;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .button_container{
+      width: 100%;
+      height: auto;
+      margin-top: 5px !important;
     }
 
     .heading_button1{
@@ -401,7 +407,7 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     /* padding-left: 5%; */
-    padding-bottom: 5%;
+    /* padding-bottom: 5%; */
     /* color:#1d3557; */
   }
 
@@ -412,10 +418,10 @@ body {
     }
 }
 
-@media(max-width:400px){
+@media(max-width:550px){
     .pass-container{
-        display: grid;
-    grid-template-columns: repeat(1, 1fr);
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
     }
 }
   
@@ -451,31 +457,8 @@ body {
 
   .pass-details {
     font-size: 16px;
-     text-align: center;
-      line-height: 20px;
-    }
-
-
-  
-
-@media screen and (max-width: 1070px) {  /*tablet*/
-  
-    .input-tile{width: fit-content !important;}
-    .pass-container{
-      flex-direction: column;
-      row-gap: 5vh;
-    }
-    .pass-tile{
-      width: 100%; 
-      /* flex-direction: row; */
-      column-gap: 5%;
-    }
-    .pass-tile img{
-      width: 80%;
-    }
-    /* .pass-details{
-      text-align: left;
-    } */
+    text-align: center;
+    line-height: 20px;
   }
   
   @media screen and (max-width: 500px){
@@ -494,6 +477,7 @@ body {
   .steps{
     width: 100%;
     height: fit-content;
+    padding-top: 65px;
     padding-bottom: 0%;
     color: #fff;
   }
@@ -503,6 +487,8 @@ body {
 }
   .steps h1{
     font-size: 300% !important;
+    margin-top: 0%;
+    margin-bottom: 0%;
   }
   .step img{
         width: 100%;
@@ -537,19 +523,27 @@ body {
     }
   }
 
-  @media(max-width:676px){
+  @media(max-width:800px){
+    .heading{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
     .main h1{
       display: flex;
       align-items: center;
       justify-content: center;
+      padding-left: 0%;
+      margin-bottom: 15px;
     }
 
     .passes #button_pay {
       display: flex;
       align-items: center;
       justify-content: center;
-  }
-
+    }
   }
 
   .bottom_button{

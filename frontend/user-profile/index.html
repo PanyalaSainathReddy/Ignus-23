@@ -124,23 +124,36 @@
   <main>
     <!-- <h1>USER PROFILE</h1> -->
     <div class="pic-container">
-      <img src = "./../static/user-profile/blank-profile-picture-973460_1280.webp" alt="profile-pic">
+      <img id="profile_pic" src = "./../static/user-profile/blank-profile-picture-973460_1280.webp" alt="profile-pic">
 
       <div class="name-cont">
-        <h2 id="user_name">John Doe</h2>
-        <!-- <span class="ca">CA</span> -->
+        <span id="name_cont_span" style="float: left; max-width: 100%;">
+          <span id="user_name_span" style="float: left; max-width: 90%;"><h2 id="user_name"></h2></span>
+          <span id="ca" style="float: right;">CA</span>
+        </span>
         <h3 id="ignus_id">
-          Ignus Id: IG-ABC-1234
+          <!-- Ignus Id: IG-ABC-1234 -->
           <!-- <sup class="ques">?</sup> -->
           <!-- <span class="tooltip-text"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias adipisci provident tenetur id, assumenda repudiandae culpa minima tempore nihil in at consectetur nostrum commodi explicabo ad dolorum. Aut, maiores adipisci. </span> -->
         </h3>
       </div>
     </div>
-    <p id="year_and_college">2nd year <br> IIT Jodhpur </p>
-    <span id="state">Rajasthan</span>
-    <span id="email">Email ID: example@gmail.com </span>
-    <span id="phone">Contact No: 9999999999 </span>
-    <span id="gender">Gender: Male </span>
+    <p id="year_and_college" style="max-width: 100%;">
+      <!-- 2nd year <br> IIT Jodhpur -->
+    </p>
+    <span id="state">
+      <!-- Rajasthan -->
+    </span>
+    <span id="email" style="max-width: 100%;">
+      <!-- Email ID: example@gmail.com -->
+    </span>
+    <span id="phone">
+      <!-- Contact No: 9999999999 -->
+    </span>
+    <span id="gender">
+      <!-- Gender: Male -->
+    </span>
+    <span id="note" style="width: 100%;"><b>Note:</b> All the transactions and the pass details will be updated on the website every 8 hours, so If you have already paid and unable to see your pass, don't panic, comeback later and you'll be able to see your pass on this page.</span>
 
     <!-- <div class="payment">
       <img id="payment_status_img" src="./../static/user-profile/Flat_tick_icon.svg.png" alt="tick">
@@ -148,56 +161,44 @@
     </div> -->
     <!-- <button class="accomodation"> Do you need any Accomodation? </button> -->
 
-    <button class="makePayment">Pay Now</button>
+    <!-- <button class="makePayment">Pay Now</button> -->
 
-    <div class="pass-container">
+    <div class="pass-container" id="pronite_pass">
       <div class="details">
-        <h1 id="pass_name">GOLD Lane</h1>
-        <h3>2 Pronites</h3>
+        <h1 id="pass_name">2 Pronites</h1>
+        <h3 id="pass_sub_name">+ All Events</h3>
         
-        <div class="acc-yes">
+        <div id="acc_yes">
           <img src="./../static/user-profile/acc_yes.png" alt="acc-yes">
-          <p>Accomodation</p>
+          <p id="acc_yes_text">Accomodation(4 days)</p>
         </div>
-        <div class="acc-no">
+        <div id="acc_no">
           <img src="./../static/user-profile/acc_close.png" alt="acc-no">
-          <p>No Accomodation</p>
+          <p id="acc_no_text">No Accomodation</p>
         </div>
 
         <p id="pass_user_name_and_id">John Doe <br> DOE5293C0 </p>
       </div>
-      <div id="qr_code">
+      <div id="pronites_qr">
         <img src="./../static/user-profile/qr-code-file-bangla-mobile-code-0.png" alt="qr">
       </div>
-
     </div>
-    <div class="pass-container">
-      <div class="details">
-        <h1 id="pass_name">GOLD Lane</h1>
-        <h3>All Events</h3>
-        
-        <div class="acc-yes">
-          <img src="./../static/user-profile/acc_yes.png" alt="acc-yes">
-          <p>Accomodation</p>
-        </div>
-        <div class="acc-no">
-          <img src="./../static/user-profile/acc_close.png" alt="acc-no">
-          <p>No Accomodation</p>
-        </div>
 
-        <p id="pass_user_name_and_id">John Doe <br> DOE5293C0 </p>
+    <div class="pass-container" id="flagship_pass">
+      <div class="details">
+        <h1 id="flagship_pass_name">Flagship</h1>
+        <!-- <h3>All Events</h3> -->
+
+        <p id="flagship_pass_user_name_and_id">Team Leader: <br> John Doe </p>
       </div>
       <div id="qr_code">
         <img src="./../static/user-profile/qr-code-file-bangla-mobile-code-0.png" alt="qr">
       </div>
-
     </div>
 
     <div class="btn-cont">
-
-      
       <button id="get_pass" class="get_pass_btn">Get Passes</button>
-      <button id="logout_button" class="accomodation"> Logout </button>
+      <button id="logout_button" class="accomodation" style="height: 40px;"> Logout </button>
     </div>
     
   </main>

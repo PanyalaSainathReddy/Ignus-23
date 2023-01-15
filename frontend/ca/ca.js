@@ -104,13 +104,25 @@ function getCookie(cname) {
 }
 
 var ca_register_btn = document.getElementById("ca_register_btn");
+var referral_code = document.getElementById("referral_code");
 
-if(!getCookie("LoggedIn")){
+if(getCookie("LoggedIn") == "True"){
+  if(getCookie("isProfileComplete") == "True"){
+    if(getCookie("isCA") == "True"){
+      ca_register_btn.innerHTML = "<a>Registered!</a>";
+      referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
+    }
+  }
+  else{
+    ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
+  }
+}
+else{
   ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
 }
 
 // API
-const BASE_URL = "http://127.0.0.1:8000/"; 
+const BASE_URL = "https://api.ignus.co.in/"; 
 const URL_USER_AUTHENTICATE= "api/accounts/login/";
 const URL_REFRESH_TOKEN="api/accounts/refresh/";
 
@@ -122,8 +134,6 @@ const miAPI = axios.create({
 miAPI.interceptors.response.use(function(response) {
   return response;
 },function(error) {
-    console.log("error :" + JSON.stringify(error));
-
     const originalReq = error.config;
 
     if ( error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE ) {
@@ -133,28 +143,31 @@ miAPI.interceptors.response.use(function(response) {
         withCredentials:true
       }).then((res) =>{
           if ( res.status == 200) {
-              console.log("token refreshed");
               return axios(originalReq);
           }
         }).catch((error) => {window.location.href="/frontend/login.html"});
     }
-    console.log("Rest promise error");
     return Promise.reject(error);
 });
 
 ca_register_btn.addEventListener("click", function(){
-  if(getCookie("LoggedIn")){
-    miAPI.post("api/accounts/ca-register/", null, {
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      withCredentials: true,
+  if(getCookie("LoggedIn") == "True"){
+    if(getCookie("isProfileComplete") == "True"){
+      if(getCookie("isCA") == "False"){
+        miAPI.post("api/accounts/ca-register/", null, {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'X-CSRFToken': getCookie('csrftoken'),
+          },
+          withCredentials: true,
+        }
+        ).then(function(response){
+          // ca_register_btn.innerHTML = "<a>Registered!</a>";
+          window.location.replace("../ca/ca.html");
+          sessionStorage.setItem("showmsg", "Successfully Registered as CA");
+        })
+      }
     }
-    ).then(function(response){
-      console.log(response);
-      ca_register_btn.innerHTML = "<a>Registered!</a>";
-    })
   }
 });
 

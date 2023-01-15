@@ -14,7 +14,7 @@ function getCookie(cname) {
     return "";
 }
 
-const BASE_URL = "http://127.0.0.1:8000/";
+const BASE_URL = "https://api.ignus.co.in/";
 const URL_USER_AUTHENTICATE = "api/accounts/login/";
 const URL_REFRESH_TOKEN = "api/accounts/refresh/";
 
@@ -26,8 +26,6 @@ const miAPI = axios.create({
 miAPI.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    console.log("error :" + JSON.stringify(error));
-
     const originalReq = error.config;
 
     if (error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE) {
@@ -42,7 +40,6 @@ miAPI.interceptors.response.use(function (response) {
             }
         }).catch((error) => { window.location.href = "/frontend/login.html" });
     }
-    console.log("Rest promise error");
     return Promise.reject(error);
 });
 
