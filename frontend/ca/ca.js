@@ -103,23 +103,23 @@ function getCookie(cname) {
 	return "";
 }
 
-var ca_register_btn = document.getElementById("ca_register_btn");
-var referral_code = document.getElementById("referral_code");
+// var ca_register_btn = document.getElementById("ca_register_btn");
+// var referral_code = document.getElementById("referral_code");
 
-if(getCookie("LoggedIn") == "True"){
-  if(getCookie("isProfileComplete") == "True"){
-    if(getCookie("isCA") == "True"){
-      ca_register_btn.innerHTML = "<a>Registered!</a>";
-      referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
-    }
-  }
-  else{
-    ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
-  }
-}
-else{
-  ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
-}
+// if(getCookie("LoggedIn") == "True"){
+//   if(getCookie("isProfileComplete") == "True"){
+//     if(getCookie("isCA") == "True"){
+//       ca_register_btn.innerHTML = "<a>Registered!</a>";
+//       referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
+//     }
+//   }
+//   else{
+//     ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
+//   }
+// }
+// else{
+//   ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
+// }
 
 // API
 const BASE_URL = "https://api.ignus.co.in/"; 

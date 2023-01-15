@@ -103,13 +103,15 @@ sign_up_form.addEventListener('submit', function(e){
     })
     .then(function(response){
       if(response.status == 200){
-        window.location.replace("complete-profile/index.html");
+        // window.location.replace("complete-profile/index.html");
+        console.log("success");
       }
       else{
         return response.json()
       }
     })
     .then(function(data){
+      console.log(1);
       var x = document.getElementById("snackbar");
       x.innerHTML = data.Error;
       x.className = "show";
@@ -140,10 +142,12 @@ sign_in_form.addEventListener('submit', function(e){
   .then(function(response){
     if(response.status == 200){
       if(getCookie("isProfileComplete") == "True"){
-        window.location.replace("index.html");
+        // window.location.replace("index.html");
+        console.log("profile_complete");
       }
       else{
-        window.location.replace("complete-profile/index.html");
+        // window.location.replace("complete-profile/index.html");
+        console.log("profile_not_complete");
       }
     }
     else{
@@ -151,6 +155,7 @@ sign_in_form.addEventListener('submit', function(e){
     }
   })
   .then(function(data){
+    console.log(2);
     var x = document.getElementById("snackbar");
     x.innerHTML = data.Error;
     x.className = "show";
