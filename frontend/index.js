@@ -127,6 +127,7 @@ var x = setInterval(function() {
 
 if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!'){
   var x = document.getElementById("snackbar");
+  x.innerHTML = sessionStorage.getItem("showmsg");
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
   sessionStorage.removeItem("showmsg");
