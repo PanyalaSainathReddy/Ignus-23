@@ -7,6 +7,8 @@ from django.db.models.signals import post_save, pre_save
 from django.shortcuts import reverse
 from django.utils.safestring import mark_safe
 
+from events.models import Event
+
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -211,6 +213,7 @@ class UserProfile(models.Model):
     referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=10, validators=[contact])
+    # avatar = models.ImageField(upload_to="user-avatars/", null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
@@ -223,7 +226,7 @@ class UserProfile(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
     # timestamp = models.DateTimeField(auto_now_add=True)
-    # events_registered = models.ManyToManyField(Event, limit_choices_to={'max_team_size': 1}, blank=True)
+    events_registered = models.ManyToManyField(Event, blank=True)
     # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
     #                                             through_fields=('userprofile', 'workshop'), blank=True)
 
@@ -238,6 +241,10 @@ class UserProfile(models.Model):
     # @property
     # def team_events_registered(self):
     #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
+
+    @property
+    def events(self):
+        return '; '.join([e.name for e in self.events_registered.all()])
 
     def team_registrations(self):
         result = self.teamregistration_set.all() | self.team_leader.all()
@@ -312,6 +319,10 @@ def pre_save_user_profile(sender, instance, **kwargs):
 pre_save.connect(pre_save_user_profile, sender=UserProfile)
 
 
+class Avatar(models.Model):
+    avatar = models.ImageField(upload_to="user-avatars/", null=True)
+
+    
 class CampusAmbassador(models.Model):
     ca_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ca_user')
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -336,18 +347,25 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
 
 
-# class TeamRegistrationManager(models.Manager):
-#     def user_profiles_count(self):
-#         return self.aggregate(members_count=Count('members'))['members_count'] + \
-#                self.aggregate(leader_count=Count('leader'))['leader_count']
+class TeamRegistration(models.Model):
+    name = models.CharField(max_length=50, blank=True)
+    id = models.CharField(max_length=20, unique=True, primary_key=True, editable=False)
+    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    members = models.ManyToManyField(UserProfile, related_name="teams", related_query_name="team", blank=True)
+    event = models.ForeignKey("events.Event", on_delete=models.DO_NOTHING, related_name="teams", related_query_name="team")
+
+    def __str__(self):
+        return self.id
+    
+    class Meta:
+        verbose_name_plural = "Team Registrations"
+
+    def number_of_members(self):
+        return self.members.count()
 
 
-# class TeamRegistration(models.Model):
-#     leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='team_leader')
-#     event = models.ForeignKey(Event, on_delete=models.CASCADE, limit_choices_to={'max_team_size__gt': 1})
-#     members = models.ManyToManyField(UserProfile, blank=True)
+def pre_save_team_registration(sender, instance, **kwargs):
+    if instance._state.adding is True:
+        instance.id = instance.leader.registration_code + "-" + instance.event.name.upper()[:4]
 
-#     objects = TeamRegistrationManager()
-
-#     def __str__(self):
-#         return "{event} - {leader}".format(leader=self.leader, event=self.event)
+pre_save.connect(pre_save_team_registration, sender=TeamRegistration)

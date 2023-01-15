@@ -1,19 +1,27 @@
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer, PreCARegistrationSerializer
+import datetime
+from io import BytesIO
+from PIL import Image
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from rest_framework import generics, status, exceptions
-from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
+import sys
 # from .utils import get_referral_code
 # from django.conf import settings
 from django.middleware import csrf
+from rest_framework import exceptions, generics, status, viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
-from django.contrib.auth import authenticate
-import datetime
 
+from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile, TeamRegistration, Avatar
+from .serializers import (CookieTokenRefreshSerializer,
+                          PreCARegistrationSerializer,
+                          PreRegistrationSerializer, RegisterSerializer,
+                          UserProfileSerializer, UserSerializer)
+from events.models import Event
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):
     queryset = PreRegistration.objects.all()
@@ -180,6 +188,7 @@ class UserProfileAPIView(generics.CreateAPIView):
         userprofile = UserProfile.objects.create(
             user=user,
             phone=request.data['phone'],
+            # avatar=request.FILES['avatar'],
             gender=request.data['gender'],
             current_year=request.data['current_year'],
             college=request.data['college'],
@@ -190,6 +199,26 @@ class UserProfileAPIView(generics.CreateAPIView):
         userprofile.save()
 
         return Response({"message": "User Profile Created Successfully", "uuid": userprofile.uuid}, status=status.HTTP_201_CREATED)
+
+class ImageUpload(generics.CreateAPIView):
+    def create(self, request, *args, **kwargs):
+        image = request.FILES['image']
+
+        with Image.open(image) as img:
+            img.thumbnail((800, 800))
+            output = BytesIO()
+            img.save(output, format="JPEG", quality=50)
+            output.seek(0)
+            request.FILES['image'] = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
+        
+        image = request.FILES['image']
+        print(image)
+        a = Avatar.objects.create(
+            avatar=image
+        )
+        a.save()
+        print(a.avatar)
+        return Response("yo", status=status.HTTP_201_CREATED)
 
 
 class UserProfileDetailsView(generics.RetrieveAPIView):
@@ -217,3 +246,69 @@ class CARegisterAPIView(generics.CreateAPIView):
         ca.save()
 
         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+
+
+class RegisterTeamAPIView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.create(
+            leader=leader,
+            name = request.data['name'],
+            event=Event.objects.get(name=request.data['event'])
+        )
+        team.save()
+
+        return Response({"message": f"Team {team.name if team.name else ''} Registered Successfully", "team_id": team.id}, status=status.HTTP_201_CREATED)
+
+
+class AddTeamMembersAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+        if team.leader != leader:
+            return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
+
+        for member in request.data['members']:
+            team.members.add(UserProfile.objects.get(registration_code=member))
+        
+        team.update()
+
+        return Response({"message": "Team Member(s) Added Successfully"}, status=status.HTTP_200_OK)
+
+
+class DeleteTeamAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def destroy(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+        if team.leader != leader:
+            return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
+        
+        team.delete()
+
+        return Response({"message": "Team Deleted Successfully"}, status=status.HTTP_200_OK)
+
+
+class TeamDetailsAPIView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+
+        return Response()

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, PreCARegistrationAPIView
+from .views import UserDetailAPI, RegisterUserAPIView, UserProfileAPIView, UserProfileDetailsView, PreRegistrationAPIView, LoginView, LogoutView, CookieTokenRefreshView, PreCARegistrationAPIView, RegisterTeamAPIView, ImageUpload, AddTeamMembersAPIView, DeleteTeamAPIView, TeamDetailsAPIView
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
@@ -15,5 +15,10 @@ urlpatterns = [
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     # path('ca-register/', CARegisterAPIView.as_view()),
     # path('ca-pre-register/', PreCARegistrationAPIView.as_view()),
+    path('register-team/', RegisterTeamAPIView.as_view()),
+    path('update-team/', AddTeamMembersAPIView.as_view()),
+    path('team-details/', TeamDetailsAPIView.as_view()),
+    path('delete-team/', DeleteTeamAPIView.as_view()),
+    path('avatar-upload/', ImageUpload.as_view()),
     path('', include(router.urls)),
 ]
