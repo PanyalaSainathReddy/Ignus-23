@@ -87,6 +87,90 @@ $(document).ready(function(){
 	});
 });
 
+function getCookie(cname) {
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	  let c = ca[i];
+	  while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	  }
+	  if (c.indexOf(name) == 0) {
+		return c.substring(name.length, c.length);
+	  }
+	}
+	return "";
+}
+
+var ca_register_btn = document.getElementById("ca_register_btn");
+var referral_code = document.getElementById("referral_code");
+
+if(getCookie("LoggedIn") == "True"){
+  if(getCookie("isProfileComplete") == "True"){
+    if(getCookie("isCA") == "True"){
+      ca_register_btn.innerHTML = "<a>Registered!</a>";
+      referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
+    }
+  }
+  else{
+    ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
+  }
+}
+else{
+  ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
+}
+
+// API
+const BASE_URL = "https://api.ignus.co.in/"; 
+const URL_USER_AUTHENTICATE= "api/accounts/login/";
+const URL_REFRESH_TOKEN="api/accounts/refresh/";
+
+const miAPI = axios.create({
+    baseURL: BASE_URL,
+    withCredentials:true
+});
+
+miAPI.interceptors.response.use(function(response) {
+  return response;
+},function(error) {
+    const originalReq = error.config;
+
+    if ( error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE ) {
+      originalReq._retry = true;
+
+      return axios.post(BASE_URL+URL_REFRESH_TOKEN, null, {
+        withCredentials:true
+      }).then((res) =>{
+          if ( res.status == 200) {
+              return axios(originalReq);
+          }
+        }).catch((error) => {window.location.href="/frontend/login.html"});
+    }
+    return Promise.reject(error);
+});
+
+ca_register_btn.addEventListener("click", function(){
+  if(getCookie("LoggedIn") == "True"){
+    if(getCookie("isProfileComplete") == "True"){
+      if(getCookie("isCA") == "False"){
+        miAPI.post("api/accounts/ca-register/", null, {
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'X-CSRFToken': getCookie('csrftoken'),
+          },
+          withCredentials: true,
+        }
+        ).then(function(response){
+          // ca_register_btn.innerHTML = "<a>Registered!</a>";
+          window.location.replace("../ca/ca.html");
+          sessionStorage.setItem("showmsg", "Successfully Registered as CA");
+        })
+      }
+    }
+  }
+});
+
 if(sessionStorage.getItem("showmsg")=='Successfully Registered as CA'){
   var x = document.getElementById("snackbar");
   x.className = "show";

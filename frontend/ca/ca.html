@@ -71,8 +71,11 @@
           <a target="_blank" style="text-decoration: none" id="ca_or_login_button">
             <button>CA</button>
           </a>
-          <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
+          <!-- <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
             <button>PRE-REGISTER</button>
+          </a> -->
+          <a id="login_button" href="../login.html" style="text-decoration: none">
+            <button>LOGIN / SIGNUP</button>
           </a>
         </div>
 
@@ -111,9 +114,14 @@
               <button>CA</button>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="../pre-registration/pre-registration.html" style="text-decoration: none" id="ca_or_login_button">
               <button>PRE-REGISTER</button>
+            </a>
+          </li> -->
+          <li>
+            <a id="login_button_mobile" href="../login.html" style="text-decoration: none">
+              <button>LOGIN / SIGNUP</button>
             </a>
           </li>
         </ul>
@@ -126,8 +134,9 @@
           <p>Convoy Ambassador</p>
           <!-- <div class="click_down">Registrations opening soon!</div> -->
           <div class="hero_buttons">
-            <div class="button1"><a href="pre-registration.html">CA Register</a></div>
+            <div class="button1" id="ca_register_btn" style="cursor: pointer;"><a>CA Register</a></div>
           </div>
+          <h6 id="referral_code" style="color: white; font-size: medium; font-weight: 400; padding-left: 30px;"></h6>
           <!-- <div class='down_arrow'><a href="#Section-1"><i class="arrow down"></i></a></div> -->
         </div>
         <div class="right">
@@ -226,6 +235,8 @@
 
   </div>
   <div id="snackbar">Successfully Registered as CA!</div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../utils/nav-bar.js"></script>
   <script src="ca.js"></script>
 </body>
 

@@ -104,6 +104,15 @@ section:nth-child(3){
 nav img{
   height: 50px;
 }
+
+#nav_get_pass_btn{
+  display: none;
+}
+
+#res_nav_get_pass_btn{
+  display: none;
+}
+
 #menu-icon{
   height: 25px;
   display: none;
