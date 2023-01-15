@@ -532,8 +532,10 @@ class GoogleLoginView(APIView):
                                 httponly=False,
                                 samesite='Lax'
                             )
+                            response['Location'] = 'https://ignus.co.in/index.html'
+                        else:
+                            response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
                         response["X-CSRFToken"] = csrf.get_token(request)
-                        response['Location'] = 'https://ignus.co.in/index.html'
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:

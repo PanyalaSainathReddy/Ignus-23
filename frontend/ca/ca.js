@@ -118,7 +118,7 @@ if(getCookie("LoggedIn") == "True"){
   }
 }
 else{
-  ca_register_btn.innerHTML = "<a href='pre-registration.html'>CA Register</a>";
+  ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
 }
 
 // API

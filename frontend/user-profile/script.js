@@ -122,40 +122,40 @@ function getUserProfileDetails() {
     else{
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
-	if(response.data.userprofile.amount_paid){
-		get_pass_btn.style.display = 'none';
-		document.getElementById("note").style.display = 'none';
-		if(response.data.userprofile.pronites){
-			document.getElementById("pronite_pass").style.display = 'flex';
-			if(response.data.userprofile.igmun){
-				document.getElementById("pass_name").innerHTML = 'IGMUN';
-				document.getElementById("pass_sub_name").innerHTML = '+ 2 Pronites';
-			}
-			if(response.data.userprofile.accomodation){
-				if(response.data.userprofile.igmun){
-					document.getElementById("acc_yes_text").innerHTML = 'Accomodation(2 days)';
-				}
-				document.getElementById("acc_yes").style.display = 'flex';
-				document.getElementById("acc_no").style.display = 'none';
-			}
-			else{
-				document.getElementById("acc_yes").style.display = 'none';
-				document.getElementById("acc_no").style.display = 'flex';
-			}
-			document.getElementById("pronites_qr").innerHTML = response.data.userprofile.pronites_qr;
-    		document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
-		}
-		if(response.data.userprofile.flagship){
-			document.getElementById("flagship_pass").style.display = 'flex';
-			document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
-			document.getElementById("flagship_pass_user_name_and_id").innerHTML = 'Team Leader:' + "<br/>" + response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
-		}
-	}
-	else{
-		document.getElementById("pronite_pass").style.display = 'none';
-		get_pass_btn.style.display = 'block';
-		document.getElementById("note").style.display = 'block';
-	}
+    if(response.data.userprofile.amount_paid){
+      get_pass_btn.style.display = 'none';
+      document.getElementById("note").style.display = 'none';
+      if(response.data.userprofile.pronites){
+        document.getElementById("pronite_pass").style.display = 'flex';
+        if(response.data.userprofile.igmun){
+          document.getElementById("pass_name").innerHTML = 'IGMUN';
+          document.getElementById("pass_sub_name").innerHTML = '+ 2 Pronites';
+        }
+        if(response.data.userprofile.accomodation){
+          if(response.data.userprofile.igmun){
+            document.getElementById("acc_yes_text").innerHTML = 'Accomodation(2 days)';
+          }
+          document.getElementById("acc_yes").style.display = 'flex';
+          document.getElementById("acc_no").style.display = 'none';
+        }
+        else{
+          document.getElementById("acc_yes").style.display = 'none';
+          document.getElementById("acc_no").style.display = 'flex';
+        }
+        document.getElementById("pronites_qr").innerHTML = response.data.userprofile.pronites_qr;
+          document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
+      }
+      if(response.data.userprofile.flagship){
+        document.getElementById("flagship_pass").style.display = 'flex';
+        document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
+        document.getElementById("flagship_pass_user_name_and_id").innerHTML = 'Team Leader:' + "<br/>" + response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
+      }
+    }
+    else{
+      document.getElementById("pronite_pass").style.display = 'none';
+      get_pass_btn.style.display = 'block';
+      document.getElementById("note").style.display = 'block';
+    }
   })
   .catch(function (error) {
     // handle error
@@ -178,7 +178,7 @@ logout_button.addEventListener('click', function(){
     }
   )
   .then(function (response) {
-    sessionStorage.setItem("showmsg", "Successfully registered");
+    sessionStorage.setItem("showmsg", "Successfully logged-out!");
     window.location.replace("/index.html");
   })
   .catch(function (error) {

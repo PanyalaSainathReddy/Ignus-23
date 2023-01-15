@@ -108,10 +108,12 @@ sign_up_form.addEventListener('submit', function(e){
       return response.json()
     })
     .then(function(data){
-      var x = document.getElementById("snackbar");
-      x.innerHTML = data.Error;
-      x.className = "show";
-      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+      if(data.Error != undefined){
+        var x = document.getElementById("snackbar");
+        x.innerHTML = data.Error;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+      }
     })
     .catch(error => console.error('Error:', error));
   }
@@ -147,10 +149,12 @@ sign_in_form.addEventListener('submit', function(e){
     return response.json()
   })
   .then(function(data){
-    var x = document.getElementById("snackbar");
-    x.innerHTML = data.Error;
-    x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+    if(data.Error != undefined){
+      var x = document.getElementById("snackbar");
+      x.innerHTML = data.Error;
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+    }
   })
   .catch(error => console.error('Error:', error));
 });
