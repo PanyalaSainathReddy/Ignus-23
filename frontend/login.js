@@ -103,15 +103,11 @@ sign_up_form.addEventListener('submit', function(e){
     })
     .then(function(response){
       if(response.status == 200){
-        // window.location.replace("complete-profile/index.html");
-        console.log("success");
+        window.location.replace("complete-profile/index.html");
       }
-      else{
-        return response.json()
-      }
+      return response.json()
     })
     .then(function(data){
-      console.log(1);
       var x = document.getElementById("snackbar");
       x.innerHTML = data.Error;
       x.className = "show";
@@ -142,20 +138,15 @@ sign_in_form.addEventListener('submit', function(e){
   .then(function(response){
     if(response.status == 200){
       if(getCookie("isProfileComplete") == "True"){
-        // window.location.replace("index.html");
-        console.log("profile_complete");
+        window.location.replace("index.html");
       }
       else{
-        // window.location.replace("complete-profile/index.html");
-        console.log("profile_not_complete");
+        window.location.replace("complete-profile/index.html");
       }
     }
-    else{
-      return response.json()
-    }
+    return response.json()
   })
   .then(function(data){
-    console.log(2);
     var x = document.getElementById("snackbar");
     x.innerHTML = data.Error;
     x.className = "show";
