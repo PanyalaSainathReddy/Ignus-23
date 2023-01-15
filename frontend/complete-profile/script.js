@@ -61,7 +61,7 @@ function getCookie(cname) {
 
 function check() {
   if (getCookie("LoggedIn") == "") {
-    window.location.href = "/frontend/login.html";
+    window.location.href = "/login.html";
   }
 }
 
@@ -89,7 +89,7 @@ miAPI.interceptors.response.use(function (response) {
       if (res.status == 200) {
         return axios(originalReq);
       }
-    }).catch((error) => { window.location.href = "/frontend/login.html" });
+    }).catch((error) => { window.location.href = "/login.html" });
   }
   return Promise.reject(error);
 });
