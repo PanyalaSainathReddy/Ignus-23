@@ -32,6 +32,6 @@ if(getCookie("LoggedIn")){
   else{
     login_button_mobile.innerHTML = "<Button>PROFILE</Button>";
   }
-  login_button.href = "/frontend/user-profile/index.html";
-  login_button_mobile.href = "/frontend/user-profile/index.html";
+  login_button.href = "/user-profile/index.html";
+  login_button_mobile.href = "/user-profile/index.html";
 }

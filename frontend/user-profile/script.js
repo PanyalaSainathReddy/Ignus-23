@@ -65,7 +65,7 @@ miAPI.interceptors.response.use(function(response) {
           if ( res.status == 200) {
               return axios(originalReq);
           }
-        }).catch((error) => {window.location.href="/frontend/login.html"});
+        }).catch((error) => {window.location.href="/login.html"});
     }
     return Promise.reject(error);
 });
@@ -160,7 +160,7 @@ function getUserProfileDetails() {
   .catch(function (error) {
     // handle error
     if(error.response.status == 500){
-      window.location.href="/frontend/complete-profile/index.html";
+      window.location.href="/complete-profile/index.html";
     }
   })
   .finally(function () {
@@ -179,7 +179,7 @@ logout_button.addEventListener('click', function(){
   )
   .then(function (response) {
     sessionStorage.setItem("showmsg", "Successfully registered");
-    window.location.replace("/frontend/index.html");
+    window.location.replace("/index.html");
   })
   .catch(function (error) {
     // handle error

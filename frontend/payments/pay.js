@@ -38,7 +38,7 @@ miAPI.interceptors.response.use(function (response) {
                 console.log("token refreshed");
                 return axios(originalReq);
             }
-        }).catch((error) => { window.location.href = "/frontend/login.html" });
+        }).catch((error) => { window.location.href = "/login.html" });
     }
     return Promise.reject(error);
 });
