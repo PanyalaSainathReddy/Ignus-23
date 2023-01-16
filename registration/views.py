@@ -8,19 +8,20 @@ from rest_framework import exceptions, generics, serializers, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer, PreCARegistrationSerializer
-# from django.contrib.auth.models import User
-from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
-# from .utils import get_referral_code
-# from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
-# from igmun.models import IGMUNCampusAmbassador
-# from payments.models import Order, Pass
-# from payments.utils import setupRazorpay
+from events.models import Event
 
+from .models import (CampusAmbassador, PreCA, PreRegistration,
+                     TeamRegistration, UserProfile)
+from .serializers import (CookieTokenRefreshSerializer,
+                          PreCARegistrationSerializer,
+                          PreRegistrationSerializer, RegisterSerializer,
+                          UserProfileSerializer, UserSerializer)
 from .utils import google_get_access_token, google_get_user_info
+
+# from igmun.models import IGMUNCampusAmbassador
 
 User = get_user_model()
 
@@ -624,6 +625,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             user=user,
             referred_by=referred_by,
             phone=request.data['phone'],
+            # avatar=request.FILES['avatar'],
             gender=request.data['gender'],
             current_year=request.data['current_year'],
             college=request.data['college'],
@@ -703,7 +705,6 @@ class CARegisterAPIView(generics.CreateAPIView):
             ca_user=userprofile
         )
         ca.save()
-
         userprofile.is_ca = True
         userprofile.save()
 
@@ -719,3 +720,69 @@ class CARegisterAPIView(generics.CreateAPIView):
             samesite='Lax'
         )
         return res
+
+
+class RegisterTeamAPIView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.create(
+            leader=leader,
+            name=request.data['name'],
+            event=Event.objects.get(name=request.data['event'])
+        )
+        team.save()
+
+        return Response({"message": f"Team {team.name if team.name else ''} Registered Successfully", "team_id": team.id}, status=status.HTTP_201_CREATED)
+
+
+class AddTeamMembersAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+        if team.leader != leader:
+            return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
+
+        for member in request.data['members']:
+            team.members.add(UserProfile.objects.get(registration_code=member))
+
+        team.update()
+
+        return Response({"message": "Team Member(s) Added Successfully"}, status=status.HTTP_200_OK)
+
+
+class DeleteTeamAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def destroy(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+        if team.leader != leader:
+            return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
+
+        team.delete()
+
+        return Response({"message": "Team Deleted Successfully"}, status=status.HTTP_200_OK)
+
+
+# class TeamDetailsAPIView(generics.RetrieveAPIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def retrieve(self, request, *args, **kwargs):
+#         user = User.objects.get(id=request.user.id)
+#         leader = UserProfile.objects.get(user=user)
+#         team = TeamRegistration.objects.get(
+#             id=request.data['team_id']
+#         )
+
+#         return Response()

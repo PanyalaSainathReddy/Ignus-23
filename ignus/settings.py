@@ -15,6 +15,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
 
 INSTALLED_APPS = [
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -24,7 +25,6 @@ INSTALLED_APPS = [
     'events',
     'igmun',
     'payments',
-    'registration',
     'sponsors',
     'team',
     'ckeditor',
@@ -34,10 +34,13 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 
-RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
-RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+# RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+# RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
 
 AUTH_USER_MODEL = "registration.User"
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

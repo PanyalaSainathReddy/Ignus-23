@@ -1,11 +1,14 @@
 import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-from django.utils.safestring import mark_safe
 # from payments.models import Pass
-# from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
+from django.utils.safestring import mark_safe
+
+from events.models import Event
+
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -218,6 +221,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     phone = models.CharField(max_length=10, validators=[contact])
+    # avatar = models.ImageField(upload_to="user-avatars/", null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
@@ -225,8 +229,12 @@ class UserProfile(models.Model):
     # _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
-    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    events_registered = models.ManyToManyField(Event, blank=True)
+    # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
+    #                                             through_fields=('userprofile', 'workshop'), blank=True)
+    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
     is_ca = models.BooleanField(default=False)
     # is_igmun_ca = models.BooleanField(default=False)
     amount_paid = models.BooleanField(default=False)
@@ -244,6 +252,9 @@ class UserProfile(models.Model):
         return self.user.get_full_name()
 
     # @property
+    # def events(self):
+    #     return '; '.join([e.name for e in self.events_registered.all()])
+
     # def passes(self):
     #     return ', '.join([p.name for p in self._pass.all()])
 
@@ -308,3 +319,28 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 
 
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
+
+
+class TeamRegistration(models.Model):
+    name = models.CharField(max_length=50, blank=True)
+    id = models.CharField(max_length=20, unique=True, primary_key=True, editable=False)
+    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    members = models.ManyToManyField(UserProfile, related_name="teams", related_query_name="team", blank=True)
+    event = models.ForeignKey("events.Event", on_delete=models.DO_NOTHING, related_name="teams", related_query_name="team")
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        verbose_name_plural = "Team Registrations"
+
+    def number_of_members(self):
+        return self.members.count()
+
+
+def pre_save_team_registration(sender, instance, **kwargs):
+    if instance._state.adding is True:
+        instance.id = instance.leader.registration_code + "-" + instance.event.name.upper()[:4]
+
+
+pre_save.connect(pre_save_team_registration, sender=TeamRegistration)
