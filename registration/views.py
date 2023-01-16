@@ -1,12 +1,8 @@
 import datetime
-import sys
-from io import BytesIO
 from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
-from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import InMemoryUploadedFile
 # from .utils import get_referral_code
 # from django.conf import settings
 from django.middleware import csrf
@@ -38,7 +34,7 @@ User = get_user_model()
 
 from events.models import Event
 
-from .models import (Avatar, CampusAmbassador, PreCA, PreRegistration,
+from .models import (CampusAmbassador, PreCA, PreRegistration,
                      TeamRegistration, UserProfile)
 from .serializers import (CookieTokenRefreshSerializer,
                           PreCARegistrationSerializer,
@@ -626,26 +622,6 @@ class UserProfileAPIView(generics.CreateAPIView):
         )
 
         return response
-
-class ImageUpload(generics.CreateAPIView):
-    def create(self, request, *args, **kwargs):
-        image = request.FILES['image']
-
-        with Image.open(image) as img:
-            img.thumbnail((800, 800))
-            output = BytesIO()
-            img.save(output, format="JPEG", quality=50)
-            output.seek(0)
-            request.FILES['image'] = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
-        
-        image = request.FILES['image']
-        print(image)
-        a = Avatar.objects.create(
-            avatar=image
-        )
-        a.save()
-        print(a.avatar)
-        return Response("yo", status=status.HTTP_201_CREATED)
 
 
 class UserProfileDetailsView(generics.RetrieveAPIView):
