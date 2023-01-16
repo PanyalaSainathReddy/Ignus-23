@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 # from payments.models import Pass
-# from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django.utils.safestring import mark_safe
 
@@ -230,12 +229,12 @@ class UserProfile(models.Model):
     # _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
-    # timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     events_registered = models.ManyToManyField(Event, blank=True)
     # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
     #                                             through_fields=('userprofile', 'workshop'), blank=True)
     # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
     is_ca = models.BooleanField(default=False)
     # is_igmun_ca = models.BooleanField(default=False)
     amount_paid = models.BooleanField(default=False)
@@ -253,55 +252,9 @@ class UserProfile(models.Model):
         return self.user.get_full_name()
 
     # @property
-    # def team_events_registered(self):
-    #     return Event.objects.filter(id__in=self.team_registrations().values_list('event', flat=True))
+    # def events(self):
+    #     return '; '.join([e.name for e in self.events_registered.all()])
 
-    @property
-    def events(self):
-        return '; '.join([e.name for e in self.events_registered.all()])
-
-    def team_registrations(self):
-        result = self.teamregistration_set.all() | self.team_leader.all()
-        return result.distinct()
-
-    # def get_absolute_url(self):
-    #     return reverse('accounts:user-detail', kwargs={'ignumber': self.user.username})
-
-    # @property
-    # def amount_paid(self):
-    #     amount = self.transactiondetail_set.aggregate(amount_paid=Sum('amount'))['amount_paid']
-    #     return 0 if amount is None else amount
-
-    def get_event_string(self):
-        return 'Events-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
-
-    def get_accommodation_string(self):
-        return 'Accommodation-{ig_no}-{uuidhalf}'.format(uuidhalf=str(self.uuid)[-12:], ig_no=self.user.username)
-
-    def get_igmun_string(self):
-        return 'Igmun-{uuidhalf}'.format(uuidhalf=str(self.uuid)[:13])
-
-    # @property
-    # def accommodation_done(self):
-    #     transaction = self.transactiondetail_set.filter(description__contains=self.get_accommodation_string(),
-    #                                                     transaction__confirmed=True).first()
-    #     return True if transaction else False
-
-    # def get_invoice_data(self):
-    #     data = {}
-    #     workshop_list = []
-    #     workshop_registration_list = self.workshopregistration_set.all()
-    #     for workshop_registration in workshop_registration_list:
-    #         if not workshop_registration.get_payment_status():
-    #             workshop_list.append(workshop_registration.get_workshop_string())
-    #     data['workshops'] = workshop_list
-    #     if not self.registration_amount_paid:
-    #         data['reg_cum_event_fee'] = self.get_event_string()
-    #     if not self.accommodation_done:
-    #         data['accommodation_fee'] = self.get_accommodation_string()
-    #     if not self.igmunregistration.paid:
-    #         data['igmun_fee'] = self.get_igmun_string()
-    #     return data
     # def passes(self):
     #     return ', '.join([p.name for p in self._pass.all()])
 
@@ -343,10 +296,6 @@ def pre_save_user_profile(sender, instance, **kwargs):
 pre_save.connect(pre_save_user_profile, sender=UserProfile)
 
 
-class Avatar(models.Model):
-    avatar = models.ImageField(upload_to="user-avatars/", null=True)
-
-    
 class CampusAmbassador(models.Model):
     ca_user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -381,7 +330,7 @@ class TeamRegistration(models.Model):
 
     def __str__(self):
         return self.id
-    
+
     class Meta:
         verbose_name_plural = "Team Registrations"
 
@@ -392,5 +341,6 @@ class TeamRegistration(models.Model):
 def pre_save_team_registration(sender, instance, **kwargs):
     if instance._state.adding is True:
         instance.id = instance.leader.registration_code + "-" + instance.event.name.upper()[:4]
+
 
 pre_save.connect(pre_save_team_registration, sender=TeamRegistration)

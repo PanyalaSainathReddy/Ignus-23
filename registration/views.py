@@ -2,35 +2,14 @@ import datetime
 from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
-# from .utils import get_referral_code
-# from django.conf import settings
 from django.middleware import csrf
 from django.shortcuts import redirect
-from PIL import Image
 from rest_framework import exceptions, generics, serializers, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-# from .utils import get_referral_code
-# from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
-
-# from django.contrib.auth.models import User
-from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
-from .serializers import (CookieTokenRefreshSerializer,
-                          PreCARegistrationSerializer,
-                          PreRegistrationSerializer, RegisterSerializer,
-                          UserProfileSerializer, UserSerializer)
-from .utils import google_get_access_token, google_get_user_info
-
-# from igmun.models import IGMUNCampusAmbassador
-# from payments.models import Order, Pass
-# from payments.utils import setupRazorpay
-
-
-User = get_user_model()
 
 from events.models import Event
 
@@ -40,6 +19,11 @@ from .serializers import (CookieTokenRefreshSerializer,
                           PreCARegistrationSerializer,
                           PreRegistrationSerializer, RegisterSerializer,
                           UserProfileSerializer, UserSerializer)
+from .utils import google_get_access_token, google_get_user_info
+
+# from igmun.models import IGMUNCampusAmbassador
+
+User = get_user_model()
 
 
 class PreRegistrationAPIView(viewsets.ModelViewSet):
@@ -746,7 +730,7 @@ class RegisterTeamAPIView(generics.CreateAPIView):
         leader = UserProfile.objects.get(user=user)
         team = TeamRegistration.objects.create(
             leader=leader,
-            name = request.data['name'],
+            name=request.data['name'],
             event=Event.objects.get(name=request.data['event'])
         )
         team.save()
@@ -768,7 +752,7 @@ class AddTeamMembersAPIView(generics.UpdateAPIView):
 
         for member in request.data['members']:
             team.members.add(UserProfile.objects.get(registration_code=member))
-        
+
         team.update()
 
         return Response({"message": "Team Member(s) Added Successfully"}, status=status.HTTP_200_OK)
@@ -785,20 +769,20 @@ class DeleteTeamAPIView(generics.DestroyAPIView):
         )
         if team.leader != leader:
             return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
-        
+
         team.delete()
 
         return Response({"message": "Team Deleted Successfully"}, status=status.HTTP_200_OK)
 
 
-class TeamDetailsAPIView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+# class TeamDetailsAPIView(generics.RetrieveAPIView):
+#     permission_classes = [IsAuthenticated]
 
-    def retrieve(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.user.id)
-        leader = UserProfile.objects.get(user=user)
-        team = TeamRegistration.objects.get(
-            id=request.data['team_id']
-        )
+#     def retrieve(self, request, *args, **kwargs):
+#         user = User.objects.get(id=request.user.id)
+#         leader = UserProfile.objects.get(user=user)
+#         team = TeamRegistration.objects.get(
+#             id=request.data['team_id']
+#         )
 
-        return Response()
+#         return Response()

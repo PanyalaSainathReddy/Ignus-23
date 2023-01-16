@@ -1,10 +1,21 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 
 from .models import (CampusAmbassador, PreCA, PreRegistration,
-                     TeamRegistration, User, UserProfile)
+                     TeamRegistration, UserProfile)
+
+User = get_user_model()
 
 
-class UserAdmin(admin.ModelAdmin):
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('profile_complete',)}),
+        ('Google', {'fields': ('is_google', 'google_picture')})
+    )
+
+    list_display = UserAdmin.list_display + ('is_google', 'profile_complete')
+
     class Meta:
         model = User
 
@@ -51,7 +62,7 @@ class PreRegistrationAdmin(admin.ModelAdmin):
         model = PreRegistration
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(TeamRegistration, TeamRegistrationAdmin)
