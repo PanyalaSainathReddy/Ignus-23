@@ -61,7 +61,12 @@ function getCookie(cname) {
 
 function check() {
   if (getCookie("LoggedIn") == "") {
-    window.location.href = "/login.html";
+    window.location.replace("../login.html");
+  }
+  else{
+    if(getCookie("isProfileComplete") == "True"){
+      window.location.replace("../user-profile/index.html");
+    }
   }
 }
 
