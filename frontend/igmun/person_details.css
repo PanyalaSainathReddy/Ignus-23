@@ -90,6 +90,15 @@ nav img{
 }
 a{color: #2c426c; text-decoration: none; font-size: 16px;}
 
+
+#nav_get_pass_btn{
+  display: none;
+}
+
+#res_nav_get_pass_btn{
+  display: none;
+}
+
 .blob{
   position: absolute;
   z-index: -999;
