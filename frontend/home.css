@@ -13,6 +13,9 @@ a{
   text-decoration: none;
 }
 
+.am-btn{
+  cursor: pointer;
+}
 
 body{
   background-color: #b5d5e0;
