@@ -7,8 +7,6 @@ from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.utils.safestring import mark_safe
 
-from events.models import Event
-
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -230,7 +228,7 @@ class UserProfile(models.Model):
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
     timestamp = models.DateTimeField(auto_now_add=True)
-    events_registered = models.ManyToManyField(Event, blank=True)
+    events_registered = models.ManyToManyField("events.Event", blank=True)
     # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
     #                                             through_fields=('userprofile', 'workshop'), blank=True)
     # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
