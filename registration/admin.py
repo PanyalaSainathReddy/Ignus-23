@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from .models import (CampusAmbassador, PreCA, PreRegistration,
-                     TeamRegistration, UserProfile)
+from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
 
 User = get_user_model()
 
@@ -44,16 +43,6 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
         model = CampusAmbassador
 
 
-class TeamRegistrationAdmin(admin.ModelAdmin):
-    # autocomplete_fields = ['leader', 'members']
-    list_display = ['id', 'event', 'leader', 'number_of_members']
-    list_filter = ['event']
-    search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
-
-    class Meta:
-        model = TeamRegistration
-
-
 class PreRegistrationAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email', 'phone_number', 'college', 'current_year', 'college_state')
     list_filter = ('college', 'current_year', 'college_state')
@@ -65,6 +54,5 @@ class PreRegistrationAdmin(admin.ModelAdmin):
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
-admin.site.register(TeamRegistration, TeamRegistrationAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
 admin.site.register(PreCA, PreCAAdmin)

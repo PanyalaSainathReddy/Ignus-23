@@ -279,14 +279,14 @@ class UserProfile(models.Model):
 
 def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
-        if (len(instance.user.get_full_name().split()) > 2):
-            code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 2):
-            code = generate_registration_code('X' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 1):
-            code = generate_registration_code('XX' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 0):
-            code = generate_registration_code('XXX', instance.__class__.objects.count())
+        name = ''.join(instance.user.get_full_name().split())
+        count = instance.__class__.objects.count()
+
+        if len(name) >= 3:
+            code = generate_registration_code(name, count)
+        else:
+            code = generate_registration_code('X' * (3 - len(name)) + name, count)
+
         instance.registration_code = f"IG-{code}"
 
         # if instance.igmun is True:
@@ -319,28 +319,3 @@ def pre_save_campus_ambassador(sender, instance, **kwargs):
 
 
 pre_save.connect(pre_save_campus_ambassador, sender=CampusAmbassador)
-
-
-class TeamRegistration(models.Model):
-    name = models.CharField(max_length=50, blank=True)
-    id = models.CharField(max_length=20, unique=True, primary_key=True, editable=False)
-    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    members = models.ManyToManyField(UserProfile, related_name="teams", related_query_name="team", blank=True)
-    event = models.ForeignKey("events.Event", on_delete=models.DO_NOTHING, related_name="teams", related_query_name="team")
-
-    def __str__(self):
-        return self.id
-
-    class Meta:
-        verbose_name_plural = "Team Registrations"
-
-    def number_of_members(self):
-        return self.members.count()
-
-
-def pre_save_team_registration(sender, instance, **kwargs):
-    if instance._state.adding is True:
-        instance.id = instance.leader.registration_code + "-" + instance.event.name.upper()[:4]
-
-
-pre_save.connect(pre_save_team_registration, sender=TeamRegistration)
