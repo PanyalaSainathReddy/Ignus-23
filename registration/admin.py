@@ -30,7 +30,7 @@ class PreCAAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
-    list_filter = ['gender', 'igmun', 'amount_paid', 'accomodation', 'is_ca']
+    list_filter = ['gender', 'igmun', 'amount_paid', 'accomodation_4', 'accomodation_2', 'is_ca']
     search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 

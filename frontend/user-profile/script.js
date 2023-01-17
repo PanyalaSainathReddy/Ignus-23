@@ -131,10 +131,13 @@ function getUserProfileDetails() {
           document.getElementById("pass_name").innerHTML = 'IGMUN';
           document.getElementById("pass_sub_name").innerHTML = '+ 2 Pronites';
         }
-        if(response.data.userprofile.accomodation){
-          if(response.data.userprofile.igmun){
-            document.getElementById("acc_yes_text").innerHTML = 'Accomodation(2 days)';
-          }
+        if(response.data.userprofile.accomodation_4){
+          document.getElementById("acc_yes_text").innerHTML = 'Accomodation(4 days)';
+          document.getElementById("acc_yes").style.display = 'flex';
+          document.getElementById("acc_no").style.display = 'none';
+        }
+        else if(response.data.userprofile.accomodation_2){
+          document.getElementById("acc_yes_text").innerHTML = 'Accomodation(2 days)';
           document.getElementById("acc_yes").style.display = 'flex';
           document.getElementById("acc_no").style.display = 'none';
         }
@@ -143,7 +146,7 @@ function getUserProfileDetails() {
           document.getElementById("acc_no").style.display = 'flex';
         }
         document.getElementById("pronites_qr").innerHTML = response.data.userprofile.pronites_qr;
-          document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
+        document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
       }
       if(response.data.userprofile.flagship){
         document.getElementById("flagship_pass").style.display = 'flex';
