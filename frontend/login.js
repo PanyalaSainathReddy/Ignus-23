@@ -33,6 +33,33 @@ signInButton.addEventListener('click', () => {
 	container.classList.remove("right-panel-active");
 });
 
+const button_1 = document.getElementById('button_1');
+const button_2 = document.getElementById('button_2');
+
+document.getElementById('button_2').addEventListener(
+	'click',
+	(theFunction = () => {
+    button_2.style.backgroundColor='#fff'
+    button_1.style.backgroundColor='#eee'
+		let x = document.getElementById('login_form')
+		x.style.display="none"
+	})
+)
+
+document.getElementById('button_1').addEventListener(
+	'click',
+	(theFunction = () => {
+    button_2.style.backgroundColor='#eee'
+    button_1.style.backgroundColor='#fff'
+    let y = document.getElementById('login_form')
+		y.style.display="block"
+	})
+)
+
+
+
+
+
 const login = document.getElementById("login");
 const register = document.getElementById("register");
 const button = document.getElementById("btn");
