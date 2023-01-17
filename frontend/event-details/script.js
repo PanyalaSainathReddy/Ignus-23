@@ -46,9 +46,16 @@ function createEventDetails(data){
 					<h1>${data.events[i].name}</h1>
 			`;
 			if(data.events[i].team_event){
-				desDivHtml += `
-					<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
-				`;
+				if(data.events[i].min_team_size == data.events[i].max_team_size){
+					desDivHtml += `
+						<span> Team Size: ${data.events[i].min_team_size} </span>
+					`;
+				}
+				else{
+					desDivHtml += `
+						<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
+					`;
+				}
 			}
 			desDivHtml += `
 					${data.events[i].about}
@@ -65,9 +72,16 @@ function createEventDetails(data){
 					<h1>${data.events[i].name}</h1>
 			`;
 			if(data.events[i].team_event){
-				desDivHtml += `
-					<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
-				`;
+				if(data.events[i].min_team_size == data.events[i].max_team_size){
+					desDivHtml += `
+						<span> Team Size: ${data.events[i].min_team_size} </span>
+					`;
+				}
+				else{
+					desDivHtml += `
+						<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
+					`;
+				}
 			}
 			desDivHtml += `
 					${data.events[i].about}
@@ -82,9 +96,16 @@ function createEventDetails(data){
 				<h1>${data.events[i].name}</h1>
 		`;
 		if(data.events[i].team_event){
-			desDivMobHtml += `
-				<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
-			`;
+			if(data.events[i].min_team_size == data.events[i].max_team_size){
+				desDivMobHtml += `
+					<span> Team Size: ${data.events[i].min_team_size} </span>
+				`;
+			}
+			else{
+				desDivMobHtml += `
+					<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
+				`;
+			}
 		}
 		desDivMobHtml += `
 				${data.events[i].about}
