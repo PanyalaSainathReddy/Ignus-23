@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Event, EventType, Location, Organizer
+from .models import Event, EventType, Location, Organizer, TeamRegistration
 
 
 class EventInLine(admin.StackedInline):
@@ -29,6 +29,17 @@ class OrganizerAdmin(admin.ModelAdmin):
         model = Organizer
 
 
+class TeamRegistrationAdmin(admin.ModelAdmin):
+    # autocomplete_fields = ['leader', 'members']
+    list_display = ['id', 'event', 'leader', 'number_of_members']
+    list_filter = ['event']
+    search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']
+
+    class Meta:
+        model = TeamRegistration
+
+
 admin.site.register(EventType, EventCategoryAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Organizer, OrganizerAdmin)
+admin.site.register(TeamRegistration, TeamRegistrationAdmin)
