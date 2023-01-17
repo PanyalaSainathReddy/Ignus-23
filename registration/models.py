@@ -243,7 +243,7 @@ class UserProfile(models.Model):
     accomodation = models.BooleanField(default=False)
     main_pronite = models.BooleanField(default=False)
     flagship = models.BooleanField(default=False)
-    igmun_pref = models.CharField(max_length=1000, default='')
+    igmun_pref = models.CharField(max_length=1000, default='', blank=True)
 
     class Meta:
         ordering = ['user__first_name']
