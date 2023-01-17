@@ -97,12 +97,12 @@ function createEventDetails(data){
 		`;
 		if(data.events[i].team_event){
 			if(data.events[i].min_team_size == data.events[i].max_team_size){
-				desDivHtml += `
+				desDivMobHtml += `
 					<span> Team Size: ${data.events[i].min_team_size} </span>
 				`;
 			}
 			else{
-				desDivHtml += `
+				desDivMobHtml += `
 					<span> Team Size: ${data.events[i].min_team_size}-${data.events[i].max_team_size} </span>
 				`;
 			}
