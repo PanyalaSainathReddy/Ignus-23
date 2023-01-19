@@ -242,6 +242,10 @@ class UserProfile(models.Model):
     accomodation_2 = models.BooleanField(default=False, verbose_name="Accomodation (2-days)")
     main_pronite = models.BooleanField(default=False)
     flagship = models.BooleanField(default=False)
+    aayam = models.BooleanField(default=False)
+    antarang = models.BooleanField(default=False)
+    nrityansh = models.BooleanField(default=False)
+    cob = models.BooleanField(default=False)
     igmun_pref = models.CharField(max_length=1000, default='', blank=True)
 
     class Meta:
@@ -306,7 +310,13 @@ class CampusAmbassador(models.Model):
 
     @property
     def number_referred(self):
-        return self.referred_users.count()
+        count = 0
+
+        for user in self.referred_users.all():
+            if user.amount_paid:
+                count += 1
+
+        return count
 
     def __str__(self):
         return self.ca_user.user.get_full_name()

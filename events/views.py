@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AnonymousUser
 from django.db.models import Prefetch
 from rest_framework import generics, status
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import (AllowAny, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -31,21 +33,54 @@ class AllEventsView(ListAPIView):
 
 
 class EventTypeView(ListAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = EventTypeSerializer
     model = EventType
 
     def get(self, request, reference_name):
-        # try:
-        #     user = request.user
-        #     user = User.objects.get(id=user.id)
-        #     userprofile = UserProfile.objects.get(user=user)
-        # except Exception:
-        #     pass
+        eventType = EventType.objects.get(reference_name=reference_name)
+        serializer = EventTypeSerializer(eventType)
+        data = serializer.data
 
-        queryset = EventType.objects.get(reference_name=reference_name)
+        if type(request.user) != AnonymousUser:
+            user = User.objects.get(id=request.user.id)
+            userprofile = UserProfile.objects.get(user=user)
+            team = None
 
-        serializer = EventTypeSerializer(queryset)
+            for event in eventType.events.all():
+                if event in userprofile.events_registered.all():
+                    if event.team_event:
+                        teams = TeamRegistration.objects.filter(event=event)
+
+                        team = [t for t in teams if userprofile in t.members.all() or t.leader == userprofile][0]
+
+                        d = {
+                            "team": {
+                                "id": team.id,
+                                "name": team.name,
+                                "leader": {
+                                    "id": team.leader.registration_code,
+                                    "name": team.leader.user.get_full_name()
+                                },
+                                "members": team.member_list()
+                            }
+                        }
+
+                        for e in data["events"]:
+                            if e["name"] == event.name:
+                                e["is_registered"] = True
+                                e["team"] = d["team"]
+                            else:
+                                e["is_registered"] = False
+
+            if eventType.type == '4':
+                data["antarang"] = team.leader.antarang
+                data["aayam"] = team.leader.aayam
+                data["nrityansh"] = team.leader.nrityansh
+                data["cob"] = team.leader.cob
+
+            return Response(data=data, status=status.HTTP_200_OK)
+
         return Response(serializer.data)
 
 
@@ -64,6 +99,21 @@ class RegisterEventAPIView(APIView):
         userprofile.events_registered.add(event)
 
         if event.team_event:
+            if event.event_type.type == '4':
+                if userprofile.flagship:
+                    if event.name == "Antarang":
+                        userprofile.antarang = True
+                    elif event.name == "Aayam":
+                        userprofile.aayam = True
+                    elif event.name == "Nrityansh":
+                        userprofile.nrityansh = True
+                    else:
+                        userprofile.cob = True
+
+                    userprofile.save()
+                else:
+                    return Response(data={"message": "Complete your payment before registering."}, status=status.HTTP_402_PAYMENT_REQUIRED)
+
             team = TeamRegistration.objects.create(
                 leader=userprofile,
                 name=request.data['team_name'],
@@ -95,42 +145,25 @@ class UpdateTeamAPIView(generics.UpdateAPIView):
         if team.leader != leader:
             return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
 
-        unregistered = []
-        unpaid = []
-        paid = []
-        already = []
+        member = request.data['member']
 
-        for member in request.data['members']:
-            try:
-                mem = UserProfile.objects.get(registration_code=member)
+        try:
+            member = UserProfile.objects.get(registration_code=member)
+        except Exception:
+            return Response(data={"message": "This user does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-                if mem.amount_paid:
-                    if team.event not in mem.events_registered:
-                        paid.append(mem)
-                    else:
-                        already.append(mem)
-                else:
-                    unpaid.append(mem)
-            except Exception:
-                unregistered.append(mem)
+        if member.amount_paid:
+            if team.event not in member.events_registered.all():
+                member.events_registered.add(team.event)
+                team.members.add(member)
+            else:
+                return Response(data={"message": "This user is already registered for this event."}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return Response(data={"message": "The user has not completed their payment."}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
-        for member in paid:
-            member.events_registered.add(team.event)
-            team.members.add(member)
+        team.save()
 
-        team.update()
-
-        data = {
-            "paid": [member.registration_code for member in paid],
-            "already": [member.registration_code for member in already],
-            "unpaid": [member.registration_code for member in unpaid],
-            "unregistered": [member.registration_code for member in unregistered]
-        }
-
-        if already is None and unpaid is None and unregistered is None:
-            data["message"] = "Team Member(s) Added Successfully"
-
-        return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data={"message": "Team member added successfully."}, status=status.HTTP_200_OK)
 
 
 class DeleteTeamAPIView(generics.DestroyAPIView):
@@ -142,8 +175,17 @@ class DeleteTeamAPIView(generics.DestroyAPIView):
         team = TeamRegistration.objects.get(
             id=request.data['team_id']
         )
+        event = team.event
+        members = team.members.all()
+
         if team.leader != leader:
             return Response("You are not the team leader", status=status.HTTP_403_FORBIDDEN)
+
+        for member in members:
+            if event in member.events_registered.all():
+                member.events_registered.remove(event)
+
+        leader.events_registered.remove(event)
 
         team.delete()
 

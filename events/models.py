@@ -73,6 +73,7 @@ class EventType(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=32)
     # slug = models.SlugField(blank=True, default="")
+    team_id_code = models.CharField(max_length=5, blank=True)
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
     venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     start_time = models.DateTimeField(blank=True, null=True)
@@ -149,7 +150,7 @@ class TeamRegistration(models.Model):
 
 def pre_save_team_registration(sender, instance, **kwargs):
     if instance._state.adding is True:
-        instance.id = instance.leader.registration_code + "-" + instance.event.name.upper()[:4]
+        instance.id = instance.leader.registration_code + "-" + instance.event.team_id_code
 
 
 pre_save.connect(pre_save_team_registration, sender=TeamRegistration)
