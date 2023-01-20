@@ -71,13 +71,10 @@ class PaymentHandlerAPIView(APIView):
             result = razorpayClient.utility.verify_payment_signature(params_dict)
 
             if result:
-                print("Payment Successful!")
                 userprofile.amount_paid = True
                 userprofile.save()
                 return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/success.html")
             else:
-                print("Payment Failed!")
                 return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/failed.html")
         except Exception:
-            print("Payment Failed!")
             return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/failed.html")

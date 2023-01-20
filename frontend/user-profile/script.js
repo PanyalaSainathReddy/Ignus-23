@@ -87,7 +87,7 @@ function getUserProfileDetails() {
         document.getElementById("profile_pic").src = "./../static/user-profile/blank-profile-picture-973460_1280.webp";
       }
       else{
-        document.getElementById("profile_pic").src = "https://api.ignus.co.in" + response.data.userprofile.profile_pic;
+        document.getElementById("profile_pic").src = BASE_URL + response.data.userprofile.profile_pic;
       }
     }
     document.getElementById("user_name").innerHTML = response.data.user.first_name;

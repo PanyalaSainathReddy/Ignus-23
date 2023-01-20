@@ -242,7 +242,7 @@ class UserProfile(models.Model):
     accomodation_2 = models.BooleanField(default=False, verbose_name="Accomodation (2-days)")
     main_pronite = models.BooleanField(default=False)
     flagship = models.BooleanField(default=False)
-    aayam = models.BooleanField(default=False)
+    aayaam = models.BooleanField(default=False)
     antarang = models.BooleanField(default=False)
     nrityansh = models.BooleanField(default=False)
     cob = models.BooleanField(default=False)

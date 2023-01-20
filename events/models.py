@@ -119,7 +119,6 @@ class Event(models.Model):
 
 
 class TeamRegistration(models.Model):
-    name = models.CharField(max_length=50, blank=True)
     id = models.CharField(max_length=20, unique=True, primary_key=True, editable=False)
     leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     members = models.ManyToManyField(UserProfile, related_name="teams", related_query_name="team", blank=True)
