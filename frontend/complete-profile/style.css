@@ -208,6 +208,20 @@ input[type = "text"], select{
   background: transparent; 
   outline: none;
 }
+input[type="file"]{
+  margin: 10px 0;
+}
+input[type="file"]::file-selector-button{
+  padding: 3px 8px;
+  background-color: transparent;
+  border: 2px solid #123f7d;
+  border-radius: 5px;
+  color: #123f7d;
+  font-family: 'Montserrat', sans-serif;
+  
+  
+}
+
 input:focus, select:focus{
   border: 3px solid #123f7d;
 }
