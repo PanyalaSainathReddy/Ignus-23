@@ -128,6 +128,11 @@ function createEventDetails(data, x){
 				<div class="content">
 					<h1>${data.events[i].name}</h1>
 			`;
+			if(data.events[i].start_time != null){
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+				`;
+			}
 			if(data.events[i].team_event){
 				if(data.events[i].min_team_size == data.events[i].max_team_size){
 					desDivHtml += `
@@ -162,6 +167,11 @@ function createEventDetails(data, x){
 				<div class="content">
 					<h1>${data.events[i].name}</h1>
 			`;
+			if(data.events[i].start_time != null){
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+				`;
+			}
 			if(data.events[i].team_event){
 				if(data.events[i].min_team_size == data.events[i].max_team_size){
 					desDivHtml += `
@@ -194,6 +204,11 @@ function createEventDetails(data, x){
 			<div class="content">
 				<h1>${data.events[i].name}</h1>
 		`;
+		if(data.events[i].start_time != null){
+			desDivMobHtml += `
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+			`;
+		}
 		if(data.events[i].team_event){
 			if(data.events[i].min_team_size == data.events[i].max_team_size){
 				desDivMobHtml += `
@@ -256,6 +271,11 @@ function createCompleteEventDetails(data){
 				<div class="content">
 					<h1>${data.events[i].name}</h1>
 			`;
+			if(data.events[i].start_time != null){
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+				`;
+			}
 			if(data.events[i].team_event){
 				if(data.events[i].min_team_size == data.events[i].max_team_size){
 					desDivHtml += `
@@ -323,6 +343,11 @@ function createCompleteEventDetails(data){
 				<div class="content">
 					<h1>${data.events[i].name}</h1>
 			`;
+			if(data.events[i].start_time != null){
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+				`;
+			}
 			if(data.events[i].team_event){
 				if(data.events[i].min_team_size == data.events[i].max_team_size){
 					desDivHtml += `
@@ -388,6 +413,11 @@ function createCompleteEventDetails(data){
 			<div class="content">
 				<h1>${data.events[i].name}</h1>
 		`;
+		if(data.events[i].start_time != null){
+			desDivMobHtml += `
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 </span><br>
+			`;
+		}
 		if(data.events[i].team_event){
 			if(data.events[i].min_team_size == data.events[i].max_team_size){
 				desDivMobHtml += `
