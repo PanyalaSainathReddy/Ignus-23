@@ -22,6 +22,33 @@ body{
   transition: background-color 0.5s ease-in-out;
   -webkit-transition: background-color 0.5s ease-in-out;
 }
+
+.social-sidebar{
+  border-radius: 0px 10px 10px 0px;
+  background-color: #1d3557;
+  padding: 18px 10px 18px 8px;
+  height: fit-content;
+  position: fixed;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 10px;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  z-index: 10000;
+}
+
+.social-med-btn{
+  cursor: pointer;
+}
+.social-sidebar .social-med-btn:hover{
+  color: #1d3557 !important;
+}
+
+
 #container{
   overflow: hidden;
 }
@@ -207,15 +234,15 @@ nav button:hover{
   justify-content: center;
   align-items: center;
   z-index: 20000;
+  cursor: pointer;
 }
 #aud{
-  left: 20px;
-}
-.faq_btn{
-  display: inline;
-  float: right;
   right: 20px;
 }
+.faq_btn{
+  left: 20px;
+}
+
 #aud img, .faq_btn img{
   height: 35px;
   width: 35px;
@@ -341,8 +368,21 @@ section:nth-child(1) a{
   align-items: center;
   color: #fbfbf2;
 }
+
+.social-med-btn-1{
+  border: 1.5px solid #fbfbf2;
+  border-radius: 50%;
+  padding: 10px;
+  width: 30px !important;
+  height: 30px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fbfbf2;
+}
+
 .social-med-btn:hover{
-  border: 2px solid #fbfbf2;
+  border: 1.5px solid #fbfbf2;
   background-color: #fbfbf2;
   color: #7f5690;
 }
@@ -712,7 +752,23 @@ iframe{
   .theme-vid{margin: 0; width: 60vw;}
   .theme-content{margin: 40vh 0 0 0 !important;}
 }
+
 @media screen and (max-width: 500px){ /*mobile*/
+  #aud, .faq_btn{
+   height: 50px;
+   width: 50px;
+  }
+  .faq_btn img{
+    width: 25px;
+    height: auto;
+  }
+  .social-sidebar{
+    padding: 10px 5px 10px 4px;
+  }
+  .social-sidebar .social-med-btn{
+    border: 0;
+  }
+
   .header-btn-cont{
     flex-direction: column;
     row-gap: 20px;
@@ -759,6 +815,11 @@ iframe{
   .social-med-btn{
     width: 40px;
     height: 40px;
+    border: 1px solid white;
+  }
+  .social-med-btn-1{
+    width: 30px !important;
+    height: 30px !important;
     border: 1px solid white;
   }
   .social-med-btn i{
