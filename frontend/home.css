@@ -19,6 +19,33 @@ body{
   transition: background-color 0.5s ease-in-out;
   -webkit-transition: background-color 0.5s ease-in-out;
 }
+
+.social-sidebar{
+  border-radius: 10px 0 0  10px;
+  background-color: #1d3557;
+  padding: 40px 20px;
+  height: fit-content;
+  position: fixed;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  z-index: 10000;
+}
+
+.social-med-btn{
+  cursor: pointer;
+}
+.social-sidebar .social-med-btn:hover{
+  color: #1d3557 !important;
+}
+
+
 #container{
   overflow: hidden;
 }
@@ -204,15 +231,15 @@ nav button:hover{
   justify-content: center;
   align-items: center;
   z-index: 20000;
+  cursor: pointer;
 }
 #aud{
-  left: 20px;
-}
-.faq_btn{
-  display: inline;
-  float: right;
   right: 20px;
 }
+.faq_btn{
+  left: 20px;
+}
+
 #aud img, .faq_btn img{
   height: 35px;
   width: 35px;
@@ -709,7 +736,23 @@ iframe{
   .theme-vid{margin: 0; width: 60vw;}
   .theme-content{margin: 40vh 0 0 0 !important;}
 }
+
 @media screen and (max-width: 500px){ /*mobile*/
+  #aud, .faq_btn{
+   height: 50px;
+   width: 50px;
+  }
+  .faq_btn img{
+    width: 25px;
+    height: auto;
+  }
+  .social-sidebar{
+    padding: 10px;
+  }
+  .social-sidebar .social-med-btn{
+    border: 0;
+  }
+
   .header-btn-cont{
     flex-direction: column;
     row-gap: 20px;
