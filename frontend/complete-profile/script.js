@@ -59,16 +59,16 @@ function getCookie(cname) {
   return "";
 }
 
-// function check() {
-//   if (getCookie("LoggedIn") == "") {
-//     window.location.replace("../login.html");
-//   }
-//   else{
-//     if(getCookie("isProfileComplete") == "True"){
-//       window.location.replace("../user-profile/index.html");
-//     }
-//   }
-// }
+function check() {
+  if (getCookie("LoggedIn") == "") {
+    window.location.replace("../login.html");
+  }
+  else{
+    if(getCookie("isProfileComplete") == "True"){
+      window.location.replace("../user-profile/index.html");
+    }
+  }
+}
 
 // API
 const BASE_URL = "https://api.ignus.co.in/";
