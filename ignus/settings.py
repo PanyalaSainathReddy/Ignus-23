@@ -15,6 +15,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
 
 INSTALLED_APPS = [
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -24,7 +25,6 @@ INSTALLED_APPS = [
     'events',
     'igmun',
     'payments',
-    'registration',
     'sponsors',
     'team',
     'ckeditor',
@@ -34,10 +34,13 @@ INSTALLED_APPS = [
     'corsheaders'
 ]
 
-RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
-RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
+# RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+# RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
 
 AUTH_USER_MODEL = "registration.User"
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,12 +79,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ignus.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if config('SQLITE_DB', cast=bool):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', cast=int, default=5432),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

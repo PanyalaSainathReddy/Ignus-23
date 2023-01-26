@@ -96,30 +96,55 @@
     </div>
 
     <div class="form">
-      <div class="buttons">
-        <label for="chbox" class="login btn"><span>Login</span></label>
-        <label for="chbox" class="SignUp btn"><span>SignUp</span></label>
+      <div class="button_container">
+        <div class="button_1" id="button_1">
+          <p>Login</p>
+        </div>
+        <div class="button_2" id="button_2">
+          <p>Sign Up</p>
+        </div>
+      </div>
+      <div class="form_container">
+      <div class="login_form" id="login_form">
+        <form id="mob_sign_in_form">
+          <h1>Login</h1>
+          <br /><input id="mob_email_sign_in" type="text" placeholder="Username" />
+          <input id="mob_password_sign_in" type="password" placeholder="Password" /><br />
+          <button type="submit">Login</button>
+
+          <p style="margin: 15px 0px; text-align: center;">OR</p>
+            
+          <div type="button" class="google-btn" id="mob_google_sign_in_button">
+            <div class="google-icon-wrapper">
+              <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+            </div>
+            <p class="btn-text" style="margin: 10px 10px 0 0;"><b>Sign in with Google</b></p>
+          </div>
+        </form>
       </div>
 
-      <input type="checkbox" id="chbox" />
-      <div class="layer"></div>
-      <div class="layer2"></div>
-      <div class="login_form">
-        <h1>Login</h1>
-        <br /><input type="text" placeholder="Username" /><br />
-        <input type="password" placeholder="Password" /><br />
-        <button>Login</button>
-      </div>
+      <div class="SignUp_form" id="SignUp_form">
+        <form  id="mob_sign_up_form">
+          <h1>Sign Up</h1>
+          <input id="mob_first_name" type="text" placeholder="First Name" />
+          <input id="mob_last_name" type="text" placeholder="Last Name" />
+          <input id="mob_email_sign_up" type="email" placeholder="Email" />
+          <input id="mob_password_sign_up" type="password" placeholder="Password" />
+          <input id="mob_confirm_password_sign_up" type="password" onkeyup="matchPassword()" placeholder="Confirm Password" required />
+          <span id='mob_message'></span>
+          <button type="submit" style="margin-top: 10px;">Sign Up</button>
 
-      <div class="SignUp_form">
-        <h1>Sign Up</h1>
-        <input type="text" placeholder="First Name" />
-        <input type="text" placeholder="Last Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <input type="password" placeholder="Confirm Password" required />
-        <button>Sign Up</button>
+          <p style="margin: 5px 0px; text-align: center;">OR</p>
+            
+          <div type="button" class="google-btn" id="mob_google_sign_up_button">
+            <div class="google-icon-wrapper">
+              <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+            </div>
+            <p class="btn-text" style="margin: 10px 7px 0 0;"><b>Sign up with Google</b></p>
+          </div>
+        </form>
       </div>
+    </div>
     </div>
 
     <div id="snackbar">Error!</div>

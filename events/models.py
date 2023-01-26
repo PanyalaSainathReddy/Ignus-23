@@ -1,7 +1,10 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.signals import pre_save
 from django.utils.safestring import mark_safe
+
+from registration.models import UserProfile
 
 
 class Organizer(models.Model):
@@ -70,6 +73,7 @@ class EventType(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=32)
     # slug = models.SlugField(blank=True, default="")
+    team_id_code = models.CharField(max_length=5, blank=True)
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
     venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
     start_time = models.DateTimeField(blank=True, null=True)
@@ -112,3 +116,40 @@ class Event(models.Model):
     # def save(self) -> None:
     #     self.slug = slugify(self.reference_name)
     #     return super().save()
+
+
+class TeamRegistration(models.Model):
+    id = models.CharField(max_length=20, unique=True, primary_key=True, editable=False)
+    leader = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    members = models.ManyToManyField(UserProfile, related_name="teams", related_query_name="team", blank=True)
+    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING, related_name="teams", related_query_name="team")
+
+    def __str__(self):
+        return self.id
+
+    class Meta:
+        verbose_name_plural = "Team Registrations"
+
+    def number_of_members(self):
+        return self.members.count()
+
+    def member_list(self):
+        members = []
+
+        for member in self.members.all():
+            mem = {
+                "id": member.registration_code,
+                "name": member.user.get_full_name()
+            }
+
+            members.append(mem)
+
+        return members
+
+
+def pre_save_team_registration(sender, instance, **kwargs):
+    if instance._state.adding is True:
+        instance.id = instance.leader.registration_code + "-" + instance.event.team_id_code
+
+
+pre_save.connect(pre_save_team_registration, sender=TeamRegistration)

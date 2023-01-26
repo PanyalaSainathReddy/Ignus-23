@@ -8,19 +8,17 @@ from rest_framework import exceptions, generics, serializers, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import PreRegistrationSerializer, RegisterSerializer, CookieTokenRefreshSerializer, UserSerializer, UserProfileSerializer, PreCARegistrationSerializer
-# from django.contrib.auth.models import User
-from .models import UserProfile, PreRegistration, CampusAmbassador, PreCA
-# from .utils import get_referral_code
-# from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
-# from igmun.models import IGMUNCampusAmbassador
-# from payments.models import Order, Pass
-# from payments.utils import setupRazorpay
-
+from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
+from .serializers import (CookieTokenRefreshSerializer,
+                          PreCARegistrationSerializer,
+                          PreRegistrationSerializer, RegisterSerializer,
+                          UserProfileSerializer, UserSerializer)
 from .utils import google_get_access_token, google_get_user_info
+
+# from igmun.models import IGMUNCampusAmbassador
 
 User = get_user_model()
 
@@ -63,6 +61,7 @@ class LoginView(APIView):
                             value=data["access"],
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=True,
                             samesite='Lax'
                         )
@@ -72,7 +71,18 @@ class LoginView(APIView):
                             value=data["refresh"],
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=True,
+                            samesite='Lax'
+                        )
+
+                        response.set_cookie(
+                            key='csrftoken',
+                            value=csrf.get_token(request),
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            domain=".ignus.co.in",
+                            httponly=False,
                             samesite='Lax'
                         )
 
@@ -81,6 +91,7 @@ class LoginView(APIView):
                             value=True,
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -90,6 +101,7 @@ class LoginView(APIView):
                             value=user.profile_complete,
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -99,6 +111,7 @@ class LoginView(APIView):
                             value=user.is_google,
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -109,6 +122,7 @@ class LoginView(APIView):
                                 value=userprofile.is_ca,
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
+                                domain=".ignus.co.in",
                                 httponly=False,
                                 samesite='Lax'
                             )
@@ -117,6 +131,7 @@ class LoginView(APIView):
                                 value=userprofile.registration_code,
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
+                                domain=".ignus.co.in",
                                 httponly=False,
                                 samesite='Lax'
                             )
@@ -161,6 +176,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=data["access"],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=True,
                     samesite='Lax'
                 )
@@ -170,7 +186,18 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=data["refresh"],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=True,
+                    samesite='Lax'
+                )
+
+                response.set_cookie(
+                    key='csrftoken',
+                    value=csrf.get_token(request),
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    domain=".ignus.co.in",
+                    httponly=False,
                     samesite='Lax'
                 )
 
@@ -179,6 +206,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=True,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -188,6 +216,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=user.profile_complete,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -197,6 +226,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     value=user.is_google,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -208,6 +238,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                         value=userprofile.is_ca,
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
+                        domain=".ignus.co.in",
                         httponly=False,
                         samesite='Lax'
                     )
@@ -216,6 +247,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                         value=userprofile.registration_code,
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
+                        domain=".ignus.co.in",
                         httponly=False,
                         samesite='Lax'
                     )
@@ -243,7 +275,7 @@ class GoogleRegisterView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'https://www.ignus.co.in/login.html'
+        login_url = 'https://ignus.co.in/login.html'
 
         if error or not code:
             params = urlencode({'Error': error})
@@ -288,6 +320,7 @@ class GoogleRegisterView(APIView):
                     value=data["access"],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=True,
                     samesite='Lax'
                 )
@@ -297,7 +330,18 @@ class GoogleRegisterView(APIView):
                     value=data["refresh"],
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=True,
+                    samesite='Lax'
+                )
+
+                response.set_cookie(
+                    key='csrftoken',
+                    value=csrf.get_token(request),
+                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                    secure=True,
+                    domain=".ignus.co.in",
+                    httponly=False,
                     samesite='Lax'
                 )
 
@@ -306,6 +350,7 @@ class GoogleRegisterView(APIView):
                     value=True,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -315,6 +360,7 @@ class GoogleRegisterView(APIView):
                     value=user.profile_complete,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -324,6 +370,7 @@ class GoogleRegisterView(APIView):
                     value=user.is_google,
                     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                     secure=True,
+                    domain=".ignus.co.in",
                     httponly=False,
                     samesite='Lax'
                 )
@@ -335,6 +382,7 @@ class GoogleRegisterView(APIView):
                         value=userprofile.is_ca,
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
+                        domain=".ignus.co.in",
                         httponly=False,
                         samesite='Lax'
                     )
@@ -343,12 +391,13 @@ class GoogleRegisterView(APIView):
                         value=userprofile.registration_code,
                         expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                         secure=True,
+                        domain=".ignus.co.in",
                         httponly=False,
                         samesite='Lax'
                     )
 
                 response["X-CSRFToken"] = csrf.get_token(request)
-                response['Location'] = 'https://www.ignus.co.in/complete-profile/index.html'
+                response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
@@ -373,7 +422,7 @@ class GoogleLoginView(APIView):
         code = validated_data.get('code')
         error = validated_data.get('error')
 
-        login_url = 'https://www.ignus.co.in/login.html'
+        login_url = 'https://ignus.co.in/login.html'
 
         if error or not code:
             params = urlencode({'Error': error})
@@ -406,6 +455,7 @@ class GoogleLoginView(APIView):
                             value=data["access"],
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=True,
                             samesite='Lax'
                         )
@@ -415,7 +465,18 @@ class GoogleLoginView(APIView):
                             value=data["refresh"],
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=True,
+                            samesite='Lax'
+                        )
+
+                        response.set_cookie(
+                            key='csrftoken',
+                            value=csrf.get_token(request),
+                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                            secure=True,
+                            domain=".ignus.co.in",
+                            httponly=False,
                             samesite='Lax'
                         )
 
@@ -424,6 +485,7 @@ class GoogleLoginView(APIView):
                             value=True,
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -433,6 +495,7 @@ class GoogleLoginView(APIView):
                             value=user.profile_complete,
                             expires=datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -442,6 +505,7 @@ class GoogleLoginView(APIView):
                             value=user.is_google,
                             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                             secure=True,
+                            domain=".ignus.co.in",
                             httponly=False,
                             samesite='Lax'
                         )
@@ -453,6 +517,7 @@ class GoogleLoginView(APIView):
                                 value=userprofile.is_ca,
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
+                                domain=".ignus.co.in",
                                 httponly=False,
                                 samesite='Lax'
                             )
@@ -461,11 +526,14 @@ class GoogleLoginView(APIView):
                                 value=userprofile.registration_code,
                                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
                                 secure=True,
+                                domain=".ignus.co.in",
                                 httponly=False,
                                 samesite='Lax'
                             )
+                            response['Location'] = 'https://ignus.co.in/index.html'
+                        else:
+                            response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
                         response["X-CSRFToken"] = csrf.get_token(request)
-                        response['Location'] = 'https://www.ignus.co.in/index.html'
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
@@ -491,15 +559,15 @@ class LogoutView(APIView):
             token = RefreshToken(refreshToken)
             token.blacklist()
             res = Response()
-            res.delete_cookie('access')
-            res.delete_cookie('refresh')
-            res.delete_cookie('LoggedIn')
-            res.delete_cookie("X-CSRFToken")
-            res.delete_cookie("csrftoken")
-            res.delete_cookie("isProfileComplete")
-            res.delete_cookie("isCA")
-            res.delete_cookie("ignusID")
-            res.delete_cookie("isGoogle")
+            res.delete_cookie('access', domain=".ignus.co.in")
+            res.delete_cookie('refresh', domain=".ignus.co.in")
+            res.delete_cookie('LoggedIn', domain=".ignus.co.in")
+            res.delete_cookie("X-CSRFToken", domain=".ignus.co.in")
+            res.delete_cookie("csrftoken", domain=".ignus.co.in")
+            res.delete_cookie("isProfileComplete", domain=".ignus.co.in")
+            res.delete_cookie("isCA", domain=".ignus.co.in")
+            res.delete_cookie("ignusID", domain=".ignus.co.in")
+            res.delete_cookie("isGoogle", domain=".ignus.co.in")
             res["X-CSRFToken"] = None
 
             return res
@@ -517,6 +585,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 value=response.data["access"],
                 expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(minutes=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
                 secure=True,
+                domain=".ignus.co.in",
                 httponly=True,
                 samesite='Lax'
             )
@@ -553,6 +622,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             user=user,
             referred_by=referred_by,
             phone=request.data['phone'],
+            # avatar=request.FILES['avatar'],
             gender=request.data['gender'],
             current_year=request.data['current_year'],
             college=request.data['college'],
@@ -582,6 +652,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             value=user.profile_complete,
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
+            domain=".ignus.co.in",
             httponly=False,
             samesite='Lax'
         )
@@ -591,6 +662,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             value=userprofile.is_ca,
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
+            domain=".ignus.co.in",
             httponly=False,
             samesite='Lax'
         )
@@ -599,6 +671,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             value=userprofile.registration_code,
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
+            domain=".ignus.co.in",
             httponly=False,
             samesite='Lax'
         )
@@ -625,11 +698,14 @@ class CARegisterAPIView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         user = User.objects.get(id=request.user.id)
         userprofile = UserProfile.objects.get(user=user)
+
+        if not userprofile.amount_paid:
+            return Response(data={"error": "Please complete your payment before registering for CA."}, status=status.HTTP_402_PAYMENT_REQUIRED)
+
         ca = CampusAmbassador.objects.create(
             ca_user=userprofile
         )
         ca.save()
-
         userprofile.is_ca = True
         userprofile.save()
 
@@ -640,6 +716,7 @@ class CARegisterAPIView(generics.CreateAPIView):
             value=userprofile.is_ca,
             expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=15), "%a, %d-%b-%Y %H:%M:%S GMT"),
             secure=True,
+            domain=".ignus.co.in",
             httponly=False,
             samesite='Lax'
         )

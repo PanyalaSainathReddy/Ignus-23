@@ -165,7 +165,12 @@ ca_register_btn.addEventListener("click", function(){
           // ca_register_btn.innerHTML = "<a>Registered!</a>";
           window.location.replace("../ca/ca.html");
           sessionStorage.setItem("showmsg", "Successfully Registered as CA");
-        })
+        }).catch(function(error){
+          if(error.response.status == 402){
+            sessionStorage.setItem("showmsg", error.response.data.error);
+            window.location.replace("../payment_steps/steps.html");
+          }
+        });
       }
     }
   }

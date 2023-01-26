@@ -1,11 +1,12 @@
 import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-from django.utils.safestring import mark_safe
 # from payments.models import Pass
-# from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
+from django.utils.safestring import mark_safe
+
 from .utils import generate_registration_code, send_ca_confirmation_mail
 
 
@@ -218,6 +219,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     phone = models.CharField(max_length=10, validators=[contact])
+    # avatar = models.ImageField(upload_to="user-avatars/", null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
@@ -225,17 +227,26 @@ class UserProfile(models.Model):
     # _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
-    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    events_registered = models.ManyToManyField("events.Event", blank=True)
+    # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
+    #                                             through_fields=('userprofile', 'workshop'), blank=True)
+    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
     is_ca = models.BooleanField(default=False)
     # is_igmun_ca = models.BooleanField(default=False)
     amount_paid = models.BooleanField(default=False)
     pronites = models.BooleanField(default=False)
     igmun = models.BooleanField(default=False)
-    accomodation = models.BooleanField(default=False)
+    accomodation_4 = models.BooleanField(default=False, verbose_name="Accomodation (4-days)")
+    accomodation_2 = models.BooleanField(default=False, verbose_name="Accomodation (2-days)")
     main_pronite = models.BooleanField(default=False)
     flagship = models.BooleanField(default=False)
-    igmun_pref = models.CharField(max_length=1000, default='')
+    aayaam = models.BooleanField(default=False)
+    antarang = models.BooleanField(default=False)
+    nrityansh = models.BooleanField(default=False)
+    cob = models.BooleanField(default=False)
+    igmun_pref = models.CharField(max_length=1000, default='', blank=True)
 
     class Meta:
         ordering = ['user__first_name']
@@ -244,6 +255,9 @@ class UserProfile(models.Model):
         return self.user.get_full_name()
 
     # @property
+    # def events(self):
+    #     return '; '.join([e.name for e in self.events_registered.all()])
+
     # def passes(self):
     #     return ', '.join([p.name for p in self._pass.all()])
 
@@ -268,14 +282,14 @@ class UserProfile(models.Model):
 
 def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
-        if (len(instance.user.get_full_name().split()) > 2):
-            code = generate_registration_code(''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 2):
-            code = generate_registration_code('X' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 1):
-            code = generate_registration_code('XX' + ''.join(instance.user.get_full_name().split()), instance.__class__.objects.count())
-        elif (len(instance.user.get_full_name().split()) == 0):
-            code = generate_registration_code('XXX', instance.__class__.objects.count())
+        name = ''.join(instance.user.get_full_name().split())
+        count = instance.__class__.objects.count()
+
+        if len(name) >= 3:
+            code = generate_registration_code(name, count)
+        else:
+            code = generate_registration_code('X' * (3 - len(name)) + name, count)
+
         instance.registration_code = f"IG-{code}"
 
         # if instance.igmun is True:
@@ -296,7 +310,13 @@ class CampusAmbassador(models.Model):
 
     @property
     def number_referred(self):
-        return self.referred_users.count()
+        count = 0
+
+        for user in self.referred_users.all():
+            if user.amount_paid:
+                count += 1
+
+        return count
 
     def __str__(self):
         return self.ca_user.user.get_full_name()

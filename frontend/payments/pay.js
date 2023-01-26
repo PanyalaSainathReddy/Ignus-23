@@ -35,7 +35,6 @@ miAPI.interceptors.response.use(function (response) {
             withCredentials: true
         }).then((res) => {
             if (res.status == 200) {
-                console.log("token refreshed");
                 return axios(originalReq);
             }
         }).catch((error) => { window.location.href = "/login.html" });
@@ -55,13 +54,11 @@ async function createOrder() {
             withCredentials: true,
         });
         alert(document.cookie);
-        console.log(response);
         sessionStorage.setItem("msg", `Order ${getCookie("order_id")} Created Successfully`);
         alert(sessionStorage.getItem("msg"));
         // Doesn't redirect
         window.location.replace("pay.html");
     } catch (error) {
-        console.error(error);
         alert(error);
     }
 }

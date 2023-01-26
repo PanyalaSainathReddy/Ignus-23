@@ -62,7 +62,7 @@
         <a href="../ca/ca.html" style="text-decoration: none">
           <button>CA</button>
         </a>
-        <!-- <a href="pre-registration/pre-registration.html" style="text-decoration: none">
+        <!-- <a href="../pre-registration/pre-registration.html" style="text-decoration: none">
           <button>PRE-REGISTER</button>
         </a> -->
         <a id="login_button" href="../login.html" style="text-decoration: none">
@@ -105,7 +105,7 @@
           </a>
         </li>
         <!-- <li>
-          <a href="pre-registration/pre-registration.html" style="text-decoration: none">
+          <a href="../pre-registration/pre-registration.html" style="text-decoration: none">
             <button>PRE-REGISTER</button>
           </a>
         </li> -->
@@ -129,11 +129,11 @@
                 <div class="button_container">
                   
                   <div class="heading_button2">
-                    <a href="#steps"><div class="button2" >How to Pay?</div></a>                 
+                    <div id="button2">How to Pay?</div>                 
                   </div>
 
                   <div class="heading_button1">
-                    <a href="https://www.onlinesbi.sbi/sbicollect/icollecthome.htm" target="_blank"><div class="button" >Proceed to Pay</div></a>
+                    <div class="button" id="pay_btn_1">Proceed to Pay</div>
                   </div>
                 
                 </div>
@@ -145,14 +145,14 @@
               <img src="../static/payment_steps/PRONITE.png" alt="silver">
               <div class="pass-details">
                 <h3><br> Rs 499 (*Early Bird Offer)</h3>
-                <p>All events + 2 Silver Pronite (free)</p>
+                <p>All events + 2-Pronites (Silver Lane)</p>
               </div>
             </div>
             <div class="pass-tile">
               <img src="../static/payment_steps/PRONITE1.png" alt="silver">
               <div class="pass-details">
                 <h3><br> Rs 2299 (*Early Bird Offer)</h3>
-                <p>All events + 2 Silver Pronite (free) + Accommodation</p>
+                <p>All events + 2-Pronites (Silver Lane) + Accommodation (4 days)</p>
               </div>
             </div>
             <div class="pass-tile">
@@ -165,16 +165,16 @@
             <div class="pass-tile">
               <img src="../static/payment_steps/IGMUN1.png" alt="silver">
               <div class="pass-details">
-                <h3><br> Rs 1500 (*Early Bird Offer)</h3>
-                <p>IGMUN + Socials</p>
+                <h3><br> Rs 1500 </h3>
+                <p>IGMUN Registration Fee + 2-Pronites (Silver Lane)</p>
               </div>
             </div>
 
           <div class="pass-tile">
             <img src="../static/payment_steps/IGMUN2.png" alt="silver">
             <div class="pass-details">
-              <h3><br> Rs 2500 (*Early Bird Offer)</h3>
-              <p>IGMUN + Socials + Accommodation</p>
+              <h3><br> Rs 2500 </h3>
+              <p>IGMUN Registration Fee + 2-Pronites (Silver Lane) + Accommodation (2 days)</p>
               </div>
           </div>
 
@@ -231,9 +231,11 @@
           <p>* The details of your transaction and passes will be updated on the website every 8 hours, so don't panic if you can't see the pass on your profile right after the payment, come back later and you can see it on your profile page *</p>
         </div>
         <div class="bottom_button">
-          <a href="https://www.onlinesbi.sbi/sbicollect/icollecthome.htm" target="_blank"><p>Proceed to Pay</p></a>
+          <p id="pay_btn_2">Proceed to Pay</p>
         </div>
       </div>
+
+      <div id="snackbar">Snack Bar</div>
       <script src="../utils/nav-bar.js"></script>
       <script src="steps.js"></script>
     </body>

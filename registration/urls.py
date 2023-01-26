@@ -3,12 +3,14 @@ from rest_framework import routers
 
 from .views import (CARegisterAPIView, CookieTokenRefreshView, GoogleLoginView,
                     GoogleRegisterView, LoginView, LogoutView,
-                    PreRegistrationAPIView, RegisterUserAPIView, UserDetailAPI,
-                    UserProfileAPIView, UserProfileDetailsView, PreCARegistrationAPIView)
+                    PreCARegistrationAPIView, PreRegistrationAPIView,
+                    RegisterUserAPIView, UserDetailAPI, UserProfileAPIView,
+                    UserProfileDetailsView)
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
 router.register(r'ca-pre-register', PreCARegistrationAPIView)
+
 urlpatterns = [
     path('register/', RegisterUserAPIView.as_view(), name="register"),
     path('login/', LoginView.as_view(), name="login"),
@@ -17,8 +19,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('refresh/', CookieTokenRefreshView.as_view(), name="refresh"),
     path('user-details/', UserDetailAPI.as_view()),
-    path('user-profile/', UserProfileAPIView.as_view(), name="create-user-profile"),
-    path('user-profile-details/', UserProfileDetailsView.as_view(), name="user-details"),
+    path('user-profile/', UserProfileAPIView.as_view()),
+    path('user-profile-details/', UserProfileDetailsView.as_view()),
     path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),
     path('', include(router.urls)),
 ]

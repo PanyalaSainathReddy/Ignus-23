@@ -1,8 +1,20 @@
 from django.contrib import admin
-from .models import CampusAmbassador, PreRegistration, User, UserProfile, PreCA
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+
+from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
+
+User = get_user_model()
 
 
-class UserAdmin(admin.ModelAdmin):
+class CustomUserAdmin(UserAdmin):
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('profile_complete',)}),
+        ('Google', {'fields': ('is_google', 'google_picture')})
+    )
+
+    list_display = UserAdmin.list_display + ('is_google', 'profile_complete')
+
     class Meta:
         model = User
 
@@ -18,8 +30,8 @@ class PreCAAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
-    list_filter = ['gender']
-    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
+    list_filter = ['gender', 'igmun', 'amount_paid', 'accomodation_4', 'accomodation_2', 'is_ca']
+    search_fields = ['user__username', 'registration_code', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 
 class CampusAmbassadorAdmin(admin.ModelAdmin):
@@ -39,7 +51,7 @@ class PreRegistrationAdmin(admin.ModelAdmin):
         model = PreRegistration
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)
