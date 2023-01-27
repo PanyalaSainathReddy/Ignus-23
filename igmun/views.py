@@ -1,11 +1,14 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-# from registration.models import UserProfile
+from rest_framework.views import APIView
 
-from .models import EBForm, PreRegistrationForm, PreCA
-from .serializers import EBFormSerializer, PreRegistrationFormSerializer, PreCARegistrationSerializer
+from registration.models import UserProfile
+
+from .models import EBForm, PreCA, PreRegistrationForm
+from .serializers import (EBFormSerializer, PreCARegistrationSerializer,
+                          PreRegistrationFormSerializer)
 
 User = get_user_model()
 
@@ -87,3 +90,21 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
 #         userprofile.save()
 
 #         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
+
+
+class IGMUNRegistrationAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+
+        try:
+            userprofile = UserProfile.objects.get(user=user)
+        except Exception:
+            return Response(data={"message": "Profile not complete"}, status=status.HTTP_404_NOT_FOUND)
+
+        userprofile.igmun = True
+        userprofile.igmun_pref = request.data.get('igmun_pref', '')
+        userprofile.save()
+
+        return Response(data={"message": "Registered for IGMUN Successfully"}, status=status.HTTP_200_OK)
