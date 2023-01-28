@@ -1,6 +1,7 @@
 import datetime
 from urllib.parse import urlencode
 
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.middleware import csrf
 from django.shortcuts import redirect
@@ -408,6 +409,39 @@ class GoogleRegisterView(APIView):
             return redirect(f'{login_url}?{params}')
 
 
+class GoogleRegisterViewApp(APIView):
+    def post(self, request, format=None):
+        secret = settings.APP_SECRET
+        incoming_secret = request.headers.get('X-APP')
+
+        if secret != incoming_secret:
+            return Response(data={"message": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+
+        data = request.data
+
+        try:
+            user = User.objects.create(
+                first_name=data.get('first_name', ''),
+                last_name=data.get('last_name', ''),
+                email=data.get('email'),
+                username=data.get('email'),
+                google_picture=data.get('picture', ''),
+                is_google=True
+            )
+        except Exception:
+            return Response(data={"message": "User Already Exists"}, status=status.HTTP_409_CONFLICT)
+
+        user.set_password('google')
+        user.save()
+
+        user = authenticate(username=data.get('email'), password='google')
+
+        if user is None:
+            return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(data={"message": "Registration Successful"}, status=status.HTTP_201_CREATED)
+
+
 class GoogleLoginView(APIView):
     class InputSerializer(serializers.Serializer):
         code = serializers.CharField(required=False)
@@ -548,6 +582,32 @@ class GoogleLoginView(APIView):
         else:
             params = urlencode({'Error': "Please Signup first!!"})
             return redirect(f'{login_url}?{params}')
+
+
+class GoogleLoginViewApp(APIView):
+    def post(self, request, format=None):
+        secret = settings.APP_SECRET
+        incoming_secret = request.headers.get('X-APP')
+
+        if secret != incoming_secret:
+            return Response(data={"message": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
+
+        data = request.data
+
+        if User.objects.filter(email=data.get('email')).exists():
+            user = User.objects.get(email=data.get('email'))
+
+            if user.is_google:
+                user = authenticate(username=data.get('email'), password='google')
+
+                if user is None:
+                    return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
+
+                return Response(data={"message": "Logged In Successfully"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response(data={"message": "You signed up using email and password"}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return Response(data={"message": "You need to sign up before you can login"}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class LogoutView(APIView):
