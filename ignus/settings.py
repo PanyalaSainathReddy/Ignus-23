@@ -61,6 +61,8 @@ CORS_ORIGIN_WHITELIST = (
     config('FRONTEND_URL', cast=str),
 )
 
+APP_SECRET = config('APP_SECRET')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
