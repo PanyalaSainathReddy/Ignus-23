@@ -2,7 +2,8 @@ from django.urls import include, path
 from rest_framework import routers
 
 from .views import (CARegisterAPIView, CookieTokenRefreshView, GoogleLoginView,
-                    GoogleRegisterView, LoginView, LogoutView,
+                    GoogleLoginViewApp, GoogleRegisterView,
+                    GoogleRegisterViewApp, LoginView, LogoutView,
                     PreCARegistrationAPIView, PreRegistrationAPIView,
                     RegisterUserAPIView, UserDetailAPI, UserProfileAPIView,
                     UserProfileDetailsView)
@@ -15,7 +16,9 @@ urlpatterns = [
     path('register/', RegisterUserAPIView.as_view(), name="register"),
     path('login/', LoginView.as_view(), name="login"),
     path('register/google/', GoogleRegisterView.as_view(), name="google-register"),
+    path('register/google/app/', GoogleRegisterViewApp.as_view(), name='google-register-app'),
     path('login/google/', GoogleLoginView.as_view(), name="google-login"),
+    path('login/google/app/', GoogleLoginViewApp.as_view(), name="google-login-app"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('refresh/', CookieTokenRefreshView.as_view(), name="refresh"),
     path('user-details/', UserDetailAPI.as_view()),
