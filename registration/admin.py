@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from import_export.admin import ExportActionMixin
+from import_export import resources
+from import_export.admin import ExportActionMixin, ImportExportActionModelAdmin
 
 from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
 
@@ -29,7 +30,14 @@ class PreCAAdmin(admin.ModelAdmin):
         model = PreCA
 
 
-class UserProfileAdmin(ExportActionMixin, admin.ModelAdmin):
+class UserProfileResource(resources.ModelResource):
+    class Meta:
+        model = UserProfile
+        fields = ('user__first_name', 'user__last_name', 'user__email', 'phone', 'college', 'registration_code', 'amount_paid', 'igmun', 'accomodation_4', 'accomodation_2', 'flagship')
+
+
+class UserProfileAdmin(ImportExportActionModelAdmin):
+    resource_class = UserProfileResource
     list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
     list_filter = ['gender', 'igmun', 'amount_paid', 'accomodation_4', 'accomodation_2', 'is_ca']
     search_fields = ['user__username', 'registration_code', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
