@@ -439,7 +439,21 @@ class GoogleRegisterViewApp(APIView):
         if user is None:
             return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(data={"message": "Registration Successful"}, status=status.HTTP_201_CREATED)
+        data = get_tokens_for_user(user)
+        csrftoken = csrf.get_token(request=request)
+
+        res = Response(
+            data={
+                "message": "Registration Successful",
+                "access": data["access"],
+                "refresh": data["refresh"],
+                "csrftoken": csrftoken,
+            },
+            status=status.HTTP_201_CREATED
+        )
+        res['X-CSRFToken'] = csrftoken
+
+        return res
 
 
 class GoogleLoginView(APIView):
@@ -603,7 +617,21 @@ class GoogleLoginViewApp(APIView):
                 if user is None:
                     return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
 
-                return Response(data={"message": "Logged In Successfully"}, status=status.HTTP_201_CREATED)
+                data = get_tokens_for_user(user)
+                csrftoken = csrf.get_token(request=request)
+
+                res = Response(
+                    data={
+                        "message": "Logged In Successfully",
+                        "access": data["access"],
+                        "refresh": data["refresh"],
+                        "csrftoken": csrftoken,
+                    },
+                    status=status.HTTP_200_OK
+                )
+                res['X-CSRFToken'] = csrftoken
+
+                return res
             else:
                 return Response(data={"message": "You signed up using email and password"}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:

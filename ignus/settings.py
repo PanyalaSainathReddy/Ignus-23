@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
-    'corsheaders'
+    'corsheaders',
+    'import_export'
 ]
 
 # RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
