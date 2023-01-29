@@ -28,7 +28,7 @@ body {
    .res-nav{
     width: 100vw;
     height: 0vh;
-    z-index: 55;
+    z-index: 200000;
     position: fixed;
     background-color: orange;
     transition: height 1s ease-in-out;
@@ -160,7 +160,7 @@ body {
     backdrop-filter: blur( 5.5px ); 
     -webkit-backdrop-filter: blur( 5.5px ); 
     border: 1px solid rgba( 255, 255, 255, 0.18 );
-    z-index: 100;
+    z-index: 2000000;
     position: fixed;
   }
   nav button{
@@ -297,7 +297,14 @@ body {
     align-items: center;
 }
 
-
+.reg-btn{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  background-color: #1d3557 !important;
+  color: #fff !important;
+}
 
 .heading a{
     width: 100%;

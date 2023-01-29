@@ -23,7 +23,7 @@ body {
 }
 
 #home {
-  background-color: salmon;
+  background-color: #fd9458;
   height: 70px;
   width: 70px;
   border-radius: 50%;
@@ -38,9 +38,9 @@ body {
 }
 
 #home img {
-  height: 35px;
-  width: 35px;
-  mix-blend-mode: soft-light;
+  height: 50px;
+  width: 50px;
+  mix-blend-mode: luminosity;
 }
 
 h1 {
