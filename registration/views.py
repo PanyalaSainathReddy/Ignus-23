@@ -412,7 +412,7 @@ class GoogleRegisterView(APIView):
 class GoogleRegisterViewApp(APIView):
     def post(self, request, format=None):
         secret = settings.APP_SECRET
-        incoming_secret = request.headers.get('X-APP')
+        incoming_secret = request.headers.get('X-App')
 
         if secret != incoming_secret:
             return Response(data={"message": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
@@ -601,7 +601,7 @@ class GoogleLoginView(APIView):
 class GoogleLoginViewApp(APIView):
     def post(self, request, format=None):
         secret = settings.APP_SECRET
-        incoming_secret = request.headers.get('X-APP')
+        incoming_secret = request.headers.get('X-App')
 
         if secret != incoming_secret:
             return Response(data={"message": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)

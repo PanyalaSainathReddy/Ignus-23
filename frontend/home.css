@@ -64,7 +64,7 @@ section{
 .res-nav{
   width: 100vw;
   height: 0vh;
-  z-index: 2;
+  z-index: 200000;
   position: absolute;
   background-color: orange;
   transition: height 1s ease-in-out;
@@ -202,7 +202,7 @@ nav{
   backdrop-filter: blur( 5.5px ); 
   -webkit-backdrop-filter: blur( 5.5px ); 
   border: 1px solid rgba( 255, 255, 255, 0.18 );
-  z-index: 100;
+  z-index: 2000000;
 }
 nav button{
   background: transparent;
@@ -219,6 +219,15 @@ button{
 }
 nav button:hover{
   border-bottom: 3px solid #1d3557;
+}
+
+.reg-btn{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  background-color: #1d3557 !important;
+  color: #fff !important;
 }
 
 #aud, .faq_btn{

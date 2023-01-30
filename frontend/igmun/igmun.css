@@ -51,7 +51,7 @@ ul li{
   font-size: 20px;
   color: white;
   min-width: max-content;
-  padding: 2% 0%;
+  padding: 1% 0%;
   transition: all 0.5s ease;
 }
 .res-nav{
@@ -551,4 +551,15 @@ footer img{
   .about-us-text{
     font-size: 14px !important;
   }
+}
+
+
+.reg-btn{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  background-color: #1d3557 !important;
+  color: #fff !important;
+  border: none !important;
 }
