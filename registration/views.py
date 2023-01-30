@@ -682,6 +682,18 @@ class CookieTokenRefreshView(TokenRefreshView):
         return super().finalize_response(request, response, *args, **kwargs)
 
 
+class CookieTokenRefreshViewApp(TokenRefreshView):
+    serializer_class = CookieTokenRefreshSerializer
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        if request.headers.get("refresh"):
+            response["X-CSRFToken"] = csrf.get_token(request=request)
+        else:
+            response.data = {"message": "No Refresh Token Provided"}
+
+        return super().finalize_response(request, response, *args, **kwargs)
+
+
 class UserDetailAPI(APIView):
     permission_classes = [IsAuthenticated]
 
