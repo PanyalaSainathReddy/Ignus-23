@@ -15,6 +15,13 @@ class EventCategoryAdmin(admin.ModelAdmin):
         model = EventType
 
 
+class EventAdmin(admin.ModelAdmin):
+    list_display = ['name', 'get_event_type', 'number_registered', 'published']
+
+    class Meta:
+        model = Event
+
+
 class LocationAdmin(admin.ModelAdmin):
     list_display = ['name', 'latitude', 'longitude', 'iframe']
 
@@ -40,6 +47,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(EventType, EventCategoryAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Organizer, OrganizerAdmin)
 admin.site.register(TeamRegistration, TeamRegistrationAdmin)

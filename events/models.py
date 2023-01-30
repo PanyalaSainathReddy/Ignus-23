@@ -110,6 +110,9 @@ class Event(models.Model):
 
             return venue
 
+    def number_registered(self):
+        return self.userprofile_set.count()
+
     # def get_absolute_url(self):
     #     return reverse("event", kwargs={"slug": self.slug})
 
