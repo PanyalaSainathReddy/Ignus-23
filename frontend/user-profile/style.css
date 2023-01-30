@@ -469,4 +469,6 @@ button{
   }
 }
 
-
+#flagship_container{
+  display: none;
+}
