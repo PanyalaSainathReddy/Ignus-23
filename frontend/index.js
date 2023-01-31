@@ -178,54 +178,24 @@ if(getCookie("LoggedIn")){
 }
 
 
-// aftermovie js
-// const amLightbox = document.querySelector(".am-lightbox");
-// const amClose = amLightbox.children[0];
-// const amBtns = document.querySelectorAll(".am-btn")
-// amBtns.forEach((btn)=>{
-//   btn.addEventListener("click", (e)=>{
-//     let year = btn.innerHTML.substring(0, 4);
-//     amLightbox.style.display = "block";
-//   })
-// })
-// amClose.addEventListener("click", ()=>{
-//   amLightbox.style.display = "none";
-//   document.querySelectorAll("iframe").forEach((ifr)=>{
-//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
-//     const source= ifr.src;
-//     ifr.src = "";
-//     ifr.src = source;
-//   })
-// })
-// amLightbox.addEventListener("click", ()=>{
-//   amLightbox.style.display = "none";
-//   document.querySelectorAll("iframe").forEach((ifr)=>{
-//     // ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
-//     const source= ifr.src;
-//     ifr.src = "";
-//     ifr.src = source;
-//   })
-// })
 
 
+// arrow key funcitonality 
+document.addEventListener("keydown", (e)=>{
+  if(e.code == 'ArrowDown'){
+    container.scrollBy({
+      left: 50,
+      behavior: "smooth"
+    })
+  } else if (e.code == "ArrowUp"){
+    container.scrollBy({
+      left: -50,
+      behavior: "smooth"
+    })
+  }
+  body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)]
+  sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
+  moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
+})
 
 
-// stats js 
-
-// let ctr = 0;
-// container.addEventListener("wheel", (e)=>{
-//   if(Math.floor(container.scrollLeft / window.innerWidth) >= 4 && ctr == 0){
-//     document.querySelectorAll(".stats-tile").forEach((tile)=>{
-//       const stat = tile.children[1].children[0];
-//       let final_val = stat.innerHTML;
-//       stat.innerHTML = 0;
-//       // console.log(tile);
-//       setInterval(()=>{
-//         if(stat.innerHTML != final_val){
-//           stat.innerHTML = parseInt(stat.innerHTML) + 1;
-//         }
-//       }, 50)
-//     })
-//     ctr = 1;
-//   }
-// })
