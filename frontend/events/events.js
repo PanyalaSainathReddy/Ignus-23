@@ -8,7 +8,7 @@ const lbCloseBtn = document.querySelector(".close");
 const lbImg = document.getElementById("lbImg");
 
 
-for(let i=0; i<events_btns.length; i++){
+for(let i=0; i<events_btns.length-7; i++){
   events_btns[i].addEventListener("click", ()=>{
     let key = events_btns[i].innerHTML.toLowerCase();
     key = key.split(" ").join("");
