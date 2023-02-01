@@ -14,6 +14,7 @@ class User(AbstractUser):
     google_picture = models.TextField(default='', blank=True)
     is_google = models.BooleanField(default=False)
     profile_complete = models.BooleanField(default=False)
+    iitj = models.BooleanField(default=False)
 
 
 class PreRegistration(models.Model):
@@ -249,7 +250,7 @@ class UserProfile(models.Model):
     igmun_pref = models.CharField(max_length=1000, default='', blank=True)
 
     class Meta:
-        ordering = ['user__first_name']
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.user.get_full_name()
