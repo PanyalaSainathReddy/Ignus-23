@@ -149,9 +149,22 @@ function getUserProfileDetails() {
         document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
       }
       if(response.data.userprofile.flagship){
-        document.getElementById("flagship_pass").style.display = 'flex';
-        document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
-        document.getElementById("flagship_pass_user_name_and_id").innerHTML = 'Team Leader:' + "<br/>" + response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
+        // document.getElementById("flagship_pass").style.display = 'flex';
+        // document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
+        // document.getElementById("flagship_pass_user_name_and_id").innerHTML = 'Team Leader:' + "<br/>" + response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
+        document.getElementById("flagship_container").style.display = 'block';
+        if(response.data.userprofile.aayaam){
+          document.getElementById("payment_status_note").innerHTML = `You have created a team for Aayaam.`;
+        }
+        else if(response.data.userprofile.antarang){
+          document.getElementById("payment_status_note").innerHTML = `You have created a team for Antarang.`;
+        }
+        else if(response.data.userprofile.nrityansh){
+          document.getElementById("payment_status_note").innerHTML = `You have created a team for Nrityansh.`;
+        }
+        else if(response.data.userprofile.cob){
+          document.getElementById("payment_status_note").innerHTML = `You have created a team for COB.`;
+        }
       }
     }
     else{

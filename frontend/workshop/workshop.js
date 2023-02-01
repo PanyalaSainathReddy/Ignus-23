@@ -8,32 +8,13 @@ const lbCloseBtn = document.querySelector(".close");
 const lbImg = document.getElementById("lbImg");
 
 
-for(let i=0; i<events_btns.length-7; i++){
+for(let i=0; i<events_btns.length; i++){
   events_btns[i].addEventListener("click", ()=>{
     let key = events_btns[i].innerHTML.toLowerCase();
     key = key.split(" ").join("");
     window.location.href = `../event-details/index.html?ref=${key}`;
   })
 }
-
-// for(let i=0; i<events_btns.length; i++){
-//   events_btns[i].addEventListener("click", ()=>{
-//     lightBox.style.display = "block";
-//     let key = events_btns[i].innerHTML.toLowerCase();
-//     key = key.split(" ").join("");
-//     lbImg.src = `../static/events/${key}.jpeg`
-//   })
-// }
-
-// lbCloseBtn.addEventListener("click", ()=>{
-//   lightBox.style.display = "none";
-// })
-
-// lightBox.addEventListener("click", ()=>{
-//   if(lightBox.style.display != "none"){
-//     lightBox.style.display = "none";
-//   }
-// })
 
 for(let i=0; i<5; i++){
   sec[i].style.backgroundColor = colors[i];

@@ -73,6 +73,7 @@ class EventType(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=32)
     # slug = models.SlugField(blank=True, default="")
+    sub_title = models.CharField(max_length=64, blank=True, default="")
     team_id_code = models.CharField(max_length=5, blank=True)
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE, null=True, blank=True, related_name="events", related_query_name="event")
     venue = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)

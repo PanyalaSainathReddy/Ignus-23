@@ -182,9 +182,119 @@ nav button:hover{
 
 body{
   background-color: #F1C270;
-  padding: 50px 15px;
+  padding: 120px 5vw;
+  overflow-x: hidden;
 }
 
+
+
+.blob{
+  position: fixed;
+  top: -15vh;
+  left: -20vw;
+  z-index: -1000;
+}
+.two{
+  top: 50vh;
+  left: 10vw;
+}
+.three{
+  left: 70vw;
+  top: 10vh;
+}
+
+main{
+  /* border: 1px solid black; */
+  min-height: 20vh;
+  display: flex;
+  color: #604726;
+  column-gap: 10vw;
+}
+main h1{font-size: 4.5rem;}
+.left-container{
+  display: flex;
+  flex-direction: column;
+  row-gap: 3vh;
+}
+button{
+  border: none;
+  outline: none;
+}
+a{text-decoration: none; color: #604726;}
+.sidebar{
+  display: flex;
+  flex-direction: column;;
+}
+.sidebar button{
+  width: fit-content;
+}
+
+
+
+.left-container{min-width: fit-content; position: fixed;}
+
+.sidebar a{
+  font-size: 1.2rem;
+  line-height: 3.5rem;
+  font-weight: 600;
+  border-bottom: 2px solid #604726;
+  padding: 0.2rem 0;
+}
+.right-container{
+  width: 70vw;
+  padding: 5vh 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 40vw;
+}
+
+.grid{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 30px;
+  margin: 20px 0;
+}
+
+.person-card{
+  min-height: fit-content;
+  width: 220px;
+  /* height: 195px; */
+  background: url('./../static/teams/card.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  aspect-ratio: 240/390;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-direction: column;
+  row-gap: 3px;
+}
+.profile-pic{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  margin: 10px 0;
+}
+.teams-container{padding-top: 10vh;}
+.person-card h4{color: #FFA61E;}
+.person-card span{color: white; font-size: 14px;}
+.handles{
+  display: flex;
+  justify-content: space-evenly;
+  width: 60%;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.handles img{
+  width: 25px;
+  height: auto;
+  cursor: pointer;
+}
 
 
 
@@ -205,4 +315,33 @@ body{
   font-weight: 600;
   background-color: #1d3557 !important;
   color: #fff !important;
+}
+@media screen and (max-width: 850px){
+  .left-container h1{ font-size: 2.5rem; }
+  .right-container{left: 30vw;}
+  .sidebar a{font-size: 1rem;}
+}
+@media screen and (max-width: 650px){
+  main{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .left-container, .right-container{
+    position: relative;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    /* display: none; */
+  }
+  .sidebar button{text-align: center; width: 100%;}
+  .grid{justify-items: center; row-gap: 15px;}
+  .person-card{width: 150px;}
+  .profile-pic{height: 60px; width: 60px; margin-top: 0;}
+  .person-card h4{font-size: 0.8rem;}
+  .person-card span{font-size: 0.7rem;}
+  .handles img{width: 20px;}
+  .handles{margin-top: 0;}
+
+  body{padding: 80px 0;}
 }
