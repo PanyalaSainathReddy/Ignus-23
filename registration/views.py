@@ -308,7 +308,7 @@ class GoogleRegisterView(APIView):
             user.set_password('google')
             if user_data['email'].split('@')[1] == "iitj.ac.in":
                 user.iitj = True
-            
+
             user.save()
         except Exception:
             params = urlencode({'Error': "User already exists, try to sign-in!"})
