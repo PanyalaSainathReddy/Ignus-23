@@ -39,7 +39,8 @@ class EventType(models.Model):
         ('1', 'Cultural Event'),
         ('2', 'Informal Event'),
         ('3', 'Pronites'),
-        ('4', 'Flagship Event')
+        ('4', 'Flagship Event'),
+        ('5', 'Online Event')
     )
 
     type = models.CharField(max_length=2, choices=ETYPE_CHOICES, default='1')
@@ -85,6 +86,8 @@ class Event(models.Model):
     min_team_size = models.PositiveSmallIntegerField(default=1, help_text='Select minimum number of participants for event.')
     about = RichTextUploadingField(blank=True)
     rank = models.PositiveSmallIntegerField(default=0, help_text='Rank of event in event type')
+    gform_link = models.URLField(blank=True, default="")
+    ol_live = models.BooleanField(default=False)
     # details = RichTextUploadingField(blank=True, default="")
     # results = models.TextField(blank=True, default="")
     # google_form = models.URLField(blank=True)

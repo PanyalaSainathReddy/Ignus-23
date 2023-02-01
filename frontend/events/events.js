@@ -16,6 +16,14 @@ for(let i=0; i<events_btns.length-7; i++){
   })
 }
 
+for(let i=events_btns.length-7; i<events_btns.length; i++){
+  events_btns[i].addEventListener("click", ()=>{
+    let key = events_btns[i].innerHTML.toLowerCase();
+    key = key.split(" ").join("");
+    window.location.href = `../online-event-details/index.html?ref=${key}`;
+  })
+}
+
 // for(let i=0; i<events_btns.length; i++){
 //   events_btns[i].addEventListener("click", ()=>{
 //     lightBox.style.display = "block";

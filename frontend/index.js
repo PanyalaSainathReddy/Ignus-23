@@ -184,12 +184,22 @@ if(getCookie("LoggedIn")){
 document.addEventListener("keydown", (e)=>{
   if(e.code == 'ArrowDown'){
     container.scrollBy({
-      left: 50,
+      left: 500,
       behavior: "smooth"
     })
   } else if (e.code == "ArrowUp"){
     container.scrollBy({
-      left: -50,
+      left: -500,
+      behavior: "smooth"
+    })
+  } else if(e.code == 'ArrowRight'){
+    container.scrollBy({
+      left: 500,
+      behavior: "smooth"
+    })
+  } else if (e.code == "ArrowLeft"){
+    container.scrollBy({
+      left: -500,
       behavior: "smooth"
     })
   }
