@@ -249,7 +249,7 @@ class UserProfile(models.Model):
     igmun_pref = models.CharField(max_length=1000, default='', blank=True)
 
     class Meta:
-        ordering = ['user__first_name']
+        ordering = ['timestamp']
 
     def __str__(self):
         return self.user.get_full_name()
