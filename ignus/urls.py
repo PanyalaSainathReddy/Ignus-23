@@ -14,7 +14,7 @@ urlpatterns = [
     path('api/core-team/', include('team.urls')),
     path('api/accounts/', include('registration.urls')),
     path('api/igmun/', include('igmun.urls')),
-    path("payments/", include('payments.urls')),
+    path('api/payments/', include('payments.urls')),
     path('api/events/', include('events.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

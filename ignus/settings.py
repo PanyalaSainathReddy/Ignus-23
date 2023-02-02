@@ -38,6 +38,9 @@ INSTALLED_APPS = [
 # RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
 # RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
 
+PAYTM_MID = config("PAYTM_MID")
+PAYTM_MERCHANT_KEY = config("PAYTM_MERCHANT_KEY")
+
 AUTH_USER_MODEL = "registration.User"
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -56,10 +59,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ignus.urls'
 
+FRONTEND_URL = config('FRONTEND_URL', cast=str)
+
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-    config('FRONTEND_URL', cast=str),
+    FRONTEND_URL,
 )
 
 APP_SECRET = config('APP_SECRET')
