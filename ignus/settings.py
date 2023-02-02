@@ -12,7 +12,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
-# CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
+CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
 
 INSTALLED_APPS = [
     'registration',
