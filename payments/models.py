@@ -45,14 +45,14 @@ class Transaction(models.Model):
     txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
     bank_txn_id = models.CharField(max_length=100, default="")
     user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
-    status = models.CharField(max_length=20, default="failed")
+    status = models.CharField(max_length=100, default="failed")
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
     amount = models.CharField(max_length=10, default="1.00")
     gateway_name = models.CharField(max_length=20, default="")
     payment_mode = models.CharField(max_length=20, default="UPI")
     resp_code = models.CharField(max_length=5, default="")
     resp_msg = models.CharField(max_length=200, default="")
-    timestamp = models.CharField(max_length=20, default="")
+    timestamp = models.CharField(max_length=100, default="")
 
     class Meta:
         verbose_name_plural = "Transactions"
