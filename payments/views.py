@@ -167,7 +167,9 @@ class PaymentCallback(APIView):
         elif pay_for == "pass-1499.00":
             if user.amount_paid is True:
                 user.flagship = True
-
+        
+        user.save()
+        
         if txn.status == "TXN_FAILURE":
             if from_app:
                 return Response(data={"message": "Payment Failed"}, status=status.HTTP_400_BAD_REQUEST)
