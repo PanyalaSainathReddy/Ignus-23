@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pay</title>
-  </head>
-  <body>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="pay.js"></script>
-    <form>
-      <button id="rzp-pay-button" type="button" onclick="pay()">Pay</button>
-    </form>
-  </body>
+<html>
+   <head>
+      <title>Show Payment Page</title>
+   </head>
+   <body>
+      <center>
+         <h1>Please do not refresh this page...</h1>
+      </center>
+      <form method="post" id="paytm_form" name="paytm">
+          <table border="1">
+            <tbody>
+               <input type="hidden" name="mid" id="mid" value="">
+               <input type="hidden" name="orderId" id="orderId" value="">
+               <input type="hidden" name="txnToken" id="txnToken" value="">
+            </tbody>
+          </table>
+          <script type="text/javascript">
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+              get: (searchParams, prop) => searchParams.get(prop),
+            });
+
+            document.getElementById('mid').value = params.mid;
+            document.getElementById('orderId').value = params.orderId;
+            document.getElementById('txnToken').value = params.txnToken;
+            document.getElementById('paytm_form').action = "https://securegw.paytm.in/theia/api/v1/showPaymentPage?mid=" + params.mid + "&orderId=" + params.orderId;
+            document.paytm.submit();
+          </script>
+      </form>
+   </body>
 </html>
