@@ -104,6 +104,9 @@ h1{
 /* .informal .btn-container button:hover{
   color: #32AFA5;
 } */
+.igmun .btn-container button:hover{
+  color: #d3531a;
+}
 .inf-img{
   position: absolute;
   top:115vh;

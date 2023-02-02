@@ -534,7 +534,7 @@ function registerEvent(event_name){
 	miAPI.post(BASE_URL + 'api/events/register/', body, {
 		headers: {
 			'Content-type': 'application/json; charset=UTF-8',
-			'X-CSRFToken': getCookie('csrftoken'),
+			// 'X-CSRFToken': getCookie('csrftoken'),
 		},
 		withCredentials: true,
 	}).then(function (response) {
@@ -604,7 +604,7 @@ document.getElementById('add_mem_form').addEventListener('submit', function(e){
 	miAPI.put(BASE_URL + 'api/events/update-team/', body, {
 		headers: {
 			'Content-type': 'application/json; charset=UTF-8',
-			'X-CSRFToken': getCookie('csrftoken'),
+			// 'X-CSRFToken': getCookie('csrftoken'),
 		},
 		withCredentials: true,
 	}).then(function (response) {
@@ -663,7 +663,7 @@ document.getElementById('del_team_btn').addEventListener('click', function(){
 		miAPI.delete(BASE_URL + 'api/events/delete-team/', {
 			headers: {
 				'Content-type': 'application/json; charset=UTF-8',
-				'X-CSRFToken': getCookie('csrftoken'),
+				// 'X-CSRFToken': getCookie('csrftoken'),
 			},
 			data: body,
 			withCredentials: true,

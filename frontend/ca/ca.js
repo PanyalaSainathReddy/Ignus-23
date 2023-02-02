@@ -157,7 +157,7 @@ ca_register_btn.addEventListener("click", function(){
         miAPI.post("api/accounts/ca-register/", null, {
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
-            'X-CSRFToken': getCookie('csrftoken'),
+            // 'X-CSRFToken': getCookie('csrftoken'),
           },
           withCredentials: true,
         }

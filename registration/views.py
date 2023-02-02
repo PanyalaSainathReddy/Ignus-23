@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.middleware import csrf
+# from django.middleware import csrf
 from django.shortcuts import redirect
 from rest_framework import exceptions, generics, serializers, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -77,15 +77,15 @@ class LoginView(APIView):
                             samesite='Lax'
                         )
 
-                        response.set_cookie(
-                            key='csrftoken',
-                            value=csrf.get_token(request),
-                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                            secure=True,
-                            domain=".ignus.co.in",
-                            httponly=False,
-                            samesite='Lax'
-                        )
+                        # response.set_cookie(
+                        #     key='csrftoken',
+                        #     value=csrf.get_token(request),
+                        #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        #     secure=True,
+                        #     domain=".ignus.co.in",
+                        #     httponly=False,
+                        #     samesite='Lax'
+                        # )
 
                         response.set_cookie(
                             key='LoggedIn',
@@ -137,7 +137,7 @@ class LoginView(APIView):
                                 samesite='Lax'
                             )
 
-                        response["X-CSRFToken"] = csrf.get_token(request)
+                        # response["X-CSRFToken"] = csrf.get_token(request)
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
@@ -192,15 +192,15 @@ class RegisterUserAPIView(generics.CreateAPIView):
                     samesite='Lax'
                 )
 
-                response.set_cookie(
-                    key='csrftoken',
-                    value=csrf.get_token(request),
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    domain=".ignus.co.in",
-                    httponly=False,
-                    samesite='Lax'
-                )
+                # response.set_cookie(
+                #     key='csrftoken',
+                #     value=csrf.get_token(request),
+                #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                #     secure=True,
+                #     domain=".ignus.co.in",
+                #     httponly=False,
+                #     samesite='Lax'
+                # )
 
                 response.set_cookie(
                     key='LoggedIn',
@@ -253,7 +253,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
                         samesite='Lax'
                     )
 
-                response["X-CSRFToken"] = csrf.get_token(request)
+                # response["X-CSRFToken"] = csrf.get_token(request)
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
             else:
@@ -339,15 +339,15 @@ class GoogleRegisterView(APIView):
                     samesite='Lax'
                 )
 
-                response.set_cookie(
-                    key='csrftoken',
-                    value=csrf.get_token(request),
-                    expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                    secure=True,
-                    domain=".ignus.co.in",
-                    httponly=False,
-                    samesite='Lax'
-                )
+                # response.set_cookie(
+                #     key='csrftoken',
+                #     value=csrf.get_token(request),
+                #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                #     secure=True,
+                #     domain=".ignus.co.in",
+                #     httponly=False,
+                #     samesite='Lax'
+                # )
 
                 response.set_cookie(
                     key='LoggedIn',
@@ -400,7 +400,7 @@ class GoogleRegisterView(APIView):
                         samesite='Lax'
                     )
 
-                response["X-CSRFToken"] = csrf.get_token(request)
+                # response["X-CSRFToken"] = csrf.get_token(request)
                 response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
                 response.data = {"Success": "Registration successfull", "data": data}
                 return response
@@ -446,18 +446,18 @@ class GoogleRegisterViewApp(APIView):
             return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
 
         data = get_tokens_for_user(user)
-        csrftoken = csrf.get_token(request=request)
+        # csrftoken = csrf.get_token(request=request)
 
         res = Response(
             data={
                 "message": "Registration Successful",
                 "access": data["access"],
                 "refresh": data["refresh"],
-                "csrftoken": csrftoken,
+                # "csrftoken": csrftoken,
             },
             status=status.HTTP_201_CREATED
         )
-        res['X-CSRFToken'] = csrftoken
+        # res['X-CSRFToken'] = csrftoken
 
         return res
 
@@ -524,15 +524,15 @@ class GoogleLoginView(APIView):
                             samesite='Lax'
                         )
 
-                        response.set_cookie(
-                            key='csrftoken',
-                            value=csrf.get_token(request),
-                            expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
-                            secure=True,
-                            domain=".ignus.co.in",
-                            httponly=False,
-                            samesite='Lax'
-                        )
+                        # response.set_cookie(
+                        #     key='csrftoken',
+                        #     value=csrf.get_token(request),
+                        #     expires=datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(days=30), "%a, %d-%b-%Y %H:%M:%S GMT"),
+                        #     secure=True,
+                        #     domain=".ignus.co.in",
+                        #     httponly=False,
+                        #     samesite='Lax'
+                        # )
 
                         response.set_cookie(
                             key='LoggedIn',
@@ -587,7 +587,7 @@ class GoogleLoginView(APIView):
                             response['Location'] = 'https://ignus.co.in/index.html'
                         else:
                             response['Location'] = 'https://ignus.co.in/complete-profile/index.html'
-                        response["X-CSRFToken"] = csrf.get_token(request)
+                        # response["X-CSRFToken"] = csrf.get_token(request)
                         response.data = {"Success": "Login successfull", "data": data}
                         return response
                     else:
@@ -624,18 +624,18 @@ class GoogleLoginViewApp(APIView):
                     return Response(data={"message": "Username or Password Invalid"}, status=status.HTTP_404_NOT_FOUND)
 
                 data = get_tokens_for_user(user)
-                csrftoken = csrf.get_token(request=request)
+                # csrftoken = csrf.get_token(request=request)
 
                 res = Response(
                     data={
                         "message": "Logged In Successfully",
                         "access": data["access"],
                         "refresh": data["refresh"],
-                        "csrftoken": csrftoken,
+                        # "csrftoken": csrftoken,
                     },
                     status=status.HTTP_200_OK
                 )
-                res['X-CSRFToken'] = csrftoken
+                # res['X-CSRFToken'] = csrftoken
 
                 return res
             else:
@@ -662,7 +662,7 @@ class LogoutView(APIView):
             res.delete_cookie("isCA", domain=".ignus.co.in")
             res.delete_cookie("ignusID", domain=".ignus.co.in")
             res.delete_cookie("isGoogle", domain=".ignus.co.in")
-            res["X-CSRFToken"] = None
+            # res["X-CSRFToken"] = None
 
             return res
         except Exception:
@@ -684,7 +684,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 samesite='Lax'
             )
 
-        response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
+        # response["X-CSRFToken"] = request.COOKIES.get("csrftoken")
         return super().finalize_response(request, response, *args, **kwargs)
 
 
@@ -693,7 +693,8 @@ class CookieTokenRefreshViewApp(TokenRefreshView):
 
     def finalize_response(self, request, response, *args, **kwargs):
         if request.headers.get("refresh"):
-            response["X-CSRFToken"] = csrf.get_token(request=request)
+            # response["X-CSRFToken"] = csrf.get_token(request=request)
+            pass
         else:
             response.data = {"message": "No Refresh Token Provided"}
 
@@ -747,7 +748,7 @@ class UserProfileAPIView(generics.CreateAPIView):
                 referred_by.save()
 
         response = Response(data={"Message: Profile Created Successfully!"}, status=status.HTTP_201_CREATED)
-        response["X-CSRFToken"] = csrf.get_token(request)
+        # response["X-CSRFToken"] = csrf.get_token(request)
 
         # max_age = request.COOKIES.get('refresh')
         # print("max_age: ", max_age)

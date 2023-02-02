@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             "name", "sub_title", "get_event_type", "get_venue", "start_time", "end_time",
             "cover", "team_event", "max_team_size", "min_team_size", "about",
-            "rank", "published"
+            "rank", "published", "ol_live", "gform_link"
         )
         # extra_kwargs = {
         #     'url': {'lookup_field': 'slug'}

@@ -174,7 +174,7 @@ complete_profile_form.addEventListener('submit', function (e) {
   miAPI.post(BASE_URL + 'api/accounts/user-profile/', body, {
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
-      'X-CSRFToken': getCookie('csrftoken'),
+      // 'X-CSRFToken': getCookie('csrftoken'),
     },
     withCredentials: true,
   }
