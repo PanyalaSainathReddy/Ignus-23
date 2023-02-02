@@ -12,7 +12,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
+# CSRF_TRUSTED_ORIGINS = list(map(lambda x: x[1:-1], config("CSRF_TRUSTED_ORIGINS")[1:-1].split(", ")))
 
 INSTALLED_APPS = [
     'registration',
@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

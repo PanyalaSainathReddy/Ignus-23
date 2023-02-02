@@ -653,3 +653,14 @@ font-size: 110%;
   from {top: 80px; opacity: 1;}
   to {top: 0; opacity: 0;}
 }
+
+/* .reg-btn{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  background-color: #1d3557 !important;
+  color: #fff !important;
+  cursor: pointer;
+  border: none;
+} */
