@@ -237,8 +237,7 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    /* justify-content: center; */
-    padding-left: 5%;
+    justify-content: center;
     font-size: 400%;
     color: #fff;
 }
@@ -654,13 +653,13 @@ font-size: 110%;
   to {top: 0; opacity: 0;}
 }
 
-/* .reg-btn{
+.pay-btn{
   border-radius: 100px;
   padding: 13px 17px;
   min-width: max-content;
   font-weight: 600;
-  background-color: #1d3557 !important;
+  background-color: #1d3557;
   color: #fff !important;
   cursor: pointer;
   border: none;
-} */
+}
