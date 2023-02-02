@@ -49,6 +49,7 @@ class EventTypeView(ListAPIView):
             except UserProfile.DoesNotExist:
                 return Response(serializer.data)
             data['amount_paid'] = userprofile.amount_paid
+            data['iitj'] = user.iitj
             team = None
 
             for event in eventType.events.all():
@@ -161,7 +162,7 @@ class UpdateTeamAPIView(generics.UpdateAPIView):
         except Exception:
             return Response(data={"message": "The Ignus ID you entered does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-        if member.amount_paid:
+        if member.user.iitj or member.amount_paid:
             if team.event not in member.events_registered.all():
                 member.events_registered.add(team.event)
                 team.members.add(member)

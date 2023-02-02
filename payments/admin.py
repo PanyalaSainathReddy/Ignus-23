@@ -1,20 +1,15 @@
 from django.contrib import admin
 
-from .models import Order, Pass, Transaction
+from .models import Order, Transaction
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', "amount", "user", "receipt"]
+    list_display = ['id', "amount", "user"]
 
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['payment_id', "order", "amount", "user", "status"]
-
-
-class PassAdmin(admin.ModelAdmin):
-    list_display = ['name', "amount", "type"]
+    list_display = ['txn_id', "order", "amount", "user", "status"]
 
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Transaction, TransactionAdmin)
-admin.site.register(Pass, PassAdmin)

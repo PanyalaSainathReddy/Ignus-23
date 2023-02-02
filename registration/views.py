@@ -306,6 +306,9 @@ class GoogleRegisterView(APIView):
                 is_google=True,
             )
             user.set_password('google')
+            if user_data['email'].split('@')[1] == "iitj.ac.in":
+                user.iitj = True
+
             user.save()
         except Exception:
             params = urlencode({'Error': "User already exists, try to sign-in!"})
@@ -432,6 +435,9 @@ class GoogleRegisterViewApp(APIView):
             return Response(data={"message": "User Already Exists"}, status=status.HTTP_409_CONFLICT)
 
         user.set_password('google')
+        if data.get('email').split('@')[1] == "iitj.ac.in":
+            user.iitj = True
+
         user.save()
 
         user = authenticate(username=data.get('email'), password='google')

@@ -1,35 +1,38 @@
 from django.db import models
 
 
-class Pass(models.Model):
-    PASS_TYPES = (
-        ('A', 'Accomodation'),
-        ('E', 'Events Participation'),
-        ('F', 'Flagship Events'),
-        ('N', 'Normal Passes')
-    )
+# class Pass(models.Model):
+#     PASS_TYPES = (
+#         ('A', 'Accomodation'),
+#         ('E', 'Events Participation'),
+#         ('F', 'Flagship Events'),
+#         ('N', 'Normal Passes')
+#     )
 
-    name = models.CharField(max_length=50, default="pass")
-    amount = models.IntegerField()
-    type = models.CharField(max_length=1, choices=PASS_TYPES, default='N')
+#     name = models.CharField(max_length=50, default="pass")
+#     amount = models.IntegerField()
+#     type = models.CharField(max_length=1, choices=PASS_TYPES, default='N')
 
-    class Meta:
-        verbose_name_plural = "Passes"
+#     class Meta:
+#         verbose_name_plural = "Passes"
 
-    def __str__(self) -> str:
-        return self.name
+#     def __str__(self) -> str:
+#         return self.name
 
 
 class Order(models.Model):
-    id = models.CharField(max_length=20, unique=True, primary_key=True)
+    id = models.CharField(max_length=30, unique=True, primary_key=True)
     user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
-    amount = models.IntegerField()
-    amount_paid = models.IntegerField()
-    amount_due = models.IntegerField()
+    checksum = models.CharField(max_length=200, default="")
+    pay_for = models.CharField(max_length=100, default="")
+    amount = models.CharField(max_length=10, default="1.00")
     currency = models.CharField(max_length=3, default="INR")
-    receipt = models.CharField(max_length=40)
-    attempts = models.IntegerField()
-    timestamp = models.DateTimeField()
+    request_timestamp = models.CharField(max_length=20, default="")
+    signature = models.CharField(max_length=200, default="")
+    response_timestamp = models.CharField(max_length=20, default="")
+    result_code = models.CharField(max_length=4, default="0000")
+    result_msg = models.CharField(max_length=200, default="")
+    transaction_token = models.CharField(max_length=100, default="")
 
     class Meta:
         verbose_name_plural = "Orders"
@@ -39,25 +42,20 @@ class Order(models.Model):
 
 
 class Transaction(models.Model):
-    payment_id = models.CharField(max_length=20, unique=True, primary_key=True)
+    txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
+    bank_txn_id = models.CharField(max_length=100, default="")
     user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10, default="failed")
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
-    signature = models.CharField(max_length=100, blank=True)
-    captured = models.BooleanField(default=False)
-    description = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(unique=False, blank=True)
-    contact = models.CharField(max_length=15, blank=True)
-    fee = models.IntegerField(blank=True, null=True)
-    tax = models.IntegerField(blank=True, null=True)
-    timestamp = models.DateTimeField()
+    amount = models.CharField(max_length=10, default="1.00")
+    gateway_name = models.CharField(max_length=20, default="")
+    payment_mode = models.CharField(max_length=20, default="UPI")
+    resp_code = models.CharField(max_length=5, default="")
+    resp_msg = models.CharField(max_length=200, default="")
+    timestamp = models.CharField(max_length=20, default="")
 
     class Meta:
         verbose_name_plural = "Transactions"
 
     def __str__(self) -> str:
-        return self.payment_id
-
-    @property
-    def amount(self):
-        return self.order.amount_paid
+        return self.txn_id

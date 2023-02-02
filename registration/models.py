@@ -14,6 +14,7 @@ class User(AbstractUser):
     google_picture = models.TextField(default='', blank=True)
     is_google = models.BooleanField(default=False)
     profile_complete = models.BooleanField(default=False)
+    iitj = models.BooleanField(default=False)
 
 
 class PreRegistration(models.Model):
