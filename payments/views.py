@@ -24,6 +24,7 @@ class InitPaymentAPIView(APIView):
 
     def post(self, request, format=None):
         user = User.objects.get(id=request.user.id)
+
         userprofile = UserProfile.objects.get(
             user=user
         )
@@ -31,23 +32,27 @@ class InitPaymentAPIView(APIView):
         timestamp = round(time() * 1000)
         rand = id_generator()
         order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+        callback_url = "https://api.ignus.co.in/api/payments/callback/"
         mid = settings.PAYTM_MID
         merchant_key = settings.PAYTM_MERCHANT_KEY
         amount = request.data.get('amount')
-        pay_for = request.data.get('pay_for')
+        pay_for = request.data.get('pay_for', '')
         paytm_params = dict()
         paytm_params["body"] = {
             "requestType": "Payment",
             "mid": mid,
             "websiteName": "WEBPROD",
             "orderId": order_id,
-            "callbackUrl": "http://127.0.0.1:8000/api/payments/callback/",
+            "callbackUrl": callback_url,
             "txnAmount": {
                 "value": amount,
                 "currency": "INR"
             },
             "userInfo": {
                 "custId": ignus_id
+            },
+            "extendInfo": {
+                "mercUnqRef": f"Ignus {ignus_id}"
             }
         }
 
@@ -81,113 +86,95 @@ class InitPaymentAPIView(APIView):
         return Response(data={"message": "Order Created Successfully", "txnToken": txnToken, "orderId": order_id, "mid": mid}, status=status.HTTP_201_CREATED)
 
 
-# class PaymentHandlerAPIView(APIView):
-#     def post(self, request, format=None):
-#         error = {}
-#         data = request.data
-
-#         error_code = data.get('error[code]', '')
-#         if error_code:
-#             error["code"] = error_code
-#             error["description"] = data.get('error[description]', '')
-#             error["source"] = data.get('error[source]', '')
-#             error["step"] = data.get('error[step]', '')
-#             error["reason"] = data.get('error[reason]', '')
-#             error["metadata"] = json.loads(data.get('error[metadata]', ''))
-#             payment_id = error["metadata"]["payment_id"]
-#             razorpay_order_id = error["metadata"]["order_id"]
-#             signature = ''
-#         else:
-#             payment_id = data.get('razorpay_payment_id', '')
-#             razorpay_order_id = data.get('razorpay_order_id', '')
-#             signature = data.get('razorpay_signature', '')
-
-#         razorpayClient = setupRazorpay()
-#         razorpayOrder = razorpayClient.order.fetch(razorpay_order_id)
-
-#         order = Order.objects.get(id=razorpay_order_id)
-#         order.amount_paid = razorpayOrder["amount_paid"]
-#         order.amount_due = razorpayOrder["amount_due"]
-#         order.attempts = razorpayOrder["attempts"]
-#         order.save()
-
-#         userprofile = order.user
-
-#         payment = razorpayClient.payment.fetch(payment_id)
-#         payment["created_at"] = datetime.fromtimestamp(payment["created_at"])
-
-#         Transaction.objects.create(
-#             payment_id=payment_id,
-#             user=userprofile,
-#             status=payment["status"],
-#             order=order,
-#             signature=signature,
-#             captured=payment["captured"],
-#             description=payment["description"],
-#             email=payment["email"],
-#             contact=payment["contact"],
-#             fee=payment["fee"],
-#             tax=payment["tax"],
-#             timestamp=payment["created_at"]
-#         )
-
-#         params_dict = {
-#             'razorpay_order_id': razorpay_order_id,
-#             'razorpay_payment_id': payment_id,
-#             'razorpay_signature': signature
-#         }
-
-#         try:
-#             result = razorpayClient.utility.verify_payment_signature(params_dict)
-
-#             if result:
-#                 userprofile.amount_paid = True
-#                 userprofile.save()
-#                 return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/success.html")
-#             else:
-#                 return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/failed.html")
-#         except Exception:
-#             return HttpResponseRedirect(redirect_to="https://ignus.co.in/payments/failed.html")
-
-
 class PaymentCallback(APIView):
     def post(self, request, format=None):
-        print(request.data)
+        from_app = False
+        response_dict = {}
+        secret = settings.APP_SECRET
+        incoming_secret = request.headers.get('X-App', '')
+
+        if secret == incoming_secret:
+            from_app = True
+            response_dict = request.data
+
         data = request.data
-        mid = data.get("MID")
-        order_id = data.get("ORDERID")
-        checksum = data.get("CHECKSUMHASH")
+        order_id = data.get("ORDERID", '')
+        checksum = data.get("CHECKSUMHASH", '')
         merchant_key = settings.PAYTM_MERCHANT_KEY
         frontend_base_url = settings.FRONTEND_URL
         order = Order.objects.get(id=order_id)
-
-        body = {
-            "mid": mid,
-            "orderId": order_id
-        }
-        body = json.dumps(body)
-
-        verified = paytmchecksum.verifySignature(body, merchant_key, checksum)
-        if not verified:
-            print("Checksum Mismatched")
-            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/frontend/payments/failed.html")
+        user = order.user
 
         txn = Transaction.objects.create(
-            txn_id=data.get('TXNID')[0],
-            bank_txn_id=data.get('BANKTXNID')[0],
+            txn_id=data.get('TXNID', ''),
+            bank_txn_id=data.get('BANKTXNID', ''),
             order=order,
-            user=order.user,
-            status=data.get('STATUS')[0],
-            amount=data.get('TXNAMOUNT')[0],
-            gateway_name=data.get('GATEWAYNAME')[0],
-            payment_mode=data.get('PAYMENTMODE')[0],
-            resp_code=data.get('RESPCODE')[0],
-            resp_msg=data.get('RESPMSG')[0],
-            timestamp=data.get('TXNDATE')[0]
+            user=user,
+            status=data.get('STATUS', ''),
+            amount=data.get('TXNAMOUNT', ''),
+            gateway_name=data.get('GATEWAYNAME', ''),
+            payment_mode=data.get('PAYMENTMODE', ''),
+            resp_code=data.get('RESPCODE', ''),
+            resp_msg=data.get('RESPMSG', ''),
+            timestamp=data.get('TXNDATE', '')
         )
         txn.save()
 
+        if not from_app:
+            form = request.POST
+
+            for i in form.keys():
+                response_dict[i] = form[i]
+                if i == 'CHECKSUMHASH':
+                    checksum = form[i]
+
+        verified = paytmchecksum.verifySignature(response_dict, merchant_key, checksum)
+
+        if not verified:
+            print("Checksum Mismatched")
+
+            if from_app:
+                return Response(data={"message": "Invalid Payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
+
+        print("Checksum Matched")
+
+        pay_for = order.pay_for
+
+        if pay_for == "pass-499.00":
+            user.amount_paid = True
+            user.pronites = True
+            user.main_pronite = True
+            user.igmun = False
+        elif pay_for == "pass-2299.00":
+            user.amount_paid = True
+            user.pronites = True
+            user.main_pronite = True
+            user.accomodation_4 = True
+            user.igmun = False
+        elif pay_for == "pass-1500.00":
+            user.amount_paid = True
+            user.pronites = True
+            user.main_pronite = True
+            user.igmun = True
+        elif pay_for == "pass-2500.00":
+            user.amount_paid = True
+            user.pronites = True
+            user.main_pronite = True
+            user.igmun = True
+            user.accomodation_2 = True
+        elif pay_for == "pass-1499.00":
+            if user.amount_paid is True:
+                user.flagship = True
+
         if txn.status == "TXN_FAILURE":
-            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/frontend/payments/failed.html")
+            if from_app:
+                return Response(data={"message": "Payment Failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
         else:
-            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/frontend/payments/success.html")
+            if from_app:
+                return Response(data={"message": "Payment Success"}, status=status.HTTP_200_OK)
+
+            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/user-profile/index.html?status=success")
