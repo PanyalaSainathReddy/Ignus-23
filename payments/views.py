@@ -140,42 +140,42 @@ class PaymentCallback(APIView):
 
         print("Checksum Matched")
 
-        pay_for = order.pay_for
-
-        if pay_for == "pass-499.00":
-            user.amount_paid = True
-            user.pronites = True
-            user.main_pronite = True
-            user.igmun = False
-        elif pay_for == "pass-2299.00":
-            user.amount_paid = True
-            user.pronites = True
-            user.main_pronite = True
-            user.accomodation_4 = True
-            user.igmun = False
-        elif pay_for == "pass-1500.00":
-            user.amount_paid = True
-            user.pronites = True
-            user.main_pronite = True
-            user.igmun = True
-        elif pay_for == "pass-2500.00":
-            user.amount_paid = True
-            user.pronites = True
-            user.main_pronite = True
-            user.igmun = True
-            user.accomodation_2 = True
-        elif pay_for == "pass-1499.00":
-            if user.amount_paid is True:
-                user.flagship = True
-
-        user.save()
-
         if txn.status == "TXN_FAILURE":
             if from_app:
                 return Response(data={"message": "Payment Failed"}, status=status.HTTP_400_BAD_REQUEST)
 
             return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
         else:
+            pay_for = order.pay_for
+
+            if pay_for == "pass-499.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = False
+            elif pay_for == "pass-2299.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.accomodation_4 = True
+                user.igmun = False
+            elif pay_for == "pass-1500.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = True
+            elif pay_for == "pass-2500.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = True
+                user.accomodation_2 = True
+            elif pay_for == "pass-1499.00":
+                if user.amount_paid is True:
+                    user.flagship = True
+
+            user.save()
+
             if from_app:
                 return Response(data={"message": "Payment Success"}, status=status.HTTP_200_OK)
 
