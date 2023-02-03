@@ -256,8 +256,14 @@
 
         <div class="expand_igmun">
           <div class="input-tile" style="width: 70%; margin-top: 0%;">
+            <label>Expirience in MUN</label>
+            <input type="text" id="mun_exp" maxlength="1000">
+          </div>
+
+          <div class="input-tile" style="width: 70%;">
             <label>Committee Preference-1*</label>
             <select id="committee_1" required>
+              <option selected disabled>-- select an option --</option>
               <option value="DISEC">DISEC (Disarmament and International Security)</option>
               <option value="UNHRC">UNHRC (United Nations Human Rights Council)</option>
               <option value="ESS-UNGA">ESS-UNGA (Emergency Special Session UN General Assembly)</option>
@@ -265,17 +271,17 @@
             </select>
           </div>
 
-          <div class="input-tile DISEC_1" style="width: 25%;">
+          <div class="input-tile DISEC_1" style="width: 25%; display: none;">
             <label>DISEC Preference-1*</label>
             <select id="DISEC_11"></select>
           </div>
 
-          <div class="input-tile DISEC_1" style="width: 25%;">
+          <div class="input-tile DISEC_1" style="width: 25%; display: none;">
             <label>DISEC Preference-2*</label>
             <select id="DISEC_12" required></select>
           </div>
 
-          <div class="input-tile DISEC_1" style="width: 25%;">
+          <div class="input-tile DISEC_1" style="width: 25%; display: none;">
             <label>DISEC Preference-3*</label>
             <select id="DISEC_13" required></select>
           </div>
@@ -328,8 +334,9 @@
           <div class="input-tile" style="width: 70%;">
             <label>Committee Preference-2*</label>
             <select id="committee_2" required>
+              <option selected disabled>-- select an option --</option>
               <option value="DISEC">DISEC (Disarmament and International Security)</option>
-              <option selected value="UNHRC" selected>UNHRC (United Nations Human Rights Council)</option>
+              <option value="UNHRC">UNHRC (United Nations Human Rights Council)</option>
               <option value="ESS-UNGA">ESS-UNGA (Emergency Special Session UN General Assembly)</option>
               <option value="LS">LOK SABHA</option>
             </select>
@@ -350,17 +357,17 @@
             <select id="DISEC_23" required></select>
           </div>
 
-          <div class="input-tile UNHRC_2" style="width: 25%;">
+          <div class="input-tile UNHRC_2" style="width: 25%; display: none;">
             <label>UNHRC Preference-1*</label>
             <select id="UNHRC_21" required></select>
           </div>
 
-          <div class="input-tile UNHRC_2" style="width: 25%;">
+          <div class="input-tile UNHRC_2" style="width: 25%; display: none;">
             <label>UNHRC Preference-2*</label>
             <select id="UNHRC_22" required></select>
           </div>
 
-          <div class="input-tile UNHRC_2" style="width: 25%;">
+          <div class="input-tile UNHRC_2" style="width: 25%; display: none;">
             <label>UNHRC Preference-3*</label>
             <select id="UNHRC_23" required></select>
           </div>

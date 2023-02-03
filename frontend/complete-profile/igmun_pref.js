@@ -1,4 +1,5 @@
 var disec_ess_pref_html = `
+              <option selected disabled>-- select an option --</option>
               <option value="Islamic Republic of Afghanistan">Islamic Republic of Afghanistan</option>
               <option value="Republic of Albania">Republic of Albania</option>
               <option value="People's Democratic Republic of Algeria">People's Democratic Republic of Algeria</option>
@@ -193,6 +194,7 @@ var disec_ess_pref_html = `
               <option value="Republic of Zimbabwe">Republic of Zimbabwe</option>`;
 
 var unhrc_pref_html = `
+<option selected disabled>-- select an option --</option>
 <option value="Plurinational State of Bolivia">Plurinational State of Bolivia</option>
 <option value="China">China</option>
 <option value="Côte d'Ivoire">Côte d'Ivoire</option>
@@ -228,6 +230,7 @@ var unhrc_pref_html = `
 <option value="United States of America">United States of America</option>`;
 
 var ls_pref_html = `
+<option selected disabled>-- select an option --</option>
 <option value="ShriA. Raja">ShriA. Raja</option>
 <option value="Shri Narayana SwamyAbbaiah">Shri Narayana SwamyAbbaiah</option>
 <option value="Dr. FarooqAbdullah">Dr. FarooqAbdullah</option>
