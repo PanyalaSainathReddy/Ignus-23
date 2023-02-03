@@ -5,6 +5,19 @@ $(document).ready(function(){
 	});
 });
 
+const params = new Proxy(new URLSearchParams(window.location.search), {
+	get: (searchParams, prop) => searchParams.get(prop),
+});
+
+let stat = params.status;
+
+if(stat == "success"){
+  var x = document.getElementById("snackbar");
+  x.innerHTML = "Your Payment has been Successful!";
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+
 const states = ['', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttarakhand', 'Uttar Pradesh', 'West Bengal', 'Andaman and Nicobar Islands', 'Delhi', 'Chandigarh', 'Dadra and Nagar Haveli', 'Daman and Diu', 'Lakshadweep', 'Puducherry'];
 
 function getCookie(cname) {

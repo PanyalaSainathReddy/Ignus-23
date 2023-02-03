@@ -19,12 +19,23 @@ $(document).ready(function(){
 // 	window.open("https://www.onlinesbi.sbi/sbicollect/icollecthome.htm", "_blank");
 // });
 
-if(sessionStorage.getItem("showmsg") != null){
+const params = new Proxy(new URLSearchParams(window.location.search), {
+	get: (searchParams, prop) => searchParams.get(prop),
+});
+
+let stat = params.status;
+
+if(stat == "failed"){
+  var x = document.getElementById("snackbar");
+  x.innerHTML = "Your Payment has been failed, try again!";
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+else if(stat == "pending"){
 	var x = document.getElementById("snackbar");
-	x.innerHTML = sessionStorage.getItem("showmsg");
+	x.innerHTML = "Your Payment is still Pending!";
 	x.className = "show";
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-	sessionStorage.removeItem("showmsg");
 }
 
 function getCookie(cname) {
