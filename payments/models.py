@@ -40,6 +40,16 @@ class Order(models.Model):
     def __str__(self):
         return self.id
 
+    def transacted(self):
+        if self.transaction_set.count() > 0:
+            return True
+        return False
+
+    def transaction_status(self):
+        if self.transacted():
+            return self.transaction_set.all()[0].status
+        return "NA"
+
 
 class Transaction(models.Model):
     txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
@@ -56,6 +66,7 @@ class Transaction(models.Model):
 
     class Meta:
         verbose_name_plural = "Transactions"
+        ordering = ['-timestamp']
 
     def __str__(self) -> str:
         return self.txn_id

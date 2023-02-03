@@ -4,7 +4,7 @@ from .models import Order, Transaction
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', "amount", "user"]
+    list_display = ['id', "amount", "user", 'pay_for', 'transacted', 'transaction_status']
 
 
 class TransactionAdmin(admin.ModelAdmin):
