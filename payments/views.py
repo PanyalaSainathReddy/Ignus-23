@@ -49,10 +49,14 @@ class InitPaymentAPIView(APIView):
                 "currency": "INR"
             },
             "userInfo": {
-                "custId": ignus_id
+                "custId": ignus_id,
+                "mobile": userprofile.phone,
+                "email": userprofile.user.email,
+                "firstName": userprofile.user.first_name,
+                "lastName": userprofile.user.last_name
             },
             "extendInfo": {
-                "mercUnqRef": f"Ignus {ignus_id}"
+                "mercUnqRef": "Ignus 2023 Payments"
             }
         }
 
