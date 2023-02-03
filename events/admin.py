@@ -1,4 +1,6 @@
 from django.contrib import admin
+from import_export import fields, resources, widgets
+from import_export.admin import ImportExportActionModelAdmin
 
 from .models import Event, EventType, Location, Organizer, TeamRegistration
 
@@ -15,11 +17,21 @@ class EventCategoryAdmin(admin.ModelAdmin):
         model = EventType
 
 
-class EventAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_event_type', 'number_registered', 'published']
+class EventResource(resources.ModelResource):
+    userfield = fields.Field(
+        column_name="registered_users",
+        attribute="userprofile_set",
+        widget=widgets.ManyToManyWidget("registration.UserProfile", field="registration_code", separator="; ")
+    )
 
     class Meta:
         model = Event
+        fields = ('name', 'userfield')
+
+
+class EventAdmin(ImportExportActionModelAdmin):
+    resource_class = EventResource
+    list_display = ['name', 'get_event_type', 'number_registered', 'published']
 
 
 class LocationAdmin(admin.ModelAdmin):

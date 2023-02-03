@@ -136,16 +136,24 @@ class PaymentCallback(APIView):
             if from_app:
                 return Response(data={"message": "Invalid Payment"}, status=status.HTTP_400_BAD_REQUEST)
 
-            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
+            return HttpResponseRedirect(
+                redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
 
         print("Checksum Matched")
 
         if txn.status == "TXN_FAILURE":
             if from_app:
-                return Response(data={"message": "Payment Failed"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
-            return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
-        else:
+            return HttpResponseRedirect(
+                redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
+        elif txn.status == "PENDING":
+            if from_app:
+                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+
+            return HttpResponseRedirect(
+                redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
+        elif txn.status == "TXN_SUCCESS":
             pay_for = order.pay_for
 
             if pay_for == "pass-499.00":
