@@ -113,6 +113,7 @@ complete_profile_form.addEventListener('submit', function (e) {
   var referral_code = document.getElementById('referral_code').value
   var igmun_checkbox = document.getElementById('igmun_checkbox');
   var igmun_pref = '';
+  var mun_exp = '';
 
   if (igmun_checkbox.checked) {
     var committee_1 = document.getElementById('committee_1').value;
@@ -158,6 +159,7 @@ complete_profile_form.addEventListener('submit', function (e) {
       var pref_23 = document.getElementById('LS_23').value;
     }
     igmun_pref = '{(1) ' + committee_1 + ' || (1a) ' + pref_11 + ' || (1b) ' + pref_12 + ' || (1c) ' + pref_13 + '}, {(2) ' + committee_2 + ' || (2a) ' + pref_21 + ' || (2b) ' + pref_22 + ' || (2c) ' + pref_23 + ' }';
+    mun_exp = document.getElementById('mun_exp').value;
   }
   
   var body = {
@@ -169,6 +171,7 @@ complete_profile_form.addEventListener('submit', function (e) {
     referral_code: referral_code,
     igmun: igmun_checkbox.checked,
     igmun_pref: igmun_pref,
+    mun_exp: mun_exp,
   }
 
   miAPI.post(BASE_URL + 'api/accounts/user-profile/', body, {

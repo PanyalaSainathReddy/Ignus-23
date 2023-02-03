@@ -735,7 +735,8 @@ class UserProfileAPIView(generics.CreateAPIView):
             college=request.data['college'],
             state=request.data['state'],
             igmun=request.data["igmun"],
-            igmun_pref=request.data["igmun_pref"]
+            igmun_pref=request.data["igmun_pref"],
+            mun_exp=request.data["mun_exp"]
         )
         userprofile.save()
 
