@@ -92,25 +92,36 @@ class InitPaymentAPIView(APIView):
 
 class PaymentCallback(APIView):
     def post(self, request, format=None):
+        print("Paytm Callback Data: ", request.data)
+
         from_app = False
         response_dict = {}
         secret = settings.APP_SECRET
+        frontend_base_url = settings.FRONTEND_URL
         incoming_secret = request.headers.get('X-App', '')
+        txn_id = request.data.get('TXNID', '')
+        print("TXN ID: ", txn_id)
 
         if secret == incoming_secret:
             from_app = True
             response_dict = request.data
 
+        if txn_id == '':
+            if from_app:
+                return Response(data={"message": "Payment Incomplete"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return HttpResponseRedirect(
+                redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=incomplete")
+
         data = request.data
         order_id = data.get("ORDERID", '')
         checksum = data.get("CHECKSUMHASH", '')
         merchant_key = settings.PAYTM_MERCHANT_KEY
-        frontend_base_url = settings.FRONTEND_URL
         order = Order.objects.get(id=order_id)
         user = order.user
 
         txn = Transaction.objects.create(
-            txn_id=data.get('TXNID', ''),
+            txn_id=txn_id,
             bank_txn_id=data.get('BANKTXNID', ''),
             order=order,
             user=user,
@@ -146,12 +157,16 @@ class PaymentCallback(APIView):
         print("Checksum Matched")
 
         if txn.status == "TXN_FAILURE":
+            # send_mail(txn)
+
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "PENDING":
+            # send_mail(txn)
+
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -187,6 +202,8 @@ class PaymentCallback(APIView):
                     user.flagship = True
 
             user.save()
+
+            # send_mail(txn)
 
             if from_app:
                 return Response(data={"message": "Payment Success"}, status=status.HTTP_200_OK)
