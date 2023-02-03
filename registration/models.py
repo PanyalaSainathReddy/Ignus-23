@@ -248,6 +248,7 @@ class UserProfile(models.Model):
     nrityansh = models.BooleanField(default=False)
     cob = models.BooleanField(default=False)
     igmun_pref = models.CharField(max_length=1000, default='', blank=True)
+    mun_exp = models.CharField(max_length=1000, default="", blank=True)
 
     class Meta:
         ordering = ['timestamp']
