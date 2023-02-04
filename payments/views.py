@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http.response import HttpResponseRedirect
 from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,6 +18,136 @@ from .models import Order, Transaction
 from .utils import id_generator
 
 User = get_user_model()
+
+
+def get_na_orders():
+    na_orders = []
+    orders = Order.objects.all()
+
+    for order in orders:
+        if order.transaction_set.count() == 0:
+            na_orders.append(order)
+
+    return na_orders
+
+
+def get_pending_transactions():
+    return Transaction.objects.filter(status="PENDING").all()
+
+
+def get_payment_status(order_id):
+    mid = settings.PAYTM_MID
+    merchant_key = settings.PAYTM_MERCHANT_KEY
+
+    paytm_params = dict()
+    paytm_params["body"] = {
+        "mid": mid,
+        "orderId": order_id
+    }
+
+    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+
+    paytm_params["head"] = {
+        "signature": checksum
+    }
+
+    data = json.dumps(paytm_params)
+    url = "https://securegw.paytm.in/v3/order/status"
+
+    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+    return response
+
+
+@api_view(['POST'])
+def update_payments(request):
+    na_orders = get_na_orders()
+    pending_txns = get_pending_transactions()
+
+    updated_transactions = []
+
+    print("Updating NA Orders...")
+    for order in na_orders:
+        data = get_payment_status(order.id)
+        # head = data["head"]
+        body = data["body"]
+
+        txn = Transaction.objects.create(
+            txn_id=body.get('txnId', ''),
+            bank_txn_id=data.get('BANKTXNID', ''),
+            order=order,
+            user=order.user,
+            status=body["resultInfo"].get('resultStatus', ''),
+            amount=body.get('txnAmount', ''),
+            gateway_name=body.get('gatewayName', ''),
+            payment_mode=body.get('paymentMode', ''),
+            resp_code=body["resultInfo"].get('resultCode', ''),
+            resp_msg=body["resultInfo"].get('resultMsg', ''),
+            timestamp=body.get('txnDate', '')
+        )
+        txn.save()
+
+        updated_transactions.append(txn)
+
+    print("Updating Pending Transactions...")
+    for t in pending_txns:
+        data = get_payment_status(t.order.id)
+        # head = data["head"]
+        body = data["body"]
+
+        t.txn_id = body.get('txnId', '')
+        t.bank_txn_id = data.get('BANKTXNID', '')
+        t.order = order
+        t.user = order.user
+        t.status = body["resultInfo"].get('resultStatus', '')
+        t.amount = body.get('txnAmount', '')
+        t.gateway_name = body.get('gatewayName', '')
+        t.payment_mode = body.get('paymentMode', '')
+        t.resp_code = body["resultInfo"].get('resultCode', '')
+        t.resp_msg = body["resultInfo"].get('resultMsg', '')
+        t.timestamp = body.get('txnDate', '')
+
+        t.save()
+
+        updated_transactions.append(t)
+
+    for txn in updated_transactions:
+        if txn.status == 'TXN_SUCCESS':
+            user = txn.user
+            order = txn.order
+            pay_for = order.pay_for
+
+            if pay_for == "pass-499.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = False
+            elif pay_for == "pass-2299.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.accomodation_4 = True
+                user.igmun = False
+            elif pay_for == "pass-1500.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = True
+            elif pay_for == "pass-2500.00":
+                user.amount_paid = True
+                user.pronites = True
+                user.main_pronite = True
+                user.igmun = True
+                user.accomodation_2 = True
+            elif pay_for == "pass-1499.00":
+                if user.amount_paid is True:
+                    user.flagship = True
+
+            user.save()
+
+    print("Updated Transactions")
+
+    return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
 
 
 class InitPaymentAPIView(APIView):
