@@ -74,7 +74,7 @@ def update_payments(request):
 
         txn = Transaction.objects.create(
             txn_id=body.get('txnId', ''),
-            bank_txn_id=data.get('BANKTXNID', ''),
+            bank_txn_id=body.get('bankTxnId', ''),
             order=order,
             user=order.user,
             status=body["resultInfo"].get('resultStatus', ''),
@@ -96,9 +96,7 @@ def update_payments(request):
         body = data["body"]
 
         t.txn_id = body.get('txnId', '')
-        t.bank_txn_id = data.get('BANKTXNID', '')
-        t.order = order
-        t.user = order.user
+        t.bank_txn_id = body.get('bankTxnId', '')
         t.status = body["resultInfo"].get('resultStatus', '')
         t.amount = body.get('txnAmount', '')
         t.gateway_name = body.get('gatewayName', '')
