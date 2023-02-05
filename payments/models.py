@@ -75,7 +75,7 @@ class Transaction(models.Model):
 class PromoCode(models.Model):
     code = models.CharField(max_length=20, unique=True, primary_key=True)
     pass_name = models.CharField(max_length=100, default='')
-    discounted_amount = models.CharField(maxlenght=10, default='0.00')
+    discounted_amount = models.CharField(maxlength=10, default='0.00')
     max_uses = models.IntegerField(default=1)
     uses = models.IntegerField(default=0)
     valid = models.BooleanField(default=True)
