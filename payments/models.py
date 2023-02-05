@@ -70,3 +70,27 @@ class Transaction(models.Model):
 
     def __str__(self) -> str:
         return self.txn_id
+
+
+class PromoCode(models.Model):
+    code = models.CharField(max_length=20, unique=True, primary_key=True)
+    pass_name = models.CharField(max_length=100, default='')
+    discounted_amount = models.CharField(maxlenght=10, default='0.00')
+    max_uses = models.IntegerField(default=1)
+    uses = models.IntegerField(default=0)
+    valid = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = "Promo Codes"
+
+    def __str__(self) -> str:
+        return self.code
+
+    def is_valid(self):
+        if self.valid and self.uses < self.max_uses:
+            return True
+        return False
+
+    def use(self):
+        self.uses += 1
+        self.save()

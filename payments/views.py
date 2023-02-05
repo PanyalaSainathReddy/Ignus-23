@@ -14,7 +14,8 @@ from rest_framework.views import APIView
 
 from registration.models import UserProfile
 
-from .models import Order, Transaction
+from .models import Order, Transaction, PromoCode
+from events.models import Event, TeamRegistration
 from .utils import id_generator
 
 User = get_user_model()
@@ -166,6 +167,23 @@ class InitPaymentAPIView(APIView):
         merchant_key = settings.PAYTM_MERCHANT_KEY
         amount = request.data.get('amount')
         pay_for = request.data.get('pay_for', '')
+        promo_code = request.data.get('promo_code', '')
+
+        if promo_code:
+            try:
+                promo = PromoCode.objects.get(code=promo_code)
+
+                if pay_for == promo.pass_name:
+                    if promo.is_valid():
+                        amount = promo.discounted_amount
+                        promo.use()
+                    else:
+                        return Response(data={"message": "Promo Code Expired!"}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response(data={"message": "Promo Code is not valid for this Pass"}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                return Response(data={"message": "Invalid Promo Code"}, status=status.HTTP_400_BAD_REQUEST)
+
         paytm_params = dict()
         paytm_params["body"] = {
             "requestType": "Payment",
@@ -275,7 +293,7 @@ class PaymentCallback(APIView):
         verified = paytmchecksum.verifySignature(response_dict, merchant_key, checksum)
 
         if not verified:
-            print("Checksum Mismatched")
+            # print("Checksum Mismatched")
 
             if from_app:
                 return Response(data={"message": "Invalid Payment"}, status=status.HTTP_400_BAD_REQUEST)
@@ -283,7 +301,7 @@ class PaymentCallback(APIView):
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
 
-        print("Checksum Matched")
+        # print("Checksum Matched")
 
         if txn.status == "TXN_FAILURE":
             # send_mail(txn)
@@ -326,9 +344,62 @@ class PaymentCallback(APIView):
                 user.main_pronite = True
                 user.igmun = True
                 user.accomodation_2 = True
-            elif pay_for == "pass-1499.00":
+            elif pay_for == "pass-1800.00":
+                user.accomodation_4 = True
+            elif pay_for == "pass-1000.00":
+                user.accomodation_2 = True
+            elif pay_for == "pass-1499.00-antarang":
                 if user.amount_paid is True:
                     user.flagship = True
+                    user.antarang = True
+                    event = Event.objects.get(name='Antarang')
+                    user.events_registered.add(event)
+                    user.save()
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+                    return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/event-details/index.html?ref=antarang&status=success")
+            elif pay_for == "pass-1499.00-nrityansh":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.nrityansh = True
+                    event = Event.objects.get(name='Nrityansh')
+                    user.events_registered.add(event)
+                    user.save()
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+                    return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/event-details/index.html?ref=nrityansh&status=success")
+            elif pay_for == "pass-1499.00-aayaam":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.aayaam = True
+                    event = Event.objects.get(name='Aayaam')
+                    user.events_registered.add(event)
+                    user.save()
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+                    return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/event-details/index.html?ref=aayaam&status=success")
+            elif pay_for == "pass-1499.00-clashofbands":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.cob = True
+                    event = Event.objects.get(name='Thunder Beats')
+                    user.events_registered.add(event)
+                    user.save()
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+                    return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/event-details/index.html?ref=clashofbands&status=success")
 
             user.save()
 

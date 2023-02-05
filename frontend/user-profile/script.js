@@ -137,7 +137,6 @@ function getUserProfileDetails() {
     }
     if(response.data.userprofile.amount_paid){
       get_pass_btn.style.display = 'none';
-      document.getElementById("note").style.display = 'none';
       if(response.data.userprofile.pronites){
         document.getElementById("pronite_pass").style.display = 'flex';
         if(response.data.userprofile.igmun){
@@ -162,28 +161,52 @@ function getUserProfileDetails() {
         document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
       }
       if(response.data.userprofile.flagship){
-        // document.getElementById("flagship_pass").style.display = 'flex';
-        // document.getElementById("qr_code").innerHTML = response.data.userprofile.qr_code;
-        // document.getElementById("flagship_pass_user_name_and_id").innerHTML = 'Team Leader:' + "<br/>" + response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
         document.getElementById("flagship_container").style.display = 'block';
+        var flagship_note = `You are the team leader of `;
+        var first_flagship_event = true;
         if(response.data.userprofile.aayaam){
-          document.getElementById("payment_status_note").innerHTML = `You have created a team for Aayaam.`;
+          if(first_flagship_event){
+            flagship_note += `Aayaam`;
+            first_flagship_event = false;
+          }
+          else{
+            flagship_note += `, Aayaam`;
+          }
         }
         else if(response.data.userprofile.antarang){
-          document.getElementById("payment_status_note").innerHTML = `You have created a team for Antarang.`;
+          if(first_flagship_event){
+            flagship_note += `Antarang`;
+            first_flagship_event = false;
+          }
+          else{
+            flagship_note += `, Antarang`;
+          }
         }
         else if(response.data.userprofile.nrityansh){
-          document.getElementById("payment_status_note").innerHTML = `You have created a team for Nrityansh.`;
+          if(first_flagship_event){
+            flagship_note += `Nrityansh`;
+            first_flagship_event = false;
+          }
+          else{
+            flagship_note += `, Nrityansh`;
+          }
         }
         else if(response.data.userprofile.cob){
-          document.getElementById("payment_status_note").innerHTML = `You have created a team for COB.`;
+          if(first_flagship_event){
+            flagship_note += `Clash of Bands`;
+            first_flagship_event = false;
+          }
+          else{
+            flagship_note += `, Clash of Bands`;
+          }
         }
+        flagship_note += `.`;
+        document.getElementById("payment_status_note").innerHTML = flagship_note;
       }
     }
     else{
       document.getElementById("pronite_pass").style.display = 'none';
       get_pass_btn.style.display = 'block';
-      document.getElementById("note").style.display = 'block';
     }
   })
   .catch(function (error) {

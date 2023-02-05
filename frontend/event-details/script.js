@@ -26,6 +26,15 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 });
 
 let slug = params.ref;
+let stat = params.status;
+
+if(stat == "success"){
+	var x = document.getElementById("snackbar");
+	x.innerHTML = 'Payment Successful!';
+	x.style.backgroundColor = "#4CAF50";
+	x.className = "show";
+	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
 
 const BASE_URL = "https://api.ignus.co.in/";
 const URL_USER_AUTHENTICATE= "api/accounts/login/";
@@ -316,26 +325,7 @@ function createCompleteEventDetails(data){
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						if(data.flagship == true){
-							if(data.aayaam == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-							}
-							else if(data.antarang == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-							}
-							else if(data.cob == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-							}
-							else if(data.nrityansh == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-							}
-							else{
-								desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-							}
-						}
-						else{
-							desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-						}
+						desDivHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -393,26 +383,7 @@ function createCompleteEventDetails(data){
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						if(data.flagship == true){
-							if(data.aayaam == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-							}
-							else if(data.antarang == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-							}
-							else if(data.cob == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-							}
-							else if(data.nrityansh == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-							}
-							else{
-								desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-							}
-						}
-						else{
-							desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-						}
+						desDivHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -468,26 +439,7 @@ function createCompleteEventDetails(data){
 			}
 			else{
 				if(data.name == "Flagship Event"){
-					if(data.flagship == true){
-						if(data.aayaam == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-						}
-						else if(data.antarang == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-						}
-						else if(data.cob == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-						}
-						else if(data.nrityansh == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-						}
-						else{
-							desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-						}
-					}
-					else{
-						desDivMobHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-					}
+					desDivMobHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 				}
 				else{
 					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -695,4 +647,34 @@ if(sessionStorage.getItem("showmsg") != null){
 	x.className = "show";
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 	sessionStorage.removeItem("showmsg");
+}
+
+function pay(pay_amount, reference_name){
+	var body = {
+		amount: pay_amount,
+		pay_for: "pass-" + pay_amount + "-" + reference_name,
+		promo_code: '',
+	}
+
+	miAPI.post(BASE_URL + 'api/payments/init-payment/', body, {
+	headers: {
+		'Content-type': 'application/json; charset=UTF-8',
+	},
+	withCredentials: true,
+	}
+	)
+	.then(function (response) {
+		console.log(response);
+		var mid = response.data.mid;
+		var orderId = response.data.orderId;
+		var txnToken = response.data.txnToken;
+		window.location.href = "https://ignus.co.in/payments/pay.html?mid=" + mid + "&orderId=" + orderId + "&txnToken=" + txnToken;
+	})
+	.catch(function (error) {
+		console.log(error);
+		// handle error
+	})
+	.finally(function () {
+		// always executed
+	});
 }
