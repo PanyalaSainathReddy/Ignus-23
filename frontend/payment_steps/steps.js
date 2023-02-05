@@ -252,9 +252,9 @@ function pay(pay_amount, promo_code){
 	})
 	.catch(function (error) {
 		console.log(error);
-		if(error.status == 400){
+		if(error.response.status == 400){
 			var x = document.getElementById("snackbar");
-			x.innerHTML = error.data.message;
+			x.innerHTML = error.response.data.message;
 			x.className = "show";
 			setTimeout(function(){
 				x.className = x.className.replace("show", "");
