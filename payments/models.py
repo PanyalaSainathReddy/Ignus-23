@@ -22,7 +22,7 @@ from django.db import models
 
 class Order(models.Model):
     id = models.CharField(max_length=30, unique=True, primary_key=True)
-    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING, null=True, blank=True)
     checksum = models.CharField(max_length=200, default="")
     pay_for = models.CharField(max_length=100, default="")
     amount = models.CharField(max_length=10, default="1.00")
@@ -50,11 +50,14 @@ class Order(models.Model):
             return self.transaction_set.all()[0].status
         return "NA"
 
+    def is_random(self):
+        return self.id[:11] == "IG-RAN-0000"
+
 
 class Transaction(models.Model):
     txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
     bank_txn_id = models.CharField(max_length=100, default="")
-    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING)
+    user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING, null=True, blank=True)
     status = models.CharField(max_length=100, default="failed")
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
     amount = models.CharField(max_length=10, default="1.00")
