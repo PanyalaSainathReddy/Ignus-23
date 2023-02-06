@@ -104,15 +104,14 @@ function check(){
 function change(res){
 	pass_btn_499 = document.getElementById("get_pass_499");
 	pass_btn_2299 = document.getElementById("get_pass_2299");
-	// pass_btn_1499 = document.getElementById("get_pass_1499");
 	pass_btn_1500 = document.getElementById("get_pass_1500");
 	pass_btn_2500 = document.getElementById("get_pass_2500");
 	pass_div_499 = document.getElementById("pass-tile-499");
 	pass_div_2299 = document.getElementById("pass-tile-2299");
-	// pass_div_1499 = document.getElementById("pass-tile-1499");
 	pass_div_1500 = document.getElementById("pass-tile-1500");
 	pass_div_2500 = document.getElementById("pass-tile-2500");
-	// add_accomodation_btn = document.getElementById("add_accomodation_btn");
+	add_accomodation_btn = document.getElementById("add_accomodation_btn");
+	upper_btn_div = document.getElementById("upper_btn_div");
 
 	console.log(res);
 
@@ -122,10 +121,6 @@ function change(res){
 			pass_btn_2299.disabled = true;
 			pass_btn_1500.disabled = true;
 			pass_btn_2500.disabled = true;
-			pass_btn_499.style.backgroundColor = "grey";
-			pass_btn_2299.style.backgroundColor = "grey";
-			pass_btn_1500.style.backgroundColor = "grey";
-			pass_btn_2500.style.backgroundColor = "grey";
 
 			if(res.data.userprofile.igmun){
 				if(res.data.userprofile.accomodation_2){
@@ -141,8 +136,11 @@ function change(res){
 					pass_div_499.style.display = "none";
 					pass_div_2299.style.display = "none";
 					pass_div_2500.style.display = "none";
-					// add_accomodation_btn.style.display = "block";
-					// add_accomodation_btn.addEventListener("click", pay('1000.00', ''));
+					upper_btn_div.style.margin = "0px auto 20px";
+					add_accomodation_btn.style.display = "block";
+					add_accomodation_btn.addEventListener("click", function(){
+						pay('1000.00', '');
+					});
 				}
 			}
 			else{
@@ -159,8 +157,11 @@ function change(res){
 					pass_div_2299.style.display = "none";
 					pass_div_1500.style.display = "none";
 					pass_div_2500.style.display = "none";
-					// add_accomodation_btn.style.display = "block";
-					// add_accomodation_btn.addEventListener("click", pay('1800.00', ''));
+					upper_btn_div.style.margin = "0px auto 20px";
+					add_accomodation_btn.style.display = "block";
+					add_accomodation_btn.addEventListener("click", function(){
+						pay('1800.00', '');
+					});
 				}
 			}
 		}
