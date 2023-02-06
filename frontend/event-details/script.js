@@ -142,9 +142,9 @@ function createEventDetails(data, x){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -186,9 +186,9 @@ function createEventDetails(data, x){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -228,9 +228,9 @@ function createEventDetails(data, x){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
@@ -300,9 +300,9 @@ function createCompleteEventDetails(data){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -358,9 +358,9 @@ function createCompleteEventDetails(data){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -414,9 +414,9 @@ function createCompleteEventDetails(data){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
