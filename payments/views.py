@@ -293,9 +293,54 @@ def update_payments(request):
                 user.main_pronite = True
                 user.igmun = True
                 user.accomodation_2 = True
-            elif pay_for == "pass-1499.00":
+            elif pay_for == "pass-1800.00":
+                user.accomodation_4 = True
+            elif pay_for == "pass-1000.00":
+                user.accomodation_2 = True
+            elif pay_for == "pass-1499.00-antarang":
                 if user.amount_paid is True:
                     user.flagship = True
+                    user.antarang = True
+                    event = Event.objects.get(name='Antarang')
+                    user.events_registered.add(event)
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+            elif pay_for == "pass-1499.00-nrityansh":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.nrityansh = True
+                    event = Event.objects.get(name='Nrityansh')
+                    user.events_registered.add(event)
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+            elif pay_for == "pass-1499.00-aayaam":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.aayaam = True
+                    event = Event.objects.get(name='Aayaam')
+                    user.events_registered.add(event)
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
+            elif pay_for == "pass-1499.00-clashofbands":
+                if user.amount_paid is True:
+                    user.flagship = True
+                    user.cob = True
+                    event = Event.objects.get(name='Thunder Beats')
+                    user.events_registered.add(event)
+                    team = TeamRegistration.objects.create(
+                        leader=user,
+                        event=event
+                    )
+                    team.save()
 
             user.save()
 
