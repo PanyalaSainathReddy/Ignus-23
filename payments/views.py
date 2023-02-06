@@ -5,7 +5,8 @@ import paytmchecksum
 import requests
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
@@ -57,6 +58,143 @@ def get_payment_status(order_id):
     response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
 
     return response
+
+
+class InitPaymentAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+
+        userprofile = UserProfile.objects.get(
+            user=user
+        )
+        ignus_id = userprofile.registration_code
+        timestamp = round(time() * 1000)
+        rand = id_generator()
+        order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+        callback_url = "https://api.ignus.co.in/api/payments/callback/"
+        mid = settings.PAYTM_MID
+        merchant_key = settings.PAYTM_MERCHANT_KEY
+        amount = request.data.get('amount')
+        pay_for = request.data.get('pay_for', '')
+        paytm_params = dict()
+        paytm_params["body"] = {
+            "requestType": "Payment",
+            "mid": mid,
+            "websiteName": "WEBPROD",
+            "orderId": order_id,
+            "callbackUrl": callback_url,
+            "txnAmount": {
+                "value": amount,
+                "currency": "INR"
+            },
+            "userInfo": {
+                "custId": ignus_id,
+                "mobile": userprofile.phone,
+                "email": userprofile.user.email,
+                "firstName": userprofile.user.first_name,
+                "lastName": userprofile.user.last_name
+            },
+            "extendInfo": {
+                "mercUnqRef": "Ignus 2023 Payments"
+            }
+        }
+
+        checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+        paytm_params["head"] = {
+            "signature": checksum
+        }
+
+        data = json.dumps(paytm_params)
+        url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+        response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+        txnToken = response["body"]["txnToken"]
+        order = Order.objects.create(
+            id=order_id,
+            user=userprofile,
+            checksum=checksum,
+            pay_for=pay_for,
+            amount=amount,
+            currency="INR",
+            request_timestamp=str(timestamp),
+            response_timestamp=str(response["head"]["responseTimestamp"]),
+            signature=response["head"]["signature"],
+            result_code=response["body"]["resultInfo"]["resultCode"],
+            result_msg=response["body"]["resultInfo"]["resultMsg"],
+            transaction_token=txnToken
+        )
+        order.save()
+
+        return Response(data={"message": "Order Created Successfully", "txnToken": txnToken, "orderId": order_id, "mid": mid}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def random_payment(request):
+    return render(template_name='payments/random_payment.html', request=request)
+
+
+@api_view(['POST'])
+def generate_random_payment_link(request):
+    timestamp = round(time() * 1000)
+    rand = id_generator()
+    ignus_id = "IG-RAN-0000"
+    order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+    callback_url = "https://api.ignus.co.in/api/payments/callback/"
+    mid = settings.PAYTM_MID
+    merchant_key = settings.PAYTM_MERCHANT_KEY
+    amount = request.data.get('amount')
+    pay_for = request.data.get('pay_for', '')
+    paytm_params = dict()
+    paytm_params["body"] = {
+        "requestType": "Payment",
+        "mid": mid,
+        "websiteName": "WEBPROD",
+        "orderId": order_id,
+        "callbackUrl": callback_url,
+        "txnAmount": {
+            "value": amount,
+            "currency": "INR"
+        },
+        "userInfo": {
+            "custId": ignus_id,
+        },
+        "extendInfo": {
+            "mercUnqRef": "Ignus 2023 Payments"
+        }
+    }
+
+    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+    paytm_params["head"] = {
+        "signature": checksum
+    }
+
+    data = json.dumps(paytm_params)
+    url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+    txnToken = response["body"]["txnToken"]
+    order = Order.objects.create(
+        id=order_id,
+        user=None,
+        checksum=checksum,
+        pay_for=pay_for,
+        amount=amount,
+        currency="INR",
+        request_timestamp=str(timestamp),
+        response_timestamp=str(response["head"]["responseTimestamp"]),
+        signature=response["head"]["signature"],
+        result_code=response["body"]["resultInfo"]["resultCode"],
+        result_msg=response["body"]["resultInfo"]["resultMsg"],
+        transaction_token=txnToken
+    )
+    order.save()
+
+    link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
+    return HttpResponse(content=link)
 
 
 @api_view(['POST'])
@@ -148,81 +286,9 @@ def update_payments(request):
     return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
 
 
-class InitPaymentAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, format=None):
-        user = User.objects.get(id=request.user.id)
-
-        userprofile = UserProfile.objects.get(
-            user=user
-        )
-        ignus_id = userprofile.registration_code
-        timestamp = round(time() * 1000)
-        rand = id_generator()
-        order_id = ignus_id+"-"+str(timestamp)+"-"+rand
-        callback_url = "https://api.ignus.co.in/api/payments/callback/"
-        mid = settings.PAYTM_MID
-        merchant_key = settings.PAYTM_MERCHANT_KEY
-        amount = request.data.get('amount')
-        pay_for = request.data.get('pay_for', '')
-        paytm_params = dict()
-        paytm_params["body"] = {
-            "requestType": "Payment",
-            "mid": mid,
-            "websiteName": "WEBPROD",
-            "orderId": order_id,
-            "callbackUrl": callback_url,
-            "txnAmount": {
-                "value": amount,
-                "currency": "INR"
-            },
-            "userInfo": {
-                "custId": ignus_id,
-                "mobile": userprofile.phone,
-                "email": userprofile.user.email,
-                "firstName": userprofile.user.first_name,
-                "lastName": userprofile.user.last_name
-            },
-            "extendInfo": {
-                "mercUnqRef": "Ignus 2023 Payments"
-            }
-        }
-
-        checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
-        paytm_params["head"] = {
-            "signature": checksum
-        }
-
-        data = json.dumps(paytm_params)
-        url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
-
-        response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
-
-        txnToken = response["body"]["txnToken"]
-        order = Order.objects.create(
-            id=order_id,
-            user=userprofile,
-            checksum=checksum,
-            pay_for=pay_for,
-            amount=amount,
-            currency="INR",
-            request_timestamp=str(timestamp),
-            response_timestamp=str(response["head"]["responseTimestamp"]),
-            signature=response["head"]["signature"],
-            result_code=response["body"]["resultInfo"]["resultCode"],
-            result_msg=response["body"]["resultInfo"]["resultMsg"],
-            transaction_token=txnToken
-        )
-        order.save()
-
-        return Response(data={"message": "Order Created Successfully", "txnToken": txnToken, "orderId": order_id, "mid": mid}, status=status.HTTP_201_CREATED)
-
-
 class PaymentCallback(APIView):
     def post(self, request, format=None):
         print("Paytm Callback Data: ", request.data)
-
         from_app = False
         response_dict = {}
         secret = settings.APP_SECRET
@@ -248,6 +314,8 @@ class PaymentCallback(APIView):
         merchant_key = settings.PAYTM_MERCHANT_KEY
         order = Order.objects.get(id=order_id)
         user = order.user
+
+        is_random = order_id[:11] == "IG-RAN-0000"
 
         txn = Transaction.objects.create(
             txn_id=txn_id,
@@ -291,6 +359,9 @@ class PaymentCallback(APIView):
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
+            if is_random:
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/failed.html")
+
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "PENDING":
@@ -299,9 +370,15 @@ class PaymentCallback(APIView):
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
+            if is_random:
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/pending.html")
+
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "TXN_SUCCESS":
+            if is_random:
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/success.html")
+
             pay_for = order.pay_for
 
             if pay_for == "pass-499.00":
