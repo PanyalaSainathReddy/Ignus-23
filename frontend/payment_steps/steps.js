@@ -7,18 +7,6 @@ $(document).ready(function(){
 	});
 });
 
-// document.getElementById("button2").addEventListener("click", function(){
-// 	window.location.href = "#steps";
-// });
-
-// document.getElementById("pay_btn_1").addEventListener("click", function(){
-// 	window.open("https://www.onlinesbi.sbi/sbicollect/icollecthome.htm", "_blank");
-// });
-
-// document.getElementById("pay_btn_2").addEventListener("click", function(){
-// 	window.open("https://www.onlinesbi.sbi/sbicollect/icollecthome.htm", "_blank");
-// });
-
 const params = new Proxy(new URLSearchParams(window.location.search), {
 	get: (searchParams, prop) => searchParams.get(prop),
 });
@@ -116,14 +104,15 @@ function check(){
 function change(res){
 	pass_btn_499 = document.getElementById("get_pass_499");
 	pass_btn_2299 = document.getElementById("get_pass_2299");
-	pass_btn_1499 = document.getElementById("get_pass_1499");
+	// pass_btn_1499 = document.getElementById("get_pass_1499");
 	pass_btn_1500 = document.getElementById("get_pass_1500");
 	pass_btn_2500 = document.getElementById("get_pass_2500");
 	pass_div_499 = document.getElementById("pass-tile-499");
 	pass_div_2299 = document.getElementById("pass-tile-2299");
-	pass_div_1499 = document.getElementById("pass-tile-1499");
+	// pass_div_1499 = document.getElementById("pass-tile-1499");
 	pass_div_1500 = document.getElementById("pass-tile-1500");
 	pass_div_2500 = document.getElementById("pass-tile-2500");
+	// add_accomodation_btn = document.getElementById("add_accomodation_btn");
 
 	console.log(res);
 
@@ -138,15 +127,6 @@ function change(res){
 			pass_btn_1500.style.backgroundColor = "grey";
 			pass_btn_2500.style.backgroundColor = "grey";
 
-			if(res.data.userprofile.flagship){
-				pass_btn_1499.disabled = true;
-				pass_btn_1499.style.backgroundColor = "green";
-				pass_btn_1499.innerHTML = "PURCHASED";
-			}
-			else{
-				pass_btn_1499.disabled = false;
-				pass_btn_1499.style.backgroundColor = "#1d3557";
-			}
 			if(res.data.userprofile.igmun){
 				if(res.data.userprofile.accomodation_2){
 					pass_btn_2500.style.backgroundColor = "green";
@@ -161,6 +141,8 @@ function change(res){
 					pass_div_499.style.display = "none";
 					pass_div_2299.style.display = "none";
 					pass_div_2500.style.display = "none";
+					// add_accomodation_btn.style.display = "block";
+					// add_accomodation_btn.addEventListener("click", pay('1000.00', ''));
 				}
 			}
 			else{
@@ -177,28 +159,81 @@ function change(res){
 					pass_div_2299.style.display = "none";
 					pass_div_1500.style.display = "none";
 					pass_div_2500.style.display = "none";
+					// add_accomodation_btn.style.display = "block";
+					// add_accomodation_btn.addEventListener("click", pay('1800.00', ''));
 				}
 			}
 		}
-	}
-	else{
-		pass_btn_1499.disabled = true;
-		pass_btn_1499.style.backgroundColor = "grey";
 	}
 }
 
 let payButtonList = document.getElementsByClassName("pay-btn");
 for(let i of payButtonList){
 	i.addEventListener("click", function(e){
-		console.log(e.target.value);
-		pay(e.target.value);
+		openModal(e.target.value);
 	})
 }
 
-function pay(pay_amount){
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+var submit_button = document.getElementById("submit_button");
+
+// When the user clicks the button, open the modal
+function openModal(pay_amount){
+	submit_button.disabled = false;
+	submit_button.style.backgroundColor = "#1d3557";
+
+	if(pay_amount == "499.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 499.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, and includes silver lane pass for 2 pronites.`;
+	}
+	else if(pay_amount == "2299.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 2299.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, includes silver lane pass to 2 pronites and an accomodation for 4 nights.`;
+	}
+	else if(pay_amount == "1500.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1500.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes registration fee of IGMUN, and includes silver lane pass for last 2 pronites.`;
+	}
+	else if(pay_amount == "2500.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 2500.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes registration fee of IGMUN, includes silver lane pass for last 2 pronites and an accomodation for last 2 nights.`;
+	}
+
+	modal.style.display = "block";
+	document.getElementById("submit_button").value = pay_amount;
+};
+
+
+submit_button.addEventListener("click", function(e){
+	var promo_code = document.getElementById("promo_code").value;
+	var pay_amount = e.target.value;
+
+	pay(pay_amount, promo_code);
+});
+
+// When the user clicks on (x), close the modal
+span.onclick = function () {
+	modal.style.display = "none";
+	document.getElementById("promo_code").value = '';
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+		document.getElementById("promo_code").value = '';
+	}
+};
+
+function pay(pay_amount, promo_code){
+	submit_button.disabled = true;
+	submit_button.style.backgroundColor = "grey";
+
 	var body = {
 		amount: pay_amount,
 		pay_for: "pass-" + pay_amount,
+		promo_code: promo_code,
 	}
 
 	miAPI.post(BASE_URL + 'api/payments/init-payment/', body, {
@@ -217,7 +252,16 @@ function pay(pay_amount){
 	})
 	.catch(function (error) {
 		console.log(error);
-		// handle error
+		if(error.response.status == 400){
+			var x = document.getElementById("snackbar");
+			x.innerHTML = error.response.data.message;
+			x.className = "show";
+			setTimeout(function(){
+				x.className = x.className.replace("show", "");
+				submit_button.disabled = false;
+				submit_button.style.backgroundColor = "#1d3557";
+			}, 5000);
+		}
 	})
 	.finally(function () {
 		// always executed

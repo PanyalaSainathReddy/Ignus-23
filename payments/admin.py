@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
-from .models import Order, Transaction
+from .models import Order, Transaction, PromoCode
 
 
 class OrderResource(resources.ModelResource):
@@ -123,5 +123,12 @@ class TransactionAdmin(ImportExportActionModelAdmin):
     search_fields = ['user__user__first_name', 'user__user__last_name', 'user__registration_code', 'status', 'order__id', 'txn_id']
 
 
+class PromoCodeAdmin(admin.ModelAdmin):
+    list_display = ['code', 'uses', 'max_uses', 'pass_name', 'discounted_amount', 'valid']
+    list_filter = ['valid']
+    search_fields = ['code', 'pass_name', 'discounted_amount']
+
+
+admin.site.register(PromoCode, PromoCodeAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Transaction, TransactionAdmin)
