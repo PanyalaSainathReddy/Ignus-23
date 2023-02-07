@@ -1,23 +1,37 @@
+from django.core.validators import RegexValidator
 from django.db import models
 
 
-# class Pass(models.Model):
-#     PASS_TYPES = (
-#         ('A', 'Accomodation'),
-#         ('E', 'Events Participation'),
-#         ('F', 'Flagship Events'),
-#         ('N', 'Normal Passes')
-#     )
+class AlumniConfirmPresence(models.Model):
+    contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
 
-#     name = models.CharField(max_length=50, default="pass")
-#     amount = models.IntegerField()
-#     type = models.CharField(max_length=1, choices=PASS_TYPES, default='N')
+    name = models.CharField(max_length=200)
+    passing_year = models.IntegerField()
+    email = models.EmailField()
+    phone = models.CharField(max_length=10, validators=[contact])
 
-#     class Meta:
-#         verbose_name_plural = "Passes"
+    class Meta:
+        verbose_name_plural = "Alumni Confirm Presence"
 
-#     def __str__(self) -> str:
-#         return self.name
+    def __str__(self) -> str:
+        return self.name
+
+
+class AlumniContribution(models.Model):
+    contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
+
+    name = models.CharField(max_length=200, unique=False)
+    passing_year = models.IntegerField(unique=False)
+    email = models.EmailField(unique=False)
+    amount = models.IntegerField(unique=False)
+    phone = models.CharField(max_length=10, validators=[contact], unique=False)
+    remarks = models.CharField(max_length=1000, unique=False)
+
+    class Meta:
+        verbose_name_plural = "Alumni Contributions"
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Order(models.Model):

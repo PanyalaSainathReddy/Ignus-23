@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
-from .models import Order, Transaction, PromoCode
+from .models import Order, Transaction, PromoCode, AlumniConfirmPresence, AlumniContribution
 
 
 class OrderResource(resources.ModelResource):
@@ -129,6 +129,24 @@ class PromoCodeAdmin(admin.ModelAdmin):
     search_fields = ['code', 'pass_name', 'discounted_amount']
 
 
+class AlumniConfirmPresenceAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'passing_year']
+    search_fields = ['name', 'email']
+
+    class Meta:
+        model = AlumniConfirmPresence
+
+
+class AlumniContributionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'passing_year', 'amount']
+    search_fields = ['name', 'email']
+
+    class Meta:
+        model = AlumniContribution
+
+
 admin.site.register(PromoCode, PromoCodeAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Transaction, TransactionAdmin)
+admin.site.register(AlumniConfirmPresence, AlumniConfirmPresenceAdmin)
+admin.site.register(AlumniContribution, AlumniContributionAdmin)
