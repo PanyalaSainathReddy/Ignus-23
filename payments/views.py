@@ -415,7 +415,16 @@ def alumni_contribute(request):
     order.save()
 
     link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
-    return HttpResponseRedirect(redirect_to=link)
+    return Response(
+        data={
+            "message": "Alumni Order Created Successfully",
+            "txnToken": txnToken,
+            "orderId": order_id,
+            "mid": mid,
+            "link": link
+        },
+        status=status.HTTP_201_CREATED
+    )
 
 
 @api_view(['GET'])

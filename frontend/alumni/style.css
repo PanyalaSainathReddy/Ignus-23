@@ -360,7 +360,7 @@ input[type= "text"], input[type= "email"]{
 	border-radius: 5px;
 	padding: 16px;
 	position: fixed;
-	z-index: 10000;
+	z-index: 200000000;
 	left: 50%;
 	top: 30px;
 	font-size: 17px;

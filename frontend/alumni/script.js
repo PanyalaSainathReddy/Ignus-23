@@ -134,9 +134,10 @@ presence_form.addEventListener("submit", (e)=>{
       email_contribute.disabled = true;
       phone_contribute.disabled = true;
       year_contribute.disabled = true;
-      opinion_msg.display = "block";
+      opinion_msg.style.display = "block";
       checkbox_confirmation_contribute.checked = false;
-      confirmation_contribute.display = "none";
+      confirmation_contribute.style.display = "none";
+      document.getElementById('presence_first_btn').disabled = true;
     }
   })
   .catch(error => console.error('Error:', error));
@@ -185,7 +186,10 @@ contribution_form.addEventListener("submit", (e)=>{
           }
         })
         .then(function(response){
-          console.log(response);
+          if(response.status == 201){
+            link = response.data.link;
+            window.location.href = link;
+          }
         })
         .catch(error => console.error('Error:', error));
       }
@@ -210,7 +214,10 @@ contribution_form.addEventListener("submit", (e)=>{
       }
     })
     .then(function(response){
-      console.log(response);
+      if(response.status == 201){
+        link = response.data.link;
+        window.location.href = link;
+      }
     })
     .catch(error => console.error('Error:', error));
   }
