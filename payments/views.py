@@ -175,6 +175,106 @@ class InitPaymentAPIView(APIView):
         )
 
 
+class UpgradeToIGMUNAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+
+        userprofile = UserProfile.objects.get(
+            user=user
+        )
+        ignus_id = userprofile.registration_code
+        timestamp = round(time() * 1000)
+        rand = id_generator()
+        order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+        callback_url = "https://api.ignus.co.in/api/payments/callback/"
+        mid = settings.PAYTM_MID
+        merchant_key = settings.PAYTM_MERCHANT_KEY
+        amount = request.data.get('amount')
+        pay_for = request.data.get('pay_for', '')
+        promo_code = request.data.get('promo_code', '')
+
+        if promo_code:
+            try:
+                promo = PromoCode.objects.get(code=promo_code)
+
+                if pay_for == promo.pass_name:
+                    if promo.is_valid():
+                        amount = promo.discounted_amount
+                        promo.use()
+                    else:
+                        return Response(data={"message": "Promo Code Expired!"}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response(data={"message": "Promo Code is not valid for this Pass"}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                return Response(data={"message": "Invalid Promo Code"}, status=status.HTTP_400_BAD_REQUEST)
+
+        paytm_params = dict()
+        paytm_params["body"] = {
+            "requestType": "Payment",
+            "mid": mid,
+            "websiteName": "WEBPROD",
+            "orderId": order_id,
+            "callbackUrl": callback_url,
+            "txnAmount": {
+                "value": amount,
+                "currency": "INR"
+            },
+            "userInfo": {
+                "custId": ignus_id,
+                "mobile": userprofile.phone,
+                "email": userprofile.user.email,
+                "firstName": userprofile.user.first_name,
+                "lastName": userprofile.user.last_name
+            },
+            "extendInfo": {
+                "mercUnqRef": "Ignus 2023 Payments"
+            }
+        }
+
+        checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+        paytm_params["head"] = {
+            "signature": checksum
+        }
+
+        data = json.dumps(paytm_params)
+        url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+        response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+        txnToken = response["body"]["txnToken"]
+        order = Order.objects.create(
+            id=order_id,
+            user=userprofile,
+            checksum=checksum,
+            pay_for=pay_for,
+            amount=amount,
+            currency="INR",
+            request_timestamp=str(timestamp),
+            response_timestamp=str(response["head"]["responseTimestamp"]),
+            signature=response["head"]["signature"],
+            result_code=response["body"]["resultInfo"]["resultCode"],
+            result_msg=response["body"]["resultInfo"]["resultMsg"],
+            transaction_token=txnToken
+        )
+        order.save()
+
+        userprofile.igmun_pref = request.data.get('igmun_pref', '')
+        userprofile.mun_exp = request.data.get('mun_exp', '')
+        userprofile.save()
+
+        return Response(
+            data={
+                "message": "Order Created Successfully",
+                "txnToken": txnToken,
+                "orderId": order_id,
+                "mid": mid
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
 @api_view(['POST'])
 def bulk_payment(request):
     timestamp = round(time() * 1000)
@@ -235,7 +335,8 @@ def bulk_payment(request):
     )
 
     for user_id in request.data.get('users'):
-        order.users.add(UserProfile.objects.get(registration_code=user_id))
+        if UserProfile.objects.filter(registration_code=user_id).exists():
+            order.users.add(UserProfile.objects.get(registration_code=user_id))
     order.save()
 
     link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
@@ -705,6 +806,12 @@ class PaymentCallback(APIView):
                         user.pronites = True
                         user.main_pronite = True
                         user.igmun = True
+                    elif pay_for == "pass-1500.00-upgrade":
+                        user.igmun = True
+                    elif pay_for == "pass-2500.00-upgrade":
+                        user.igmun = True
+                        user.accomodation_4 = False
+                        user.accomodation_2 = True
                     elif pay_for == "pass-2500.00":
                         user.amount_paid = True
                         user.pronites = True
