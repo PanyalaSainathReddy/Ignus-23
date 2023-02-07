@@ -277,18 +277,22 @@ a{text-decoration: none; color: white;}
   height: 100%;
 }
 
-.presence-form, .contribution-form{
+#presence_form, #contribution_form{
   width: 80%;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
+  margin-bottom: 5vh;
+  color: #381f00;
+}
+
+.presence-form, .contribution-form{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 40px;
   row-gap: 40px;
-  margin-bottom: 5vh;
-  color: #381f00;
 }
+
 .input-tile{
   display: flex;
   flex-direction: column;
@@ -298,19 +302,19 @@ a{text-decoration: none; color: white;}
   font-weight: 600;
   margin-bottom: 5px;
 }
-input[type= "text"]{
+input[type= "text"], input[type= "email"]{
   padding: 10px 15px;
   background-color: transparent;
   outline: none;
   border: 2px solid #381f00;
   border-radius: 5px;
 }
-.contribution-form{display: none;}
+#contribution_form{display: none;}
 .submit-btn{
   background-color: #4CAF50;
   text-align: center;
   padding: 15px 20px;
-  margin: 5vh 0 0 0;
+  margin: 5vh auto 0;
   color: white;
   font-weight: 800;
   border-radius: 5px;
@@ -321,14 +325,6 @@ input[type= "text"]{
 .submit-btn:hover{
   background-color: #38803a;
 }
-
-
-
-
-
-
-
-
 
 @media screen and (max-width: 1070px) {  /*tablet*/
   nav{padding: 0 10vw;}
@@ -350,4 +346,48 @@ input[type= "text"]{
   .presence-form, .contribution-form{
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+/* Snackbar */
+
+#snackbar {
+	visibility: hidden;
+	min-width: 250px;
+	margin-left: -125px;
+	background-color: rgb(255, 62, 62);
+	color: #fff;
+	text-align: center;
+	border-radius: 5px;
+	padding: 16px;
+	position: fixed;
+	z-index: 10000;
+	left: 50%;
+	top: 30px;
+	font-size: 17px;
+}
+  
+#snackbar.show {
+	visibility: visible;
+	-webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+	animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+  
+@-webkit-keyframes fadein {
+	from {top: 0; opacity: 0;} 
+	to {top: 30px; opacity: 1;}
+}
+  
+@keyframes fadein {
+	from {top: 0; opacity: 0;}
+	to {top: 30px; opacity: 1;}
+}
+  
+@-webkit-keyframes fadeout {
+	from {top: 30px; opacity: 1;} 
+	to {top: 0; opacity: 0;}
+}
+  
+@keyframes fadeout {
+	from {top: 30px; opacity: 1;}
+	to {top: 0; opacity: 0;}
 }
