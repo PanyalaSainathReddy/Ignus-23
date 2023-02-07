@@ -68,6 +68,37 @@ class Order(models.Model):
         return self.id[:11] == "IG-RAN-0000"
 
 
+class BulkOrder(models.Model):
+    id = models.CharField(max_length=30, unique=True, primary_key=True)
+    users = models.ManyToManyField("registration.UserProfile", blank=True)
+    checksum = models.CharField(max_length=200, default="")
+    pay_for = models.CharField(max_length=100, default="")
+    amount = models.CharField(max_length=10, default="1.00")
+    currency = models.CharField(max_length=3, default="INR")
+    request_timestamp = models.CharField(max_length=20, default="")
+    signature = models.CharField(max_length=200, default="")
+    response_timestamp = models.CharField(max_length=20, default="")
+    result_code = models.CharField(max_length=4, default="0000")
+    result_msg = models.CharField(max_length=200, default="")
+    transaction_token = models.CharField(max_length=100, default="")
+
+    class Meta:
+        verbose_name_plural = "Bulk Orders"
+
+    def __str__(self):
+        return self.id
+
+    def transacted(self):
+        if self.transaction_set.count() > 0:
+            return True
+        return False
+
+    def transaction_status(self):
+        if self.transacted():
+            return self.transaction_set.all()[0].status
+        return "NA"
+
+
 class Transaction(models.Model):
     txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
     bank_txn_id = models.CharField(max_length=100, default="")
@@ -83,6 +114,27 @@ class Transaction(models.Model):
 
     class Meta:
         verbose_name_plural = "Transactions"
+        ordering = ['-timestamp']
+
+    def __str__(self) -> str:
+        return self.txn_id
+
+
+class BulkTransaction(models.Model):
+    txn_id = models.CharField(max_length=100, unique=True, primary_key=True, default="")
+    bank_txn_id = models.CharField(max_length=100, default="")
+    users = models.ManyToManyField("registration.UserProfile", blank=True)
+    status = models.CharField(max_length=100, default="failed")
+    order = models.ForeignKey(BulkOrder, on_delete=models.DO_NOTHING)
+    amount = models.CharField(max_length=10, default="1.00")
+    gateway_name = models.CharField(max_length=20, default="")
+    payment_mode = models.CharField(max_length=20, default="UPI")
+    resp_code = models.CharField(max_length=5, default="")
+    resp_msg = models.CharField(max_length=200, default="")
+    timestamp = models.CharField(max_length=100, default="")
+
+    class Meta:
+        verbose_name_plural = "Bulk Transactions"
         ordering = ['-timestamp']
 
     def __str__(self) -> str:

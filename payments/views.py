@@ -18,8 +18,8 @@ from rest_framework.views import APIView
 from events.models import Event, TeamRegistration
 from registration.models import UserProfile
 
-from .models import (AlumniConfirmPresence, AlumniContribution, Order,
-                     PromoCode, Transaction)
+from .models import (AlumniConfirmPresence, AlumniContribution, BulkOrder,
+                     BulkTransaction, Order, PromoCode, Transaction)
 from .utils import id_generator
 
 User = get_user_model()
@@ -175,9 +175,71 @@ class InitPaymentAPIView(APIView):
         )
 
 
-@api_view(['GET'])
-def random_payment(request):
-    return render(template_name='payments/random_payment.html', request=request)
+@api_view(['POST'])
+def bulk_payment(request):
+    timestamp = round(time() * 1000)
+    rand = id_generator()
+    ignus_id = "IG-BUL-0000"
+    order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+    callback_url = "https://api.ignus.co.in/api/payments/callback/"
+    mid = settings.PAYTM_MID
+    merchant_key = settings.PAYTM_MERCHANT_KEY
+    amount = request.data.get('amount')
+    pay_for = request.data.get('pay_for', '')
+    paytm_params = dict()
+    paytm_params["body"] = {
+        "requestType": "Payment",
+        "mid": mid,
+        "websiteName": "WEBPROD",
+        "orderId": order_id,
+        "callbackUrl": callback_url,
+        "txnAmount": {
+            "value": amount,
+            "currency": "INR"
+        },
+        "userInfo": {
+            "custId": ignus_id,
+            "mobile": request.data.get('phone', ''),
+            "email": request.data.get('email', ''),
+            "firstName": request.data.get('first_name'),
+            "lastName": request.data.get('last_name')
+        },
+        "extendInfo": {
+            "mercUnqRef": "Ignus 2023 Payments"
+        }
+    }
+
+    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+    paytm_params["head"] = {
+        "signature": checksum
+    }
+
+    data = json.dumps(paytm_params)
+    url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+    txnToken = response["body"]["txnToken"]
+    order = BulkOrder.objects.create(
+        id=order_id,
+        checksum=checksum,
+        pay_for=pay_for,
+        amount=amount,
+        currency="INR",
+        request_timestamp=str(timestamp),
+        response_timestamp=str(response["head"]["responseTimestamp"]),
+        signature=response["head"]["signature"],
+        result_code=response["body"]["resultInfo"]["resultCode"],
+        result_msg=response["body"]["resultInfo"]["resultMsg"],
+        transaction_token=txnToken
+    )
+
+    for user_id in request.data.get('users'):
+        order.users.add(UserProfile.objects.get(registration_code=user_id))
+    order.save()
+
+    link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
+    return HttpResponseRedirect(redirect_to=link)
 
 
 @api_view(['POST'])
@@ -253,6 +315,11 @@ def alumni_contribute(request):
 
     link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
     return HttpResponseRedirect(redirect_to=link)
+
+
+@api_view(['GET'])
+def random_payment(request):
+    return render(template_name='payments/random_payment.html', request=request)
 
 
 @api_view(['POST'])
@@ -518,26 +585,47 @@ class PaymentCallback(APIView):
         order_id = data.get("ORDERID", '')
         checksum = data.get("CHECKSUMHASH", '')
         merchant_key = settings.PAYTM_MERCHANT_KEY
-        order = Order.objects.get(id=order_id)
-        user = order.user
 
         is_random = order_id[:11] == "IG-RAN-0000"
         is_alumni = order_id[:11] == "IG-ALU-0000"
+        bulk_order = order_id[:11] == "IG-BUL-0000"
 
-        txn = Transaction.objects.create(
-            txn_id=txn_id,
-            bank_txn_id=data.get('BANKTXNID', ''),
-            order=order,
-            user=user,
-            status=data.get('STATUS', ''),
-            amount=data.get('TXNAMOUNT', ''),
-            gateway_name=data.get('GATEWAYNAME', ''),
-            payment_mode=data.get('PAYMENTMODE', ''),
-            resp_code=data.get('RESPCODE', ''),
-            resp_msg=data.get('RESPMSG', ''),
-            timestamp=data.get('TXNDATE', '')
-        )
-        txn.save()
+        if bulk_order:
+            order = BulkOrder.objects.get(id=order_id)
+            users = order.users
+
+            txn = BulkTransaction.objects.create(
+                txn_id=txn_id,
+                bank_txn_id=data.get('BANKTXNID', ''),
+                order=order,
+                users=users,
+                status=data.get('STATUS', ''),
+                amount=data.get('TXNAMOUNT', ''),
+                gateway_name=data.get('GATEWAYNAME', ''),
+                payment_mode=data.get('PAYMENTMODE', ''),
+                resp_code=data.get('RESPCODE', ''),
+                resp_msg=data.get('RESPMSG', ''),
+                timestamp=data.get('TXNDATE', '')
+            )
+            txn.save()
+        else:
+            order = Order.objects.get(id=order_id)
+            user = order.user
+
+            txn = Transaction.objects.create(
+                txn_id=txn_id,
+                bank_txn_id=data.get('BANKTXNID', ''),
+                order=order,
+                user=user,
+                status=data.get('STATUS', ''),
+                amount=data.get('TXNAMOUNT', ''),
+                gateway_name=data.get('GATEWAYNAME', ''),
+                payment_mode=data.get('PAYMENTMODE', ''),
+                resp_code=data.get('RESPCODE', ''),
+                resp_msg=data.get('RESPMSG', ''),
+                timestamp=data.get('TXNDATE', '')
+            )
+            txn.save()
 
         if not from_app:
             form = request.POST
@@ -566,7 +654,7 @@ class PaymentCallback(APIView):
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
-            if is_random:
+            if is_random or bulk_order:
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/failed.html")
 
             if is_alumni:
@@ -580,7 +668,7 @@ class PaymentCallback(APIView):
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
-            if is_random:
+            if is_random or bulk_order:
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/pending.html")
 
             if is_alumni:
@@ -597,94 +685,176 @@ class PaymentCallback(APIView):
 
             pay_for = order.pay_for
 
-            if pay_for == "pass-499.00":
-                user.amount_paid = True
-                user.pronites = True
-                user.main_pronite = True
-                user.igmun = False
-            elif pay_for == "pass-2299.00":
-                user.amount_paid = True
-                user.pronites = True
-                user.main_pronite = True
-                user.accomodation_4 = True
-                user.igmun = False
-            elif pay_for == "pass-1500.00":
-                user.amount_paid = True
-                user.pronites = True
-                user.main_pronite = True
-                user.igmun = True
-            elif pay_for == "pass-2500.00":
-                user.amount_paid = True
-                user.pronites = True
-                user.main_pronite = True
-                user.igmun = True
-                user.accomodation_2 = True
-            elif pay_for == "pass-1800.00":
-                user.accomodation_4 = True
-            elif pay_for == "pass-1000.00":
-                user.accomodation_2 = True
-            elif pay_for == "pass-1499.00-antarang":
-                if user.amount_paid is True:
-                    user.flagship = True
-                    user.antarang = True
-                    event = Event.objects.get(name='Antarang')
-                    user.events_registered.add(event)
+            if bulk_order:
+                users = txn.users
+
+                for user in users:
+                    if pay_for == "pass-499.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.igmun = False
+                    elif pay_for == "pass-2299.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.accomodation_4 = True
+                        user.igmun = False
+                    elif pay_for == "pass-1500.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.igmun = True
+                    elif pay_for == "pass-2500.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.igmun = True
+                        user.accomodation_2 = True
+                    elif pay_for == "pass-1800.00":
+                        user.accomodation_4 = True
+                    elif pay_for == "pass-1000.00":
+                        user.accomodation_2 = True
+                    elif pay_for == "pass-1499.00-antarang":
+                        if user.amount_paid is True:
+                            user.flagship = True
+                            user.antarang = True
+                            event = Event.objects.get(name='Antarang')
+                            user.events_registered.add(event)
+                            user.save()
+                            team = TeamRegistration.objects.create(
+                                leader=user,
+                                event=event
+                            )
+                            team.save()
+                    elif pay_for == "pass-1499.00-nrityansh":
+                        if user.amount_paid is True:
+                            user.flagship = True
+                            user.nrityansh = True
+                            event = Event.objects.get(name='Nrityansh')
+                            user.events_registered.add(event)
+                            user.save()
+                            team = TeamRegistration.objects.create(
+                                leader=user,
+                                event=event
+                            )
+                            team.save()
+                    elif pay_for == "pass-1499.00-aayaam":
+                        if user.amount_paid is True:
+                            user.flagship = True
+                            user.aayaam = True
+                            event = Event.objects.get(name='Aayaam')
+                            user.events_registered.add(event)
+                            user.save()
+                            team = TeamRegistration.objects.create(
+                                leader=user,
+                                event=event
+                            )
+                            team.save()
+                    elif pay_for == "pass-1499.00-clashofbands":
+                        if user.amount_paid is True:
+                            user.flagship = True
+                            user.cob = True
+                            event = Event.objects.get(name='Thunder Beats')
+                            user.events_registered.add(event)
+                            user.save()
+                            team = TeamRegistration.objects.create(
+                                leader=user,
+                                event=event
+                            )
+                            team.save()
+
                     user.save()
-                    team = TeamRegistration.objects.create(
-                        leader=user,
-                        event=event
-                    )
-                    team.save()
+            else:
+                user = txn.user
+                if pay_for == "pass-499.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                elif pay_for == "pass-2299.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.accomodation_4 = True
+                    user.igmun = False
+                elif pay_for == "pass-1500.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = True
+                elif pay_for == "pass-2500.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = True
+                    user.accomodation_2 = True
+                elif pay_for == "pass-1800.00":
+                    user.accomodation_4 = True
+                elif pay_for == "pass-1000.00":
+                    user.accomodation_2 = True
+                elif pay_for == "pass-1499.00-antarang":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.antarang = True
+                        event = Event.objects.get(name='Antarang')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
 
-                    return HttpResponseRedirect(
-                        redirect_to=f"{frontend_base_url}/event-details/index.html?ref=antarang&status=success")
-            elif pay_for == "pass-1499.00-nrityansh":
-                if user.amount_paid is True:
-                    user.flagship = True
-                    user.nrityansh = True
-                    event = Event.objects.get(name='Nrityansh')
-                    user.events_registered.add(event)
-                    user.save()
-                    team = TeamRegistration.objects.create(
-                        leader=user,
-                        event=event
-                    )
-                    team.save()
+                        return HttpResponseRedirect(
+                            redirect_to=f"{frontend_base_url}/event-details/index.html?ref=antarang&status=success")
+                elif pay_for == "pass-1499.00-nrityansh":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.nrityansh = True
+                        event = Event.objects.get(name='Nrityansh')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
 
-                    return HttpResponseRedirect(
-                        redirect_to=f"{frontend_base_url}/event-details/index.html?ref=nrityansh&status=success")
-            elif pay_for == "pass-1499.00-aayaam":
-                if user.amount_paid is True:
-                    user.flagship = True
-                    user.aayaam = True
-                    event = Event.objects.get(name='Aayaam')
-                    user.events_registered.add(event)
-                    user.save()
-                    team = TeamRegistration.objects.create(
-                        leader=user,
-                        event=event
-                    )
-                    team.save()
+                        return HttpResponseRedirect(
+                            redirect_to=f"{frontend_base_url}/event-details/index.html?ref=nrityansh&status=success")
+                elif pay_for == "pass-1499.00-aayaam":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.aayaam = True
+                        event = Event.objects.get(name='Aayaam')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
 
-                    return HttpResponseRedirect(
-                        redirect_to=f"{frontend_base_url}/event-details/index.html?ref=aayaam&status=success")
-            elif pay_for == "pass-1499.00-clashofbands":
-                if user.amount_paid is True:
-                    user.flagship = True
-                    user.cob = True
-                    event = Event.objects.get(name='Thunder Beats')
-                    user.events_registered.add(event)
-                    user.save()
-                    team = TeamRegistration.objects.create(
-                        leader=user,
-                        event=event
-                    )
-                    team.save()
+                        return HttpResponseRedirect(
+                            redirect_to=f"{frontend_base_url}/event-details/index.html?ref=aayaam&status=success")
+                elif pay_for == "pass-1499.00-clashofbands":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.cob = True
+                        event = Event.objects.get(name='Thunder Beats')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
 
-                    return HttpResponseRedirect(
-                        redirect_to=f"{frontend_base_url}/event-details/index.html?ref=clashofbands&status=success")
+                        return HttpResponseRedirect(
+                            redirect_to=f"{frontend_base_url}/event-details/index.html?ref=clashofbands&status=success")
 
-            user.save()
+                user.save()
 
             # send_mail(txn)
 

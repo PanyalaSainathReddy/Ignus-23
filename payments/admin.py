@@ -1,7 +1,9 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
-from .models import Order, Transaction, PromoCode, AlumniConfirmPresence, AlumniContribution
+
+from .models import (AlumniConfirmPresence, AlumniContribution, BulkOrder,
+                     BulkTransaction, Order, PromoCode, Transaction)
 
 
 class OrderResource(resources.ModelResource):
@@ -107,7 +109,13 @@ class OrderAdmin(ImportExportActionModelAdmin):
     resource_class = OrderResource
     list_display = ['id', "amount", "user", 'pay_for', 'transacted', 'transaction_status', 'is_random']
     list_filter = ['pay_for', OrderTransactedFilter, OrderTransactionStatusFilter, OrderIsRandomFilter]
-    search_fields = ['user__user__first_name', 'user__user__last_name', 'user__registration_code']
+    search_fields = ['id', 'user__user__first_name', 'user__user__last_name', 'user__registration_code']
+
+
+class BulkOrderAdmin(admin.ModelAdmin):
+    list_display = ['id', "amount", 'pay_for', 'transacted', 'transaction_status']
+    list_filter = ['pay_for', OrderTransactedFilter, OrderTransactionStatusFilter]
+    search_fields = ['id']
 
 
 class TransactionResource(resources.ModelResource):
@@ -121,6 +129,12 @@ class TransactionAdmin(ImportExportActionModelAdmin):
     list_display = ['txn_id', "order", "amount", "user", "status"]
     list_filter = ['status']
     search_fields = ['user__user__first_name', 'user__user__last_name', 'user__registration_code', 'status', 'order__id', 'txn_id']
+
+
+class BulkTransactionAdmin(admin.ModelAdmin):
+    list_display = ['txn_id', "order", "amount", "status"]
+    list_filter = ['status']
+    search_fields = ['status', 'order__id', 'txn_id']
 
 
 class PromoCodeAdmin(admin.ModelAdmin):
@@ -147,6 +161,8 @@ class AlumniContributionAdmin(admin.ModelAdmin):
 
 admin.site.register(PromoCode, PromoCodeAdmin)
 admin.site.register(Order, OrderAdmin)
+admin.site.register(BulkOrder, BulkOrderAdmin)
 admin.site.register(Transaction, TransactionAdmin)
+admin.site.register(BulkTransaction, BulkTransactionAdmin)
 admin.site.register(AlumniConfirmPresence, AlumniConfirmPresenceAdmin)
 admin.site.register(AlumniContribution, AlumniContributionAdmin)
