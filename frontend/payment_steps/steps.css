@@ -664,6 +664,17 @@ font-size: 110%;
   border: none;
 }
 
+#add_accomodation_btn{
+  border-radius: 100px;
+  padding: 13px 17px;
+  min-width: max-content;
+  font-weight: 600;
+  background-color: #1d3557;
+  color: #fff !important;
+  cursor: pointer;
+  border: none;
+}
+
 /* The Modal (background) */
 .modal {
   height: 100vh;
