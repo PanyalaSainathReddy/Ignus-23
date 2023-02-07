@@ -60,7 +60,7 @@ function touchMove(event) {
     container.scrollBy({
       top: offset.y * 0.1
     })
-    for(let i=1; i<7; i++){
+    for(let i=0; i<7; i++){
       sec[i].classList.add('bg-none')
     }
     // body.style.backgroundColor = clrs[Math.floor(container.scrollTop)]
