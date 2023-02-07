@@ -151,6 +151,7 @@ contribution_form.addEventListener("submit", (e)=>{
   var year = year_contribute.value;
   var amount = amount_contribute.value;
   var remarks = remarks_contribute.value;
+  var link = '';
 
   if(document.getElementById("checkbox_confirmation_contribute").checked == true){
     body = {
@@ -186,9 +187,11 @@ contribution_form.addEventListener("submit", (e)=>{
           }
         })
         .then(function(response){
-          if(response.status == 201){
-            link = response.data.link;
-            window.location.href = link;
+          return response.json();
+        })
+        .then(function(data){
+          if(data.link != undefined){
+            window.location.href = data.link;
           }
         })
         .catch(error => console.error('Error:', error));
@@ -214,9 +217,11 @@ contribution_form.addEventListener("submit", (e)=>{
       }
     })
     .then(function(response){
-      if(response.status == 201){
-        link = response.data.link;
-        window.location.href = link;
+      return response.json();
+    })
+    .then(function(data){
+      if(data.link != undefined){
+        window.location.href = data.link;
       }
     })
     .catch(error => console.error('Error:', error));
