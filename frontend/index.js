@@ -51,10 +51,20 @@ function touchMove(event) {
   offset.x = start.x - event.touches[0].pageX;
   offset.y = start.y - event.touches[0].pageY;
   
-  event.preventDefault();
-  container.scrollBy({
-    left: offset.y *0.1,
-  })
+  if(window.innerWidth > 500){
+    event.preventDefault();
+    container.scrollBy({
+      left: offset.y *0.1,
+    })
+  } else {
+    container.scrollBy({
+      top: offset.y * 0.1
+    })
+    for(let i=1; i<7; i++){
+      sec[i].classList.add('bg-none')
+    }
+    // body.style.backgroundColor = clrs[Math.floor(container.scrollTop)]
+  }
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
   moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
