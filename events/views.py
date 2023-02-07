@@ -160,17 +160,23 @@ class UpdateTeamAPIView(generics.UpdateAPIView):
         try:
             member = UserProfile.objects.get(registration_code=member)
         except Exception:
-            return Response(data={"message": "The Ignus ID you entered does not exist."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                data={"message": "The Ignus ID you entered does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
-        if team.members.count()+1 < team.event.max_team_size:
+        if team.members.count() + 1 < team.event.max_team_size:
             if member.user.iitj or member.amount_paid:
                 if team.event not in member.events_registered.all():
                     member.events_registered.add(team.event)
                     team.members.add(member)
                 else:
-                    return Response(data={"message": f"{member.user.get_full_name()} ({member.registration_code}) has already registered for this event."}, status=status.HTTP_406_NOT_ACCEPTABLE)
+                    return Response(
+                        data={
+                            "message": f"{member.user.get_full_name()} ({member.registration_code}) has already registered for this event."}, status=status.HTTP_406_NOT_ACCEPTABLE
+                    )
             else:
-                return Response(data={"message": f"{member.user.get_full_name()} ({member.registration_code}) has not completed their payment."}, status=status.HTTP_402_PAYMENT_REQUIRED)
+                return Response(
+                    data={"message": f"{member.user.get_full_name()} ({member.registration_code}) has not completed their payment."}, status=status.HTTP_402_PAYMENT_REQUIRED
+                )
         else:
             return Response(data={"message": "Team is full."}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -187,7 +193,64 @@ class UpdateTeamAPIView(generics.UpdateAPIView):
             }
         }
 
-        return Response(data={"message": f"{member.user.get_full_name()} ({member.registration_code}) added successfully.", "team": d["team"], "max_team_size": team.event.max_team_size, "event_rank": team.event.rank}, status=status.HTTP_200_OK)
+        return Response(
+            data={
+                "message": f"{member.user.get_full_name()} ({member.registration_code}) added successfully.",
+                "team": d["team"],
+                "max_team_size": team.event.max_team_size,
+                "event_rank": team.event.rank
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class RemoveMemberAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        leader = UserProfile.objects.get(user=user)
+        team = TeamRegistration.objects.get(
+            id=request.data['team_id']
+        )
+
+        if team.leader != leader:
+            return Response(data={"message": "You are not the team leader"}, status=status.HTTP_403_FORBIDDEN)
+
+        member = request.data['member']
+
+        try:
+            member = UserProfile.objects.get(registration_code=member)
+        except Exception:
+            return Response(
+                data={"message": "The Ignus ID you entered does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        team.members.remove(member)
+        team.save()
+
+        member.events_registered.remove(team.event)
+        member.save()
+
+        d = {
+            "team": {
+                "id": team.id,
+                "leader": {
+                    "id": team.leader.registration_code,
+                    "name": team.leader.user.get_full_name()
+                },
+                "members": team.member_list()
+            }
+        }
+
+        return Response(
+            data={
+                "message": f"{member.user.get_full_name()} ({member.registration_code}) removed successfully.",
+                "team": d["team"],
+                "max_team_size": team.event.max_team_size,
+                "event_rank": team.event.rank
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class DeleteTeamAPIView(generics.DestroyAPIView):
