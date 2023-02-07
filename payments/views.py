@@ -261,7 +261,7 @@ def alumni_contribute(request):
     callback_url = "https://api.ignus.co.in/api/payments/callback/"
     mid = settings.PAYTM_MID
     merchant_key = settings.PAYTM_MERCHANT_KEY
-    amount = request.data.get('amount')
+    amount = str(request.data.get('amount')) + '.00'
     remarks = request.data.get('remarks', '')
     paytm_params = dict()
     paytm_params["body"] = {
@@ -658,7 +658,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/failed.html")
 
             if is_alumni:
-                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}")
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=failed")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
@@ -672,7 +672,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/pending.html")
 
             if is_alumni:
-                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}")
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=pending")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
@@ -681,7 +681,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/success.html")
 
             if is_alumni:
-                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}")
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=success")
 
             pay_for = order.pay_for
 
