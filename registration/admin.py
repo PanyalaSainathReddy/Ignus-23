@@ -11,7 +11,7 @@ User = get_user_model()
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('profile_complete',)}),
+        (None, {'fields': ('profile_complete', 'iitj')}),
         ('Google', {'fields': ('is_google', 'google_picture')})
     )
 
@@ -39,7 +39,7 @@ class UserProfileResource(resources.ModelResource):
 class UserProfileAdmin(ImportExportActionModelAdmin):
     resource_class = UserProfileResource
     list_display = ['__str__', 'registration_code', 'phone', 'gender', 'college', 'qr_code', 'pronites_qr']
-    list_filter = ['gender', 'igmun', 'amount_paid', 'accomodation_4', 'accomodation_2', 'is_ca']
+    list_filter = ['gender', 'igmun', 'flagship', 'amount_paid', 'accomodation_4', 'accomodation_2', 'is_ca']
     search_fields = ['user__username', 'registration_code', 'user__first_name', 'user__last_name', 'user__email', 'college', 'phone']
 
 

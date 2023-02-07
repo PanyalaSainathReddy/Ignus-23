@@ -321,7 +321,7 @@ function createCompleteEventDetails(data){
 			if(data.events[i].team_event){
 				if(data.events[i].is_registered){
 					team_arr[i] = JSON.stringify(data.events[i].team);
-					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
 					if(data.name == "Flagship Event"){
@@ -379,7 +379,7 @@ function createCompleteEventDetails(data){
 			if(data.events[i].team_event){
 				if(data.events[i].is_registered){
 					team_arr[i] = JSON.stringify(data.events[i].team);
-					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
 					if(data.name == "Flagship Event"){
@@ -435,7 +435,7 @@ function createCompleteEventDetails(data){
 		if(data.events[i].team_event){
 			if(data.events[i].is_registered){
 				team_arr[i] = JSON.stringify(data.events[i].team);
-				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 			}
 			else{
 				if(data.name == "Flagship Event"){
@@ -516,7 +516,7 @@ document.getElementById('close_btn').addEventListener('click', function(){
 	document.body.style.position = 'static';
 });
 
-function openModal(team){
+function openModal(team, max_team_size){
 	team = JSON.parse(team);
 	document.getElementById('modal_heading').innerHTML = `Team ID: ` + team.id;
 	document.getElementById('modal_team_leader').innerHTML = team.leader.name + " (" + team.leader.id + ")";
@@ -533,7 +533,12 @@ function openModal(team){
 	document.getElementById('modal_team_members').innerHTML = team_mem_details;
 	document.getElementById('modal_team_members').value = team_mem_details;
 	if(team.leader.id == getCookie('ignusID')){
-		document.getElementById('add_mem_form').style.display = 'block';
+		if(team.members.length+1 < max_team_size){
+			document.getElementById('add_mem_form').style.display = 'block';
+		}
+		else{
+			document.getElementById('add_mem_form').style.display = 'none';
+		}
 		document.getElementById('del_team_btn').style.display = 'block';
 	}
 	else{
@@ -561,13 +566,25 @@ document.getElementById('add_mem_form').addEventListener('submit', function(e){
 		withCredentials: true,
 	}).then(function (response) {
 		if(response.status == 200){
+			var team_members = "";
 			document.getElementById('add_mem_id').value = '';
-			if(document.getElementById('modal_team_members').value == "You haven't added anyone to your team yet!"){
-				team_members = response.data.member;
-			}else{
-				team_members = document.getElementById('modal_team_members').value + ", " + response.data.member;
+			team_arr[response.data.event_rank-1] = JSON.stringify(response.data.team);
+			for(i=0; i<response.data.team.members.length; i++){
+				team_members += response.data.team.members[i].name + " (" + response.data.team.members[i].id + ")";
+				if(i != response.data.team.members.length-1){
+					team_members += ", ";
+				}
+			}
+			if(team_members == ""){
+				team_members = "You haven't added anyone to your team yet!";
 			}
 			document.getElementById('modal_team_members').innerHTML = team_members;
+			if(response.data.team.members.length+1 < response.data.max_team_size){
+				document.getElementById('add_mem_form').style.display = 'block';
+			}
+			else{
+				document.getElementById('add_mem_form').style.display = 'none';
+			}
 		}
 	})
 	.catch(function (error) {
@@ -580,7 +597,7 @@ document.getElementById('add_mem_form').addEventListener('submit', function(e){
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 		}
 		else if(error.response.status == 406){
-			// The user has already registered for the event.
+			// The user has already registered for the event or Team is full.
 			var x = document.getElementById("snackbar");
 			x.innerHTML = error.response.data.message;
 			x.className = "show";
