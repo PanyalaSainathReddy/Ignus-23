@@ -11,29 +11,39 @@ const res_nav = document.querySelector(".res-nav");
 
 
 // code for setting section (scene) backgrounds
-for(let i=0; i<7; i++){
-  sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
-  sec[i].style.backgroundRepeat = "no-repeat";
-  sec[i].style.backgroundPosition = "bottom";
-  sec[i].style.backgroundSize = "100vw";
-}
-
-
-
-
-// animations for non touchscreen devices 
-container.addEventListener("wheel", (e)=>{
-  e.preventDefault();
-  container.scrollBy({
-    left: e.deltaY,
-  })
-  body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
-  sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
-  moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
-  if(Math.floor(container.scrollLeft / window.innerWidth) >= 5){
-    footer.style.animation = "fadeUp 4s ease-in-out";
+if(window.innerWidth > 500){
+  for(let i=0; i<7; i++){
+    sec[i].style.background = `url('./static/scenebg/bg${i+1}sh.png')`;
+    sec[i].style.backgroundRepeat = "no-repeat";
+    sec[i].style.backgroundPosition = "bottom";
+    sec[i].style.backgroundSize = "100vw";
   }
+} 
+
+
+// animations for non touchscreen devices (desktop etc)
+container.addEventListener("wheel", (e)=>{
+  if(window.innerWidth > 500){
+    e.preventDefault();
+    container.scrollBy({
+      left: e.deltaY,
+    })
+    body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
+    sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
+    moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
+    if(Math.floor(container.scrollLeft / window.innerWidth) >= 5){
+      footer.style.animation = "fadeUp 4s ease-in-out";
+    }
+  } 
 });
+
+// scroll animations for mobile view 
+container.addEventListener("wheel", (e)=>{
+  if(window.innerWidth < 500){
+    body.style.backgroundColor = clrs[Math.floor(window.scrollY / (window.innerHeight * 0.8))];
+  } 
+});
+
 
 
 
@@ -55,6 +65,9 @@ function touchMove(event) {
   container.scrollBy({
     left: offset.y *0.1,
   })
+  for(let i=1; i<7; i++){
+    sec[i].classList.add('bg-none')
+  }
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
   moon.style.top = `${60 + window.outerHeight - 1*(window.outerHeight/(window.outerWidth*2.5)*((container.scrollLeft)-3.5*window.outerWidth))}px`;
