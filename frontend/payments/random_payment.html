@@ -6,8 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Random Payment Link Generator</title>
     <style>
+      #qr {
+        height: 500px;
+        width: 500px;
+        box-shadow: 0 0 10px #ccc;
+        border-radius: 10px;
+      }
+
+      .divs {
+        display: flex;
+        flex-direction: column;
+      }
       body {
         display: flex;
+        flex-direction: row;
+        column-gap: 5vw;
         align-items: center;
         justify-content: center;
         height: 100vh;
@@ -36,8 +49,9 @@
         border-radius: 5px;
         border: 1px solid #ccc;
       }
-      input[type="submit"] {
-        background-color: #4caf50;
+      input[type="submit"],
+      input[type="button"] {
+        background-color: #1fabf2;
         color: #fff;
         padding: 10px 20px;
         border: none;
@@ -45,7 +59,10 @@
         cursor: pointer;
       }
       input[type="submit"]:hover {
-        background-color: #3e8e41;
+        background-color: #3e418e;
+      }
+      input[type="button"]:hover {
+        background-color: #3e418e;
       }
       .error {
         color: red;
@@ -54,13 +71,34 @@
     </style>
   </head>
   <body>
-    <form method="post" action="/api/payments/generate-random-link/">
-      <h1>Random Payment Link Generator</h1>
-      <label for="amount">Amount:</label>
-      <input type="text" id="amount" name="amount" required />
-      <label for="pay_for">Pay For:</label>
-      <input type="text" id="pay_for" name="pay_for" required />
-      <input type="submit" value="Generate Link" />
-    </form>
+    <div class="divs">
+      <form method="post" action="/api/payments/generate-random-link/">
+        <h1>Random Payment Link Generator</h1>
+        <label for="amount">Amount:</label>
+        <input type="text" id="amount" name="amount" placeholder="XXX.00" required />
+        <label for="pay_for">Pay For:</label>
+        <input type="text" id="pay_for" name="pay_for" required />
+        <input type="submit" value="Generate Link" />
+        <h5>Links are valid for 15 minutes</h5>
+      </form><br>
+      <form method="post" action="/api/payments/random-payment-status/">
+        <div style="display: flex; flex-direction: row;">
+          <input type="text" name="link" value="{{ link }}" />
+          <input type="button" value="Copy" onclick="copyText()" style="height: fit-content; width: fit-content;"/>
+        </div>
+        <input type="submit" value="Verify Status"></input>
+        <span>Status: {{ status }}</span>
+      </form>
+    </div>
+    <div class="divs" id="qr">
+      <img src="{{ qr_code }}" style="width: 500px; height: 500px;" alt="QR Code" />
+    </div>
+    <script>
+      function copyText() {
+        const txt = document.getElementsByName("link")[0];
+        txt.select();
+        navigator.clipboard.writeText(txt.value);
+      }
+    </script>
   </body>
 </html>
