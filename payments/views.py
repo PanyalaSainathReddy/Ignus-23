@@ -414,6 +414,9 @@ def alumni_contribute(request):
     )
     order.save()
 
+    ac.order = order
+    ac.save()
+
     link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
     return HttpResponseRedirect(redirect_to=link)
 

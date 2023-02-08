@@ -17,23 +17,6 @@ class AlumniConfirmPresence(models.Model):
         return self.name
 
 
-class AlumniContribution(models.Model):
-    contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
-
-    name = models.CharField(max_length=200, unique=False)
-    passing_year = models.IntegerField(unique=False)
-    email = models.EmailField(unique=False)
-    amount = models.IntegerField(unique=False)
-    phone = models.CharField(max_length=10, validators=[contact], unique=False)
-    remarks = models.CharField(max_length=1000, unique=False)
-
-    class Meta:
-        verbose_name_plural = "Alumni Contributions"
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class Order(models.Model):
     id = models.CharField(max_length=30, unique=True, primary_key=True)
     user = models.ForeignKey("registration.UserProfile", on_delete=models.DO_NOTHING, null=True, blank=True)
@@ -163,3 +146,21 @@ class PromoCode(models.Model):
     def use(self):
         self.uses += 1
         self.save()
+
+
+class AlumniContribution(models.Model):
+    contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
+
+    name = models.CharField(max_length=200, unique=False)
+    passing_year = models.IntegerField(unique=False)
+    email = models.EmailField(unique=False)
+    amount = models.IntegerField(unique=False)
+    phone = models.CharField(max_length=10, validators=[contact], unique=False)
+    remarks = models.CharField(max_length=1000, unique=False)
+    order = models.ForeignKey(Order, on_delete=models.DO_NOTHING, default=None, null=True)
+
+    class Meta:
+        verbose_name_plural = "Alumni Contributions"
+
+    def __str__(self) -> str:
+        return self.name
