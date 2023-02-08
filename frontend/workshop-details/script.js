@@ -21,11 +21,11 @@ $(document).ready(function(){
 // 	return "";
 // }
 
-// const params = new Proxy(new URLSearchParams(window.location.search), {
-// 	get: (searchParams, prop) => searchParams.get(prop),
-// });
+const params = new Proxy(new URLSearchParams(window.location.search), {
+	get: (searchParams, prop) => searchParams.get(prop),
+});
 
-// let slug = params.ref;
+let slug = params.ref;
 
 const BASE_URL = "https://api.ignus.co.in/";
 
