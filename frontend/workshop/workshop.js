@@ -13,7 +13,9 @@ for(let i=0; i<events_btns.length; i++){
   events_btns[i].addEventListener("click", ()=>{
     let key = events_btns[i].innerHTML.toLowerCase();
     key = key.split(" ").join("");
-    window.location.href = `../event-details/index.html?ref=${key}`;
+    if(key == "pottery" || key == "phadpainting"){
+      window.location.href = `../workshop-details/index.html?ref=${key}`;
+    }
   })
 }
 

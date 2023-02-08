@@ -8,7 +8,7 @@ class AlumniConfirmPresence(models.Model):
     name = models.CharField(max_length=200)
     passing_year = models.IntegerField()
     email = models.EmailField()
-    phone = models.CharField(max_length=10, validators=[contact])
+    phone = models.CharField(max_length=10, validators=[contact], blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Alumni Confirm Presence"
