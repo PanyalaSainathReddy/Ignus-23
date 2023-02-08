@@ -379,8 +379,7 @@ def alumni_contribute(request):
             "custId": ignus_id,
             "mobile": request.data.get('phone', ''),
             "email": request.data.get('email', ''),
-            "firstName": request.data.get('name').split()[0],
-            "lastName": request.data.get('name').split()[1]
+            "firstName": request.data.get('name', '')
         },
         "extendInfo": {
             "mercUnqRef": "Ignus 2023 Payments"
