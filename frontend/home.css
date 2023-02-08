@@ -649,7 +649,13 @@ iframe{
   100% {opacity: 100%;}
 }
 
-@media screen and (max-width: 1450px) {  /*tablet*/
+@media screen and (max-width: 1450px) {
+  nav{padding: 0 10vw;}
+  .nav-btns{display: none;}
+  .res-menu-btn{ display: inline;}
+}
+
+@media screen and (max-width: 1090px) {  /*tablet*/
   .init-content img{display: none;}
   iframe{
     width: 90vw;
