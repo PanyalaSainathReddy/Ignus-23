@@ -8,7 +8,7 @@ class AlumniConfirmPresence(models.Model):
     name = models.CharField(max_length=200)
     passing_year = models.IntegerField()
     email = models.EmailField()
-    phone = models.CharField(max_length=10, validators=[contact], blank=True, null=True)
+    phone = models.CharField(max_length=10, validators=[contact], blank=True)
 
     class Meta:
         verbose_name_plural = "Alumni Confirm Presence"
@@ -164,3 +164,9 @@ class AlumniContribution(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def transacted(self):
+        return self.order.transacted()
+
+    def transaction_status(self):
+        return self.order.transaction_status()
