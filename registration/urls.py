@@ -2,8 +2,8 @@ from django.urls import include, path
 from rest_framework import routers
 
 from .views import (CARegisterAPIView, CookieTokenRefreshView,
-                    CookieTokenRefreshViewApp, GoogleLoginView,
-                    GoogleLoginViewApp, GoogleRegisterView,
+                    CookieTokenRefreshViewApp, DeleteAccountAPIView,
+                    GoogleLoginView, GoogleLoginViewApp, GoogleRegisterView,
                     GoogleRegisterViewApp, LoginView, LogoutView,
                     PreCARegistrationAPIView, PreRegistrationAPIView,
                     RegisterUserAPIView, UserDetailAPI, UserProfileAPIView,
@@ -27,5 +27,6 @@ urlpatterns = [
     path('user-profile/', UserProfileAPIView.as_view()),
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),
+    path('delete-account/', DeleteAccountAPIView.as_view()),
     path('', include(router.urls)),
 ]
