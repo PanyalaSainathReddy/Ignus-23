@@ -357,7 +357,7 @@ nav button:hover{
   }
   
   
-  @media screen and (max-width: 1090px) {  /*tablet*/
+  @media screen and (max-width: 1450px) {  /*tablet*/
       .navbar{
       padding: 0 10vw;
     }

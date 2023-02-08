@@ -476,7 +476,7 @@ nav button:hover{
 
 
 
-@media screen and (max-width: 950px){
+@media screen and (max-width: 1450px){
   .nav-btns{
     display: none;
   }

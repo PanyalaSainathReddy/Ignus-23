@@ -100,7 +100,6 @@ function createEventDetails(data){
 		// }else{
 		// 	desDivHtml += `<a href="../login.html"><button class="register-btn">REGISTER</button></a>`;
 		// }
-        desDivHtml += `<button class="register-btn">REGISTRATIONS OPENING SOON</button>`;
 
 		desDivHtml += `
 			</div>
@@ -151,7 +150,6 @@ function createEventDetails(data){
 		// }else{
 		// 	desDivMobHtml += `<a href="../login.html"><button class="register-btn">REGISTER</button></a>`;
 		// }
-        desDivMobHtml += `<button class="register-btn">REGISTRATIONS OPENING SOON</button>`;
 		desDivMobHtml += `
 			</div>
 		</section>

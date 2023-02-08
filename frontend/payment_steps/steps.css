@@ -180,7 +180,7 @@ body {
     border-bottom: 3px solid #1d3557;
   }
     
-    @media screen and (max-width: 1070px) {  /*tablet*/
+    @media screen and (max-width: 1450px) {  /*tablet*/
       .nav-btns{
         display: none;
       }

@@ -409,7 +409,7 @@ button{
   scrollbar-width: none;  /* Firefox */
 }
 
-@media screen and (max-width: 1070px) {
+@media screen and (max-width: 1450px) {
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
