@@ -151,7 +151,6 @@ contribution_form.addEventListener("submit", (e)=>{
   var year = year_contribute.value;
   var amount = amount_contribute.value;
   var remarks = remarks_contribute.value;
-  var link = '';
 
   if(document.getElementById("checkbox_confirmation_contribute").checked == true){
     body = {
