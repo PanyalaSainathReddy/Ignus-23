@@ -325,7 +325,7 @@ function createCompleteEventDetails(data){
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						desDivHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -383,7 +383,7 @@ function createCompleteEventDetails(data){
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						desDivHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -439,7 +439,7 @@ function createCompleteEventDetails(data){
 			}
 			else{
 				if(data.name == "Flagship Event"){
-					desDivMobHtml += `<button class="register-btn" onClick="pay('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+					desDivMobHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 				}
 				else{
 					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -666,11 +666,63 @@ if(sessionStorage.getItem("showmsg") != null){
 	sessionStorage.removeItem("showmsg");
 }
 
-function pay(pay_amount, reference_name){
+var modal2 = document.getElementById("myModal");
+var modal_span = document.getElementsByClassName("close")[0];
+var submit_button = document.getElementById("submit_button");
+
+// When the user clicks the button, open the modal2
+function openModal2(pay_amount, ref_name){
+	submit_button.disabled = false;
+	submit_button.style.backgroundColor = "#1d3557";
+	document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1499.00`;
+	
+	if(ref_name == "antarang"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Antarang. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "nrityansh"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Nrityansh. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "aayaam"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Aayaam. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "clashofbands"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Thunder Beats. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+
+	modal2.style.display = "block";
+	document.getElementById("submit_button").value = pay_amount + "-" + ref_name;
+};
+
+
+submit_button.addEventListener("click", function(e){
+	var promo_code = document.getElementById("promo_code").value;
+	var pay_amount_ref_name = e.target.value;
+
+	pay(pay_amount_ref_name, promo_code);
+});
+
+// When the user clicks on (x), close the modal2
+modal_span.onclick = function () {
+	modal2.style.display = "none";
+	document.getElementById("promo_code").value = '';
+};
+
+// When the user clicks anywhere outside of the modal2, close it
+window.onclick = function (event) {
+	if (event.target == modal2) {
+		modal2.style.display = "none";
+		document.getElementById("promo_code").value = '';
+	}
+};
+
+function pay(pay_amount_ref_name, promo_code){
+	submit_button.disabled = true;
+	submit_button.style.backgroundColor = "grey";
+
 	var body = {
 		amount: pay_amount,
-		pay_for: "pass-" + pay_amount + "-" + reference_name,
-		promo_code: '',
+		pay_for: "pass-" + pay_amount_ref_name,
+		promo_code: promo_code,
 	}
 
 	miAPI.post(BASE_URL + 'api/payments/init-payment/', body, {
@@ -689,7 +741,17 @@ function pay(pay_amount, reference_name){
 	})
 	.catch(function (error) {
 		console.log(error);
-		// handle error
+		if(error.response.status == 400){
+			var x = document.getElementById("snackbar");
+			x.innerHTML = error.response.data.message;
+			x.style.backgroundColor = "red";
+			x.className = "show";
+			setTimeout(function(){
+				x.className = x.className.replace("show", "");
+				submit_button.disabled = false;
+				submit_button.style.backgroundColor = "#1d3557";
+			}, 5000);
+		}
 	})
 	.finally(function () {
 		// always executed

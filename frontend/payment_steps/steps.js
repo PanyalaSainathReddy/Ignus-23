@@ -139,7 +139,7 @@ function change(res){
 					upper_btn_div.style.margin = "0px auto 20px";
 					add_accomodation_btn.style.display = "block";
 					add_accomodation_btn.addEventListener("click", function(){
-						pay('1000.00', '');
+						openModal('1000.00');
 					});
 				}
 			}
@@ -160,7 +160,7 @@ function change(res){
 					upper_btn_div.style.margin = "0px auto 20px";
 					add_accomodation_btn.style.display = "block";
 					add_accomodation_btn.addEventListener("click", function(){
-						pay('1800.00', '');
+						openModal('1800.00');
 					});
 				}
 			}
@@ -199,6 +199,14 @@ function openModal(pay_amount){
 	else if(pay_amount == "2500.00"){
 		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 2500.00`;
 		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes registration fee of IGMUN, includes silver lane pass for last 2 pronites and an accomodation for last 2 nights.`;
+	}
+	else if(pay_amount == "1000.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1000.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This will add an accomodation for last 2 nights to your pass.`;
+	}
+	else if(pay_amount == "1800.00"){
+		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1800.00`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This will add an accomodation for 4 nights to your pass.`;
 	}
 
 	modal.style.display = "block";
