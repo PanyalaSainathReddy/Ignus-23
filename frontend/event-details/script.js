@@ -161,7 +161,7 @@ function createEventDetails(data, x){
 			}
 			desDivHtml += data.events[i].about;
 			if(x == 0){
-				desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+				desDivHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 1){
 				desDivHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 2){
@@ -205,7 +205,7 @@ function createEventDetails(data, x){
 			}
 			desDivHtml += data.events[i].about;
 			if(x == 0){
-				desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+				desDivHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 1){
 				desDivHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 2){
@@ -247,7 +247,7 @@ function createEventDetails(data, x){
 		}
 		desDivMobHtml += data.events[i].about;
 		if(x == 0){
-			desDivMobHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+			desDivMobHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 		}else if(x == 1){
 			desDivMobHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 		}else if(x == 2){

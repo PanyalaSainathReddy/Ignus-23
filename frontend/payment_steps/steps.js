@@ -12,6 +12,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 });
 
 let stat = params.status;
+let paid = params.paid;
 
 if(stat == "failed"){
   var x = document.getElementById("snackbar");
@@ -23,6 +24,14 @@ else if(stat == "pending"){
 	var x = document.getElementById("snackbar");
 	x.innerHTML = "Your Payment is still Pending!";
 	x.className = "show";
+	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
+
+if(paid == "false"){
+	var x = document.getElementById("snackbar");
+	x.innerHTML = "You first need to buy any pass to register for the event!";
+	x.className = "show";
+	x.style.backgroundColor = "red";
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 }
 
