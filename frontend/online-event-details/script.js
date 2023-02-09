@@ -67,7 +67,7 @@ function createEventDetails(data){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivHtml += `
 				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
@@ -117,7 +117,7 @@ function createEventDetails(data){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivMobHtml += `
 				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
