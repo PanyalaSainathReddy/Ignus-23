@@ -720,7 +720,7 @@ function pay(pay_amount_ref_name, promo_code){
 	submit_button.style.backgroundColor = "grey";
 
 	var body = {
-		amount: pay_amount,
+		amount: '1499.00',
 		pay_for: "pass-" + pay_amount_ref_name,
 		promo_code: promo_code,
 	}
