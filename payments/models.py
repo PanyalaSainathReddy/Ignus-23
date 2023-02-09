@@ -23,6 +23,7 @@ class Order(models.Model):
     checksum = models.CharField(max_length=200, default="")
     pay_for = models.CharField(max_length=100, default="")
     amount = models.CharField(max_length=10, default="1.00")
+    promo_code = models.ForeignKey('PromoCode', blank=True, null=True, on_delete=models.SET_NULL)
     currency = models.CharField(max_length=3, default="INR")
     request_timestamp = models.CharField(max_length=20, default="")
     signature = models.CharField(max_length=200, default="")

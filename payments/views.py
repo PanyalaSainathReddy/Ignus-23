@@ -98,15 +98,15 @@ class InitPaymentAPIView(APIView):
         amount = request.data.get('amount')
         pay_for = request.data.get('pay_for', '')
         promo_code = request.data.get('promo_code', '')
+        promo = None
 
         if promo_code:
             try:
                 promo = PromoCode.objects.get(code=promo_code)
 
-                if pay_for == promo.pass_name:
+                if pay_for[:10] == promo.pass_name[:10]:
                     if promo.is_valid():
                         amount = promo.discounted_amount
-                        promo.use()
                     else:
                         return Response(data={"message": "Promo Code Expired!"}, status=status.HTTP_400_BAD_REQUEST)
                 else:
@@ -154,6 +154,7 @@ class InitPaymentAPIView(APIView):
             checksum=checksum,
             pay_for=pay_for,
             amount=amount,
+            promo_code=promo,
             currency="INR",
             request_timestamp=str(timestamp),
             response_timestamp=str(response["head"]["responseTimestamp"]),
@@ -194,15 +195,15 @@ class UpgradeToIGMUNAPIView(APIView):
         amount = request.data.get('amount')
         pay_for = request.data.get('pay_for', '')
         promo_code = request.data.get('promo_code', '')
+        promo = None
 
         if promo_code:
             try:
                 promo = PromoCode.objects.get(code=promo_code)
 
-                if pay_for == promo.pass_name:
+                if pay_for[:10] == promo.pass_name[:10]:
                     if promo.is_valid():
                         amount = promo.discounted_amount
-                        promo.use()
                     else:
                         return Response(data={"message": "Promo Code Expired!"}, status=status.HTTP_400_BAD_REQUEST)
                 else:
@@ -250,6 +251,7 @@ class UpgradeToIGMUNAPIView(APIView):
             checksum=checksum,
             pay_for=pay_for,
             amount=amount,
+            promo_code=promo,
             currency="INR",
             request_timestamp=str(timestamp),
             response_timestamp=str(response["head"]["responseTimestamp"]),
@@ -588,6 +590,8 @@ def update_payments(request):
                 user = txn.user
                 order = txn.order
                 pay_for = order.pay_for
+                if order.promo_code:
+                    order.promo_code.use()
 
                 if pay_for == "pass-499.00":
                     user.amount_paid = True
@@ -885,6 +889,8 @@ class PaymentCallback(APIView):
                     user.save()
             else:
                 user = txn.user
+                if order.promo_code:
+                    order.promo_code.use()
                 if pay_for == "pass-499.00":
                     user.amount_paid = True
                     user.pronites = True
