@@ -103,7 +103,7 @@ class OrderIsRandomFilter(admin.SimpleListFilter):
 
 class OrderAdmin(ImportExportActionModelAdmin):
     resource_class = OrderResource
-    list_display = ['id', "amount", "user", 'pay_for', 'promo_code__code', 'transacted', 'transaction_status', 'is_random']
+    list_display = ['id', "amount", "user", 'pay_for', 'promo_code', 'transacted', 'transaction_status', 'is_random']
     list_filter = ['pay_for', 'promo_code__code', OrderTransactedFilter, OrderTransactionStatusFilter, OrderIsRandomFilter]
     search_fields = ['id', 'user__user__first_name', 'user__user__last_name', 'user__registration_code']
 
@@ -122,7 +122,7 @@ class TransactionResource(resources.ModelResource):
 
 class TransactionAdmin(ImportExportActionModelAdmin):
     resource_class = TransactionResource
-    list_display = ['txn_id', "order", "amount", "order__promo_code__code", "user", "status"]
+    list_display = ['txn_id', "order", "amount", "user", "status"]
     list_filter = ['status', 'order__promo_code__code']
     search_fields = ['user__user__first_name', 'user__user__last_name', 'user__registration_code', 'status', 'order__id', 'txn_id']
 
