@@ -197,11 +197,11 @@ function openModal(pay_amount){
 
 	if(pay_amount == "499.00"){
 		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 499.00`;
-		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, and includes silver lane pass for 2 pronites.`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, and includes silver lane pass for all pronites.`;
 	}
 	else if(pay_amount == "2299.00"){
 		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 2299.00`;
-		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, includes silver lane pass to 2 pronites and an accomodation for 4 nights.`;
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, includes silver lane pass to all pronites and an accomodation for 4 nights.`;
 	}
 	else if(pay_amount == "1500.00"){
 		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1500.00`;
