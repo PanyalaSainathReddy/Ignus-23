@@ -69,7 +69,7 @@ function createEventDetails(data){
 		}
 		if(data.events[i].start_time != null && data.events[i].end_time != null){
 			desDivHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} - ${data.events[i].end_time.substr(8, 2)} Feb '23 </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
@@ -119,7 +119,7 @@ function createEventDetails(data){
 		}
 		if(data.events[i].start_time != null && data.events[i].end_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} - ${data.events[i].end_time.substr(8, 2)} Feb '23 </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
