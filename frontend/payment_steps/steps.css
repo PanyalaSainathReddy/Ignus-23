@@ -886,7 +886,7 @@ form #form_button {
 
 .modal-details {
   line-height: normal;
-  margin-top: -5px;
+  /* margin-top: -5px; */
   color: rgb(50, 156, 175);
   font-weight: bold;
   font-size: 17px;

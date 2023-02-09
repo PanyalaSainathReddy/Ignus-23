@@ -185,7 +185,9 @@ for(let i of payButtonList){
 }
 
 var modal = document.getElementById("myModal");
+var promoModal = document.getElementById("promoModal");
 var span = document.getElementsByClassName("close")[0];
+var close_promo = document.getElementsByClassName("close")[1];
 var submit_button = document.getElementById("submit_button");
 
 // When the user clicks the button, open the modal
@@ -236,11 +238,18 @@ span.onclick = function () {
 	document.getElementById("promo_code").value = '';
 };
 
+close_promo.onclick = function () {
+	promoModal.style.display = "none";
+};
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
 	if (event.target == modal) {
 		modal.style.display = "none";
 		document.getElementById("promo_code").value = '';
+	}
+	else if(event.target == promoModal){
+		promoModal.style.display = "none";
 	}
 };
 
