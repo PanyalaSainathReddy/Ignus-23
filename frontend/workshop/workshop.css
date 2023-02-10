@@ -376,7 +376,7 @@ img{
 .topnav button{
   background: transparent;
   border: none;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.4rem;
   font-weight: 700;
   font-size: 1fr;
   color: #1d3557;
@@ -480,7 +480,7 @@ nav button:hover{
 
 
 
-@media screen and (max-width: 1450px){
+@media screen and (max-width: 1250px){
   .nav-btns{
     display: none;
   }

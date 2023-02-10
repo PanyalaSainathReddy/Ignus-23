@@ -154,7 +154,7 @@ nav{
 nav button{
   background: transparent;
   border: none;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.4rem;
   font-weight: 700;
   font-size: 1fr;
   color: #1d3557;
@@ -309,7 +309,7 @@ tr:nth-child(odd) {
   display: none;
 }
 
-@media screen and (max-width: 1450px) {  /*tablet*/
+@media screen and (max-width: 1250px) {  /*tablet*/
   .vulture{display: none;}
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}

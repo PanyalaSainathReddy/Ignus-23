@@ -158,7 +158,7 @@ nav{
 nav button{
   background: transparent;
   border: none;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.4rem;
   font-weight: 700;
   font-size: 1fr;
   color: #1d3557;
@@ -357,7 +357,7 @@ nav button:hover{
   }
   
   
-  @media screen and (max-width: 1450px) {  /*tablet*/
+  @media screen and (max-width: 1250px) {  /*tablet*/
       .navbar{
       padding: 0 10vw;
     }

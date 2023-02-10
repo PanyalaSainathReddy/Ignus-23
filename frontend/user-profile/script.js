@@ -141,7 +141,7 @@ function getUserProfileDetails() {
         document.getElementById("pronite_pass").style.display = 'flex';
         if(response.data.userprofile.igmun){
           document.getElementById("pass_name").innerHTML = 'IGMUN';
-          document.getElementById("pass_sub_name").innerHTML = '+ 2 Pronites';
+          document.getElementById("pass_sub_name").innerHTML = '+ All Pronites';
         }
         if(response.data.userprofile.accomodation_4){
           document.getElementById("acc_yes_text").innerHTML = 'Accomodation(4 days)';
