@@ -40,6 +40,10 @@ def get_pending_transactions():
     return Transaction.objects.filter(status="PENDING").all()
 
 
+def get_failed_transactions():
+    return Transaction.objects.filter(status="TXN_FAILURE").all()
+
+
 def get_payment_status(order_id):
     mid = settings.PAYTM_MID
     merchant_key = settings.PAYTM_MERCHANT_KEY
@@ -568,6 +572,123 @@ def update_payments(request):
         body = data["body"]
 
         t.txn_id = body.get('txnId', '')
+        t.bank_txn_id = body.get('bankTxnId', '')
+        t.status = body["resultInfo"].get('resultStatus', '')
+        t.amount = body.get('txnAmount', '')
+        t.gateway_name = body.get('gatewayName', '')
+        t.payment_mode = body.get('paymentMode', '')
+        t.resp_code = body["resultInfo"].get('resultCode', '')
+        t.resp_msg = body["resultInfo"].get('resultMsg', '')
+        t.timestamp = body.get('txnDate', '')
+
+        t.save()
+
+        updated_transactions.append(t)
+
+    for txn in updated_transactions:
+        order_id = txn.order.id
+        if order_id[:11] == "IG-RAN-0000" or order_id[:11] == "IG-ALU-0000":
+            pass
+        else:
+            if txn.status == 'TXN_SUCCESS':
+                user = txn.user
+                order = txn.order
+                pay_for = order.pay_for
+                if order.promo_code:
+                    order.promo_code.use()
+
+                if pay_for == "pass-499.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                elif pay_for == "pass-2299.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.accomodation_4 = True
+                    user.igmun = False
+                elif pay_for == "pass-1500.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = True
+                elif pay_for == "pass-2500.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = True
+                    user.accomodation_2 = True
+                elif pay_for == "pass-1800.00":
+                    user.accomodation_4 = True
+                elif pay_for == "pass-1000.00":
+                    user.accomodation_2 = True
+                elif pay_for == "pass-1499.00-antarang":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.antarang = True
+                        event = Event.objects.get(name='Antarang')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
+                elif pay_for == "pass-1499.00-nrityansh":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.nrityansh = True
+                        event = Event.objects.get(name='Nrityansh')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
+                elif pay_for == "pass-1499.00-aayaam":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.aayaam = True
+                        event = Event.objects.get(name='Aayaam')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
+                elif pay_for == "pass-1499.00-clashofbands":
+                    if user.amount_paid is True:
+                        user.flagship = True
+                        user.cob = True
+                        event = Event.objects.get(name='Thunder Beats')
+                        user.events_registered.add(event)
+                        user.save()
+                        team = TeamRegistration.objects.create(
+                            leader=user,
+                            event=event
+                        )
+                        team.save()
+
+                user.save()
+
+    print("Updated Transactions")
+
+    return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_failed_payments(request):
+    failed_txns = get_failed_transactions()
+    updated_transactions = []
+
+    print("Updating Failed Transactions...")
+    for t in failed_txns:
+        data = get_payment_status(t.order.id)
+        body = data["body"]
+
         t.bank_txn_id = body.get('bankTxnId', '')
         t.status = body["resultInfo"].get('resultStatus', '')
         t.amount = body.get('txnAmount', '')
