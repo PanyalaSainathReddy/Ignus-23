@@ -155,7 +155,7 @@ nav{
 nav button{
   background: transparent;
   border: none;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.4rem;
   font-weight: 700;
   font-size: 1fr;
   color: #1d3557;
@@ -409,7 +409,7 @@ button{
   scrollbar-width: none;  /* Firefox */
 }
 
-@media screen and (max-width: 1450px) {
+@media screen and (max-width: 1250px) {
   nav{padding: 0 10vw;}
   .nav-btns{display: none;}
   .res-menu-btn{ display: inline;}
