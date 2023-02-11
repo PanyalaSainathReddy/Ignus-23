@@ -807,6 +807,9 @@ class CARegisterAPIView(generics.CreateAPIView):
         user = User.objects.get(id=request.user.id)
         userprofile = UserProfile.objects.get(user=user)
 
+        if userprofile.user.iitj:
+            return Response(data={"error": "IITJ students cannot register for CA."}, status=status.HTTP_403_FORBIDDEN)
+
         if not userprofile.amount_paid:
             return Response(data={"error": "Please complete your payment before registering for CA."}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
