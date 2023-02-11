@@ -121,10 +121,19 @@ function change(res){
 	pass_div_2500 = document.getElementById("pass-tile-2500");
 	add_accomodation_btn = document.getElementById("add_accomodation_btn");
 	upper_btn_div = document.getElementById("upper_btn_div");
+	all_pass_container = document.getElementById("all_pass_container");
+	iitj_students_msg = document.getElementById("iitj_students_msg");
 
 	console.log(res);
 
-	if(res.data.userprofile.amount_paid){
+	if(res.data.user.iitj){
+		all_pass_container.style.display = "none";
+		iitj_students_msg.style.display = "block";
+	}
+	else if(res.data.userprofile.amount_paid){
+		all_pass_container.style.display = "block";
+		iitj_students_msg.style.display = "none";
+
 		if(res.data.userprofile.pronites){
 			pass_btn_499.disabled = true;
 			pass_btn_2299.disabled = true;

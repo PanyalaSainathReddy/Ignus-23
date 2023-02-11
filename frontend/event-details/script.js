@@ -71,8 +71,11 @@ function getEventDetails(){
 			miAPI.get(BASE_URL + 'api/events/list/' + slug + '/', null, {
 				withCredentials: true,
 			}).then(function (response) {
-				if(response.data.amount_paid){
-					createCompleteEventDetails(response.data);
+				if(response.data.iitj){
+					createCompleteEventDetails(response.data, 0);
+				}
+				else if(response.data.amount_paid){
+					createCompleteEventDetails(response.data, 1);
 				}
 				else{
 					createEventDetails(response.data, 0);
@@ -278,7 +281,7 @@ function createEventDetails(data, x){
 	document.getElementById('download_rulebook').innerHTML = `<button style="margin-top: 15%;">Download Rulebook</button>`
 }
 
-function createCompleteEventDetails(data){
+function createCompleteEventDetails(data, x){
 	desDiv = document.getElementById("desDiv");
 	desDivMob = document.getElementById("desDivMob");
 	evCount = data.events.length;
@@ -324,7 +327,10 @@ function createCompleteEventDetails(data){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(data.name == "Flagship Event"){
+					if(x==0){
+						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+					}
+					else if(data.name == "Flagship Event"){
 						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
@@ -382,7 +388,10 @@ function createCompleteEventDetails(data){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(data.name == "Flagship Event"){
+					if(x==0){
+						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+					}
+					else if(data.name == "Flagship Event"){
 						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
@@ -438,7 +447,10 @@ function createCompleteEventDetails(data){
 				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 			}
 			else{
-				if(data.name == "Flagship Event"){
+				if(x==0){
+					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+				}
+				else if(data.name == "Flagship Event"){
 					desDivMobHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 				}
 				else{
