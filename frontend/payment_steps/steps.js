@@ -127,6 +127,7 @@ function change(res){
 	console.log(res);
 
 	if(res.data.user.iitj){
+		document.getElementById("promoModal").style.display = "none";
 		all_pass_container.style.display = "none";
 		iitj_students_msg.style.display = "block";
 	}

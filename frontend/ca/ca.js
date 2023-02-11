@@ -167,8 +167,12 @@ ca_register_btn.addEventListener("click", function(){
           sessionStorage.setItem("showmsg", "Successfully Registered as CA");
         }).catch(function(error){
           if(error.response.status == 403){
-            sessionStorage.setItem("showmsg", error.response.data.error);
-            window.location.replace("../ca/ca.html");
+            var x = document.getElementById("snackbar");
+            x.innerHTML = error.response.data.error;
+            x.style.backgroundColor = "red";
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            sessionStorage.removeItem("showmsg");
           }
           else if(error.response.status == 402){
             sessionStorage.setItem("showmsg", error.response.data.error);
