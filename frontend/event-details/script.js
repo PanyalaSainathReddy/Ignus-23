@@ -26,6 +26,15 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 });
 
 let slug = params.ref;
+let stat = params.status;
+
+if(stat == "success"){
+	var x = document.getElementById("snackbar");
+	x.innerHTML = 'Payment Successful!';
+	x.style.backgroundColor = "#4CAF50";
+	x.className = "show";
+	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+}
 
 const BASE_URL = "https://api.ignus.co.in/";
 const URL_USER_AUTHENTICATE= "api/accounts/login/";
@@ -133,9 +142,9 @@ function createEventDetails(data, x){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -152,7 +161,7 @@ function createEventDetails(data, x){
 			}
 			desDivHtml += data.events[i].about;
 			if(x == 0){
-				desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+				desDivHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 1){
 				desDivHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 2){
@@ -177,9 +186,9 @@ function createEventDetails(data, x){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -196,7 +205,7 @@ function createEventDetails(data, x){
 			}
 			desDivHtml += data.events[i].about;
 			if(x == 0){
-				desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+				desDivHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 1){
 				desDivHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 			}else if(x == 2){
@@ -219,9 +228,9 @@ function createEventDetails(data, x){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
@@ -238,7 +247,7 @@ function createEventDetails(data, x){
 		}
 		desDivMobHtml += data.events[i].about;
 		if(x == 0){
-			desDivMobHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
+			desDivMobHtml += `<a href="../payment_steps/steps.html?paid=false"><button class="register-btn">REGISTER</button></a>`
 		}else if(x == 1){
 			desDivMobHtml += `<a href="../complete-profile/index.html"><button class="register-btn">REGISTER</button></a>`
 		}else if(x == 2){
@@ -291,9 +300,9 @@ function createCompleteEventDetails(data){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -312,30 +321,11 @@ function createCompleteEventDetails(data){
 			if(data.events[i].team_event){
 				if(data.events[i].is_registered){
 					team_arr[i] = JSON.stringify(data.events[i].team);
-					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						if(data.flagship == true){
-							if(data.aayaam == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-							}
-							else if(data.antarang == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-							}
-							else if(data.cob == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-							}
-							else if(data.nrityansh == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-							}
-							else{
-								desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-							}
-						}
-						else{
-							desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-						}
+						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -368,9 +358,9 @@ function createCompleteEventDetails(data){
 					<span>${data.events[i].sub_title}</span><br>
 				`;
 			}
-			if(data.events[i].start_time != null && data.events[i].end_time != null){
+			if(data.events[i].start_time != null){
 				desDivHtml += `
-					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 				`;
 			}
 			if(data.events[i].team_event){
@@ -389,30 +379,11 @@ function createCompleteEventDetails(data){
 			if(data.events[i].team_event){
 				if(data.events[i].is_registered){
 					team_arr[i] = JSON.stringify(data.events[i].team);
-					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
 					if(data.name == "Flagship Event"){
-						if(data.flagship == true){
-							if(data.aayaam == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-							}
-							else if(data.antarang == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-							}
-							else if(data.cob == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-							}
-							else if(data.nrityansh == true){
-								desDivHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-							}
-							else{
-								desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-							}
-						}
-						else{
-							desDivHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-						}
+						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 					}
 					else{
 						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -443,9 +414,9 @@ function createCompleteEventDetails(data){
 				<span>${data.events[i].sub_title}</span><br>
 			`;
 		}
-		if(data.events[i].start_time != null && data.events[i].end_time != null){
+		if(data.events[i].start_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} - ${data.events[i].end_time.substr(11, 5)} </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
@@ -464,30 +435,11 @@ function createCompleteEventDetails(data){
 		if(data.events[i].team_event){
 			if(data.events[i].is_registered){
 				team_arr[i] = JSON.stringify(data.events[i].team);
-				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}])">Your Team</button>`;
+				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 			}
 			else{
 				if(data.name == "Flagship Event"){
-					if(data.flagship == true){
-						if(data.aayaam == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR AAYAAM</button>`;
-						}
-						else if(data.antarang == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR ANTARANG</button>`;
-						}
-						else if(data.cob == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR COB</button>`;
-						}
-						else if(data.nrityansh == true){
-							desDivMobHtml += `<button disabled class="register-btn">REGISTERED FOR NRITYANSH</button>`;
-						}
-						else{
-							desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-						}
-					}
-					else{
-						desDivMobHtml += `<a href="../payment_steps/steps.html"><button class="register-btn">REGISTER</button></a>`
-					}
+					desDivMobHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
 				}
 				else{
 					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
@@ -564,7 +516,7 @@ document.getElementById('close_btn').addEventListener('click', function(){
 	document.body.style.position = 'static';
 });
 
-function openModal(team){
+function openModal(team, max_team_size){
 	team = JSON.parse(team);
 	document.getElementById('modal_heading').innerHTML = `Team ID: ` + team.id;
 	document.getElementById('modal_team_leader').innerHTML = team.leader.name + " (" + team.leader.id + ")";
@@ -581,7 +533,12 @@ function openModal(team){
 	document.getElementById('modal_team_members').innerHTML = team_mem_details;
 	document.getElementById('modal_team_members').value = team_mem_details;
 	if(team.leader.id == getCookie('ignusID')){
-		document.getElementById('add_mem_form').style.display = 'block';
+		if(team.members.length+1 < max_team_size){
+			document.getElementById('add_mem_form').style.display = 'block';
+		}
+		else{
+			document.getElementById('add_mem_form').style.display = 'none';
+		}
 		document.getElementById('del_team_btn').style.display = 'block';
 	}
 	else{
@@ -609,13 +566,25 @@ document.getElementById('add_mem_form').addEventListener('submit', function(e){
 		withCredentials: true,
 	}).then(function (response) {
 		if(response.status == 200){
+			var team_members = "";
 			document.getElementById('add_mem_id').value = '';
-			if(document.getElementById('modal_team_members').value == "You haven't added anyone to your team yet!"){
-				team_members = response.data.member;
-			}else{
-				team_members = document.getElementById('modal_team_members').value + ", " + response.data.member;
+			team_arr[response.data.event_rank-1] = JSON.stringify(response.data.team);
+			for(i=0; i<response.data.team.members.length; i++){
+				team_members += response.data.team.members[i].name + " (" + response.data.team.members[i].id + ")";
+				if(i != response.data.team.members.length-1){
+					team_members += ", ";
+				}
+			}
+			if(team_members == ""){
+				team_members = "You haven't added anyone to your team yet!";
 			}
 			document.getElementById('modal_team_members').innerHTML = team_members;
+			if(response.data.team.members.length+1 < response.data.max_team_size){
+				document.getElementById('add_mem_form').style.display = 'block';
+			}
+			else{
+				document.getElementById('add_mem_form').style.display = 'none';
+			}
 		}
 	})
 	.catch(function (error) {
@@ -628,7 +597,7 @@ document.getElementById('add_mem_form').addEventListener('submit', function(e){
 			setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 		}
 		else if(error.response.status == 406){
-			// The user has already registered for the event.
+			// The user has already registered for the event or Team is full.
 			var x = document.getElementById("snackbar");
 			x.innerHTML = error.response.data.message;
 			x.className = "show";
@@ -695,4 +664,96 @@ if(sessionStorage.getItem("showmsg") != null){
 	x.className = "show";
 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 	sessionStorage.removeItem("showmsg");
+}
+
+var modal2 = document.getElementById("myModal");
+var modal_span = document.getElementsByClassName("close")[0];
+var submit_button = document.getElementById("submit_button");
+
+// When the user clicks the button, open the modal2
+function openModal2(pay_amount, ref_name){
+	submit_button.disabled = false;
+	submit_button.style.backgroundColor = "#1d3557";
+	document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 1499.00`;
+	
+	if(ref_name == "antarang"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Antarang. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "nrityansh"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Nrityansh. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "aayaam"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Aayaam. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+	else if(ref_name == "clashofbands"){
+		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This payment of Rs. 1499 will make you a team leader for Thunder Beats. This payment is for whole team, you will be able to add members to your team after the payment.`;
+	}
+
+	modal2.style.display = "block";
+	document.getElementById("submit_button").value = pay_amount + "-" + ref_name;
+};
+
+
+submit_button.addEventListener("click", function(e){
+	var promo_code = document.getElementById("promo_code").value;
+	var pay_amount_ref_name = e.target.value;
+
+	pay(pay_amount_ref_name, promo_code);
+});
+
+// When the user clicks on (x), close the modal2
+modal_span.onclick = function () {
+	modal2.style.display = "none";
+	document.getElementById("promo_code").value = '';
+};
+
+// When the user clicks anywhere outside of the modal2, close it
+window.onclick = function (event) {
+	if (event.target == modal2) {
+		modal2.style.display = "none";
+		document.getElementById("promo_code").value = '';
+	}
+};
+
+function pay(pay_amount_ref_name, promo_code){
+	submit_button.disabled = true;
+	submit_button.style.backgroundColor = "grey";
+
+	var body = {
+		amount: '1499.00',
+		pay_for: "pass-" + pay_amount_ref_name,
+		promo_code: promo_code,
+	}
+
+	miAPI.post(BASE_URL + 'api/payments/init-payment/', body, {
+	headers: {
+		'Content-type': 'application/json; charset=UTF-8',
+	},
+	withCredentials: true,
+	}
+	)
+	.then(function (response) {
+		console.log(response);
+		var mid = response.data.mid;
+		var orderId = response.data.orderId;
+		var txnToken = response.data.txnToken;
+		window.location.href = "https://ignus.co.in/payments/pay.html?mid=" + mid + "&orderId=" + orderId + "&txnToken=" + txnToken;
+	})
+	.catch(function (error) {
+		console.log(error);
+		if(error.response.status == 400){
+			var x = document.getElementById("snackbar");
+			x.innerHTML = error.response.data.message;
+			x.style.backgroundColor = "red";
+			x.className = "show";
+			setTimeout(function(){
+				x.className = x.className.replace("show", "");
+				submit_button.disabled = false;
+				submit_button.style.backgroundColor = "#1d3557";
+			}, 5000);
+		}
+	})
+	.finally(function () {
+		// always executed
+	});
 }

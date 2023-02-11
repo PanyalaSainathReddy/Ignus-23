@@ -52,11 +52,17 @@
       <a href="../igmun/index.html" target="_blank" style="text-decoration: none">
         <button>IGMUN</button>
       </a>
-      <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../events/events.html" style="text-decoration: none">
         <button>EVENTS</button>
       </a>
-      <a href="../prakriti/prakriti.html" style="text-decoration: none" id="ca_or_login_button">
+      <a href="../workshop/workshop.html" style="text-decoration: none">
+        <button>WORKSHOPS</button>
+      </a>
+      <a href="../prakriti/prakriti.html" style="text-decoration: none">
         <button>PRAKRITI</button>
+      </a>
+      <a href="../alumni/index.html" style="text-decoration: none">
+        <button>ALUMNI CONNECT</button>
       </a>
       <a href="../schedule/schedule.html" style="text-decoration: none">
         <button>SCHEDULE</button>
@@ -85,13 +91,23 @@
         </a>
       </li>
       <li>
-        <a href="../events/events.html" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../events/events.html" style="text-decoration: none">
           <button>EVENTS</button>
         </a>
       </li>
       <li>
-        <a href="../prakriti/prakriti.html" style="text-decoration: none" id="ca_or_login_button">
+        <a href="../workshop/workshop.html" style="text-decoration: none">
+          <button>WORKSHOPS</button>
+        </a>
+      </li>
+      <li>
+        <a href="../prakriti/prakriti.html" style="text-decoration: none">
           <button>PRAKRITI</button>
+        </a>
+      </li>
+      <li>
+        <a href="../alumni/index.html" style="text-decoration: none">
+          <button>ALUMNI CONNECT</button>
         </a>
       </li>
       <li>
@@ -208,6 +224,42 @@
       <div class="button-container">
         <button class="left_modal_button" id="del_team_btn">Delete Team</button>
         <button class="right_modal_button" id="close_btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- The modal -->
+  <div id="myModal" class="modal2">
+    <div class="modal-content">
+      <div class="modal2_heading">
+        <h1 style="float: left; max-width: 90%; line-height: 80px; margin: 0%;">
+          Confirm Payment
+        </h1>
+
+        <span class="close" style="float: right; line-height: 80px"
+          >&times;</span
+        >
+      </div>
+
+      <div class="modal-details">
+        <p id="modal_pass_amount"><span>Amount: </span>Rs.2500.00</p>
+        <p id="modal_pass_details">
+          <span>Details: </span>This pass includes access to all events and
+          accommodation
+        </p>
+      </div>
+
+      <form id="myForm">
+        <div class="inner_box">
+          <label for="task">Enter PROMO CODE (if any):</label>
+          <input type="text" id="promo_code" name="task" required />
+          <br />
+        </div>
+      </form>
+
+      <div id="taskList"></div>
+      <div class="modal_button_class">
+        <button id="submit_button">Proceed to Pay</button>
       </div>
     </div>
   </div>

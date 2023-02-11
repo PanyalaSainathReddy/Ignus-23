@@ -40,7 +40,8 @@ class EventType(models.Model):
         ('2', 'Informal Event'),
         ('3', 'Pronites'),
         ('4', 'Flagship Event'),
-        ('5', 'Online Event')
+        ('5', 'Online Event'),
+        ('6', 'Workshop')
     )
 
     type = models.CharField(max_length=2, choices=ETYPE_CHOICES, default='1')

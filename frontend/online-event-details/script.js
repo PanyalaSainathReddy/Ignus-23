@@ -69,7 +69,7 @@ function createEventDetails(data){
 		}
 		if(data.events[i].start_time != null){
 			desDivHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){
@@ -119,7 +119,7 @@ function createEventDetails(data){
 		}
 		if(data.events[i].start_time != null){
 			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23 onwards </span><br>
 			`;
 		}
 		if(data.events[i].team_event){

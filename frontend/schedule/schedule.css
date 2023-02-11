@@ -151,7 +151,7 @@ nav{
 nav button{
   background: transparent;
   border: none;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.4rem;
   font-weight: 700;
   font-size: 1fr;
   color: #1d3557;
@@ -173,36 +173,38 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  overflow: hidden;
 }
-/* 
+
 .container{
-  width: 100vw;
-  height: 100vh;
- padding-top: 100px;
+  width: 85vw;
+  height: 40vh;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+  overflow: visible;
 }
-
-.schedule-box{
-
-  
-  height: 70vh;
-  width: 60%;
-  border-radius: 15px;
+.csimg{
+  max-width: 50%;
+  margin: auto 0;
 }
-
-.events_list{
-  background: rgba( 255, 255, 255, 0.3 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 5.5px ); 
-  -webkit-backdrop-filter: blur( 5.5px ); 
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
+.calendar{
+  width: 40%;
+  overflow: visible;
+}
+.calendar-img{
+  width: 100%;
   height: 100%;
+  backdrop-filter: blur(5px)
 }
- */
+
+
 
 
 /* responsiveness  */
-@media screen and (max-width: 1020px) {  /*tablet*/
+@media screen and (max-width: 1250px) {  /*tablet*/
   nav{
     padding: 0 10vw;
   }
@@ -244,7 +246,6 @@ body{
   font-weight: 600;
   background-color: #1d3557 !important;
   color: #fff !important;
-  border: none;
 }
 
 /* Social Side Bar <<< Start >>> */
@@ -310,254 +311,3 @@ body{
 }
 
 /* Social Side Bar <<< End >>> */
-/* 
-.dates_list{
-  height: 10%;
-  background-color: transparent;
-  display: flex;
-  flex-direction: row;
-}
-
-.schedule-box{
-  display: flex;
-  flex-direction: column;
-}
-
-.day{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.day:hover {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(29, 53, 87,0.2);
-  border-radius: 10px 10px 0px 0px;
-  color: #1d3557;
-}
-
-.day h1{
-  font-size: 20px;
-  
-}
-
-
-.day:hover{
-  font-size: 20px;
-  color: #fff;
-}
-
-@media(max-width:600px){
-  .schedule-box{
-    width: 90%;
-  }
-
-  .day h1{
-    font-size: 15px;
-  }
-}
-
-.dates_list{
-
-
-}
-
-.events_list .day1{
-  height: 100%;
-  
-}
-
-.day2{
-  background-color: #d3531a;
-  height: 100%;
-}
-
-.day3{
-  background-color: #1a73d3;
-  height: 100%;
-}
-
-.day4{
-  background-color: #bad31a;
-  height: 100%;
-}
-
-#button_1{
-  background-color: rgb(29, 53, 87,0.2);
-  border-radius: 0 10px 0px 0;
-}
-
-#button{
-  border-radius: 0 10px 0px 0;
-} */
-
-.container{
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.schedule_box{
-  height: 80vh;
-  width: 60%;
-  margin-top: 50px;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.button_box{
-  display: flex;
-  flex-direction: row;
-  background: rgba( 255, 255, 255, 0.3 );
-  /* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
-  backdrop-filter: blur( 5.5px ); 
-  -webkit-backdrop-filter: blur( 5.5px ); 
-  /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
-}
-
-
-.tablink{
-  background-color: transparent;
-  color: white;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 8px 10px;
-  font-size: 17px;
-  width: 100%;
-  font-weight: bold;
-  /* border-radius: 10px 10px 0px 0; */
-}
-
-
-.tablink:hover {
-  background-color: #777;
-}
-
-.tablink:active{
-  background-color: #1d3557;
-}
-
-/* Style the tab content (and add height:100% for full page content) */
-.tabcontent {
-  background: rgba( 255, 255, 255, 0.3 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 5.5px ); 
-  -webkit-backdrop-filter: blur( 5.5px ); 
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
-  color: white;
-  display: none;
-  height: 100%;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;
-}
-
-.tabcontent::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
-}
-/* 
-#Home {background: rgba( 255, 255, 255, 0.3 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 5.5px ); 
-  -webkit-backdrop-filter: blur( 5.5px ); 
-  border: 1px solid rgba( 255, 255, 255, 0.18 );}
-#News {background-color: green;}
-#Contact {background-color: blue;}
-#About {background-color: orange;} */
-
-#schedule {
-  font-family: 'Montserrat', sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#schedule .club-name{
-  font-size: small;
-  font-weight: normal;
-}
-
-td{
-  border: 1px solid transparent;
-  text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-weight: bold;
-  padding: 8px;
-}
-
-td:nth-child(0) { 
-  width: 10%;
-  color: #ffffff;
-}
-
-
-td:last-child { 
-  padding: 8px;
-}
-
-tr{
-  text-align: center;  
-}
-
-tr:nth-child(2n+1) {
-  background-color: rgb(29, 53, 87, 0.05);
-  }
-
-tr:nth-child(2n){
-  background-color: rgb(29, 53, 87, 0.3);
-}
-
-@media(max-width:628px){
-  #schedule{
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .schedule_box{
-    width: 75%;
-  }
-
-  #schedule .reg-btn{
-    border-radius: 100px;
-    padding: 6px 10px !important;
-    font-size: 11px;
-    min-width: max-content;
-    font-weight: 500;
-    background-color: #1d3557 !important;
-    color: #fff !important;
-    border: none;
-
-  }
-}
-
-@media(max-width:450px){
-
-  td{
-    padding: 6.5px;
-  }
-}
-
-@media(max-width:360px){
-
-  .schedule_box{
-    width: 85%;
-
-  }
-}
-
-@media(max-width:320px){
-
-  .tablink{
-    font-size: 15px;
-
-  }
-}

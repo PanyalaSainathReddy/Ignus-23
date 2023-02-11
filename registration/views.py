@@ -829,3 +829,16 @@ class CARegisterAPIView(generics.CreateAPIView):
             samesite='Lax'
         )
         return res
+
+
+class DeleteAccountAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def destroy(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        userprofile = UserProfile.objects.get(user=user)
+
+        userprofile.delete()
+        user.delete()
+
+        return Response(data={"message": "User deleted successfully"}, status=status.HTTP_200_OK)
