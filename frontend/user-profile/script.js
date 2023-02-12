@@ -135,7 +135,12 @@ function getUserProfileDetails() {
     else{
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
-    if(response.data.userprofile.amount_paid){
+    if(response.data.user.iitj){
+      document.getElementById("flagship_container").style.display = 'block';
+      document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
+      get_pass_btn.style.display = 'none';
+    }
+    else if(response.data.userprofile.amount_paid){
       get_pass_btn.style.display = 'none';
       if(response.data.userprofile.pronites){
         document.getElementById("pronite_pass").style.display = 'flex';

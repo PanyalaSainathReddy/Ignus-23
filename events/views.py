@@ -104,7 +104,9 @@ class RegisterEventAPIView(APIView):
 
         if event.team_event:
             if event.event_type.type == '4':
-                if userprofile.flagship:
+                if userprofile.user.iitj:
+                    pass
+                elif userprofile.flagship:
                     if event.event_type.reference_name == "antarang":
                         userprofile.antarang = True
                     elif event.event_type.reference_name == "aayaam":
