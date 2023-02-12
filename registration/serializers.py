@@ -2,8 +2,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import exceptions, serializers
 from rest_framework.validators import UniqueValidator
-from .models import UserProfile, PreRegistration, PreCA
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+from .models import PreCA, PreRegistration, UserProfile
 
 User = get_user_model()
 

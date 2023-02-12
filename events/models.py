@@ -118,6 +118,9 @@ class Event(models.Model):
     def number_registered(self):
         return self.userprofile_set.count()
 
+    def teams_registered(self):
+        return self.teams.count()
+
     # def get_absolute_url(self):
     #     return reverse("event", kwargs={"slug": self.slug})
 

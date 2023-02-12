@@ -24,17 +24,11 @@ class OrderTransactedFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'True':
-            new_queryset = []
-            for query in queryset.all():
-                if query.transacted():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transacted()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == 'False':
-            new_queryset = []
-            for query in queryset.all():
-                if not query.transacted():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if not query.transacted()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
 
@@ -52,24 +46,15 @@ class OrderTransactionStatusFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "TXN_SUCCESS":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == "TXN_FAILURE":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == "PENDING":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
 
@@ -86,17 +71,11 @@ class OrderIsRandomFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'True':
-            new_queryset = []
-            for query in queryset.all():
-                if query.is_random():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.is_random()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == 'False':
-            new_queryset = []
-            for query in queryset.all():
-                if not query.is_random():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if not query.is_random()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
 
@@ -159,17 +138,11 @@ class AlumniContributionTransactedFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'True':
-            new_queryset = []
-            for query in queryset.all():
-                if query.transacted():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transacted()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == 'False':
-            new_queryset = []
-            for query in queryset.all():
-                if not query.transacted():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if not query.transacted()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
 
@@ -187,24 +160,15 @@ class AlumniContributionTransactionStatusFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "TXN_SUCCESS":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == "TXN_FAILURE":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
         if self.value() == "PENDING":
-            new_queryset = []
-            for query in queryset.all():
-                if query.transaction_status() == self.value():
-                    new_queryset.append(query.id)
+            new_queryset = [query.id for query in queryset.all() if query.transaction_status() == self.value()]
             new_queryset = queryset.filter(id__in=new_queryset)
             return new_queryset
 

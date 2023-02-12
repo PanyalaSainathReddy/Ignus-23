@@ -3,13 +3,21 @@ from typing import Any, Dict
 import requests
 from django.conf import settings
 from django.core.exceptions import ValidationError
-
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
+from rest_framework_simplejwt.tokens import RefreshToken
 
 GOOGLE_ID_TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
 
 
 def google_get_access_token(*, code: str, redirect_uri: str) -> str:

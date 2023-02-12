@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import (InitPaymentAPIView, PaymentCallback, alumni_contribute,
-                    bulk_payment, confirm_alumni_presence,
+from .alumni import alumni_contribute, confirm_alumni_presence
+from .views import (InitPaymentAPIView, PaymentCallback, bulk_payment,
                     generate_random_payment_link, random_payment,
                     update_failed_payments, update_payments,
                     verify_random_payment)

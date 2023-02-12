@@ -15,13 +15,6 @@ from .serializers import AllEventsSerializer, EventTypeSerializer
 
 User = get_user_model()
 
-# class EventView(ListAPIView):
-#     permission_classes = [AllowAny]
-#     serializer_class = EventSerializer
-#     model = Event
-#     queryset = Event.objects.filter(published=True)
-#     lookup_field = 'slug'
-
 
 class AllEventsView(ListAPIView):
     permission_classes = [AllowAny]
