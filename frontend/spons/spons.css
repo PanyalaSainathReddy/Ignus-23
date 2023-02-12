@@ -204,7 +204,7 @@ main, section{
   align-items: center;
   flex-direction: column;
 }
-main{overflow-y: scroll;}
+/* main{overflow-y: scroll;} */
 section{margin: 7vh 0;}
 h1, h2{
   color: #ec6096;

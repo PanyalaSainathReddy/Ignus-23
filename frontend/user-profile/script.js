@@ -53,6 +53,7 @@ get_pass_btn.addEventListener("click", function(){
 });
 
 var logout_button = document.getElementById("logout_button");
+var delete_account_button = document.getElementById("delete_account_button");
 
 // API
 const BASE_URL = "https://api.ignus.co.in/"; 
@@ -139,9 +140,10 @@ function getUserProfileDetails() {
       document.getElementById("flagship_container").style.display = 'block';
       document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
       get_pass_btn.style.display = 'none';
+      delete_account_button.style.display = 'none';
     }
     else if(response.data.userprofile.amount_paid){
-      get_pass_btn.style.display = 'none';
+      delete_account_button.style.display = 'none';
       if(response.data.userprofile.pronites){
         document.getElementById("pronite_pass").style.display = 'flex';
         if(response.data.userprofile.igmun){
@@ -212,6 +214,15 @@ function getUserProfileDetails() {
     else{
       document.getElementById("pronite_pass").style.display = 'none';
       get_pass_btn.style.display = 'block';
+      delete_account_button.style.display = 'none';
+    }
+    if(response.data.user.email.substring(string.length - 10) == "iitj.ac.in"){
+      if(!response.data.user.iitj){
+        get_pass_btn.style.display = 'none';
+        delete_account_button.style.display = 'block';
+        logout_button.style.backgroundColor = '#1d3557';
+        logout_button.style.color = '#ffffff';
+      }
     }
   })
   .catch(function (error) {
@@ -246,3 +257,26 @@ logout_button.addEventListener('click', function(){
     // always executed
   })
 });
+
+delete_account_button.addEventListener('click', function(){
+  delete_account_button.disabled = true;
+  miAPI.delete(BASE_URL + 'api/accounts/delete-account/', {
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+    data: null,
+    withCredentials: true,
+  }).then(function (response) {
+    if(response.status == 200){
+      sessionStorage.setItem("showmsg", "Account Deleted Succesfully!");
+      window.location.href("/index.html");
+    }
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .finally(function () {
+    delete_account_button.disabled = false;
+  })
+})
