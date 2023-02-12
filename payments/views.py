@@ -1,4 +1,5 @@
 import json
+import logging
 from time import time
 from urllib.parse import quote_plus
 
@@ -18,69 +19,11 @@ from rest_framework.views import APIView
 from events.models import Event, TeamRegistration
 from registration.models import UserProfile
 
-from .models import (AlumniConfirmPresence, AlumniContribution, BulkOrder,
-                     BulkTransaction, Order, PromoCode, Transaction)
-from .utils import id_generator
+from .models import BulkOrder, BulkTransaction, Order, PromoCode, Transaction
+from .utils import (get_failed_transactions, get_na_orders, get_payment_status,
+                    get_pending_transactions, id_generator)
 
 User = get_user_model()
-
-
-def get_na_orders():
-    na_orders = []
-    orders = Order.objects.all()
-
-    for order in orders:
-        if order.transaction_set.count() == 0:
-            na_orders.append(order)
-
-    return na_orders
-
-
-def get_pending_transactions():
-    return Transaction.objects.filter(status="PENDING").all()
-
-
-def get_failed_transactions():
-    return Transaction.objects.filter(status="TXN_FAILURE").all()
-
-
-def get_payment_status(order_id):
-    mid = settings.PAYTM_MID
-    merchant_key = settings.PAYTM_MERCHANT_KEY
-
-    paytm_params = dict()
-    paytm_params["body"] = {
-        "mid": mid,
-        "orderId": order_id
-    }
-
-    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
-
-    paytm_params["head"] = {
-        "signature": checksum
-    }
-
-    data = json.dumps(paytm_params)
-    url = "https://securegw.paytm.in/v3/order/status"
-
-    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
-
-    return response
-
-
-@api_view(['POST'])
-def confirm_alumni_presence(request):
-    data = request.data
-
-    acp = AlumniConfirmPresence.objects.create(
-        name=data.get('name'),
-        passing_year=data.get('passing_year'),
-        email=data.get('email'),
-        phone=data.get('phone')
-    )
-    acp.save()
-
-    return Response(data={"message": "Your Presence is Confirmed"}, status=status.HTTP_201_CREATED)
 
 
 class InitPaymentAPIView(APIView):
@@ -349,92 +292,6 @@ def bulk_payment(request):
     return HttpResponseRedirect(redirect_to=link)
 
 
-@api_view(['POST'])
-def alumni_contribute(request):
-    ac = AlumniContribution.objects.create(
-        name=request.data.get('name'),
-        passing_year=request.data.get('passing_year'),
-        email=request.data.get('email'),
-        phone=request.data.get('phone'),
-        amount=request.data.get('amount'),
-        remarks=request.data.get('remarks', '')
-    )
-    ac.save()
-
-    timestamp = round(time() * 1000)
-    rand = id_generator()
-    ignus_id = "IG-ALU-0000"
-    order_id = ignus_id+"-"+str(timestamp)+"-"+rand
-    callback_url = "https://api.ignus.co.in/api/payments/callback/"
-    mid = settings.PAYTM_MID
-    merchant_key = settings.PAYTM_MERCHANT_KEY
-    amount = str(request.data.get('amount')) + '.00'
-    remarks = request.data.get('remarks', '')
-    paytm_params = dict()
-    paytm_params["body"] = {
-        "requestType": "Payment",
-        "mid": mid,
-        "websiteName": "WEBPROD",
-        "orderId": order_id,
-        "callbackUrl": callback_url,
-        "txnAmount": {
-            "value": amount,
-            "currency": "INR"
-        },
-        "userInfo": {
-            "custId": ignus_id,
-            "mobile": request.data.get('phone', ''),
-            "email": request.data.get('email', ''),
-            "firstName": request.data.get('name', '')
-        },
-        "extendInfo": {
-            "mercUnqRef": "Ignus 2023 Payments"
-        }
-    }
-
-    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
-    paytm_params["head"] = {
-        "signature": checksum
-    }
-
-    data = json.dumps(paytm_params)
-    url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
-
-    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
-
-    txnToken = response["body"]["txnToken"]
-    order = Order.objects.create(
-        id=order_id,
-        user=None,
-        checksum=checksum,
-        pay_for=remarks,
-        amount=amount,
-        currency="INR",
-        request_timestamp=str(timestamp),
-        response_timestamp=str(response["head"]["responseTimestamp"]),
-        signature=response["head"]["signature"],
-        result_code=response["body"]["resultInfo"]["resultCode"],
-        result_msg=response["body"]["resultInfo"]["resultMsg"],
-        transaction_token=txnToken
-    )
-    order.save()
-
-    ac.order = order
-    ac.save()
-
-    link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
-    return Response(
-        data={
-            "message": "Alumni Order Created Successfully",
-            "txnToken": txnToken,
-            "orderId": order_id,
-            "mid": mid,
-            "link": link
-        },
-        status=status.HTTP_201_CREATED
-    )
-
-
 @api_view(['GET'])
 def random_payment(request):
     return render(template_name='payments/random_payment.html', request=request)
@@ -544,7 +401,7 @@ def update_payments(request):
 
     updated_transactions = []
 
-    print("Updating NA Orders...")
+    logging.info(msg="Updating NA Orders...")
     for order in na_orders:
         data = get_payment_status(order.id)
         body = data["body"]
@@ -566,12 +423,11 @@ def update_payments(request):
 
         updated_transactions.append(txn)
 
-    print("Updating Pending Transactions...")
+    logging.info(msg="Updating Pending Transactions...")
     for t in pending_txns:
         data = get_payment_status(t.order.id)
         body = data["body"]
 
-        t.txn_id = body.get('txnId', '')
         t.bank_txn_id = body.get('bankTxnId', '')
         t.status = body["resultInfo"].get('resultStatus', '')
         t.amount = body.get('txnAmount', '')
@@ -674,7 +530,7 @@ def update_payments(request):
 
                 user.save()
 
-    print("Updated Transactions")
+    logging.info(msg="Updated Transactions")
 
     return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
 
@@ -684,7 +540,7 @@ def update_failed_payments(request):
     failed_txns = get_failed_transactions()
     updated_transactions = []
 
-    print("Updating Failed Transactions...")
+    logging.info(msg="Updating Failed Transactions...")
     for t in failed_txns:
         data = get_payment_status(t.order.id)
         body = data["body"]
@@ -791,21 +647,21 @@ def update_failed_payments(request):
 
                 user.save()
 
-    print("Updated Transactions")
+    logging.info(msg="Updated Transactions")
 
     return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
 
 
 class PaymentCallback(APIView):
     def post(self, request, format=None):
-        print("Paytm Callback Data: ", request.data)
+        logging.info(msg=f"Paytm Callback Data: {request.data}")
         from_app = False
         response_dict = {}
         secret = settings.APP_SECRET
         frontend_base_url = settings.FRONTEND_URL
         incoming_secret = request.headers.get('X-App', '')
         txn_id = request.data.get('TXNID', '')
-        print("TXN ID: ", txn_id)
+        logging.info(msg=f"TXN ID: {txn_id}")
 
         if secret == incoming_secret:
             from_app = True
@@ -875,7 +731,7 @@ class PaymentCallback(APIView):
         verified = paytmchecksum.verifySignature(response_dict, merchant_key, checksum)
 
         if not verified:
-            # print("Checksum Mismatched")
+            logging.debug(msg="Checksum Mismatched")
 
             if from_app:
                 return Response(data={"message": "Invalid Payment"}, status=status.HTTP_400_BAD_REQUEST)
@@ -883,11 +739,9 @@ class PaymentCallback(APIView):
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed")
 
-        # print("Checksum Matched")
+        logging.debug(msg="Checksum Matched")
 
         if txn.status == "TXN_FAILURE":
-            # send_mail(txn)
-
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -900,8 +754,6 @@ class PaymentCallback(APIView):
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "PENDING":
-            # send_mail(txn)
-
             if from_app:
                 return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -1100,8 +952,6 @@ class PaymentCallback(APIView):
                             redirect_to=f"{frontend_base_url}/event-details/index.html?ref=clashofbands&status=success")
 
                 user.save()
-
-            # send_mail(txn)
 
             if from_app:
                 return Response(data={"message": "Payment Success"}, status=status.HTTP_200_OK)

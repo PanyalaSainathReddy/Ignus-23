@@ -15,7 +15,8 @@ class CustomUserAdmin(UserAdmin):
         ('Google', {'fields': ('is_google', 'google_picture')})
     )
 
-    list_display = UserAdmin.list_display + ('is_google', 'profile_complete')
+    list_display = UserAdmin.list_display + ('is_google', 'profile_complete', 'iitj')
+    list_filter = UserAdmin.list_filter + ('profile_complete', 'is_google', 'iitj')
 
     class Meta:
         model = User

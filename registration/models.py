@@ -3,7 +3,6 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-# from payments.models import Pass
 from django.db.models.signals import post_save, pre_save
 from django.utils.safestring import mark_safe
 
@@ -216,26 +215,18 @@ class UserProfile(models.Model):
     contact = RegexValidator(r'^[0-9]{10}$', message='Not a valid number!')
     # Model
     referred_by = models.ForeignKey('CampusAmbassador', blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_users", related_query_name="referred_user")
-    # referred_by_igmun = models.ForeignKey("igmun.IGMUNCampusAmbassador", blank=True, null=True, on_delete=models.SET_NULL, related_name="referred_igmun_users", related_query_name="referred_igmun_user")
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_pics', null=True, blank=True)
     phone = models.CharField(max_length=10, validators=[contact])
-    # avatar = models.ImageField(upload_to="user-avatars/", null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     current_year = models.CharField(max_length=1, choices=YEAR_CHOICES, default='1')
     college = models.CharField(max_length=128)
     state = models.CharField(max_length=2, choices=STATE_CHOICES)
-    # _pass = models.ManyToManyField(Pass, verbose_name="Passes", related_name="users", related_query_name="user")
     uuid = models.UUIDField(auto_created=True, default=uuid.uuid4, editable=False, unique=True)
     registration_code = models.CharField(max_length=12, unique=True, editable=False, default="")
     timestamp = models.DateTimeField(auto_now_add=True)
     events_registered = models.ManyToManyField("events.Event", blank=True)
-    # workshops_registered = models.ManyToManyField(Workshop, through='WorkshopRegistration',
-    #                                             through_fields=('userprofile', 'workshop'), blank=True)
-    # registration_code_igmun = models.CharField(max_length=15, editable=False, default="", blank=True)
-    # timestamp = models.DateTimeField(auto_now_add=True)
     is_ca = models.BooleanField(default=False)
-    # is_igmun_ca = models.BooleanField(default=False)
     amount_paid = models.BooleanField(default=False)
     pronites = models.BooleanField(default=False)
     igmun = models.BooleanField(default=False)
@@ -255,13 +246,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
-
-    # @property
-    # def events(self):
-    #     return '; '.join([e.name for e in self.events_registered.all()])
-
-    # def passes(self):
-    #     return ', '.join([p.name for p in self._pass.all()])
 
     def qr_code(self):
         base_url = "https://chart.apis.google.com/chart?chs=150x150&cht=qr"
@@ -293,9 +277,6 @@ def pre_save_user_profile(sender, instance, **kwargs):
             code = generate_registration_code('X' * (3 - len(name)) + name, count)
 
         instance.registration_code = f"IG-{code}"
-
-        # if instance.igmun is True:
-        #     instance.registration_code_igmun = f"IGMUN-{code}"
 
 
 pre_save.connect(pre_save_user_profile, sender=UserProfile)

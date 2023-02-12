@@ -31,7 +31,7 @@ class EventResource(resources.ModelResource):
 
 class EventAdmin(ImportExportActionModelAdmin):
     resource_class = EventResource
-    list_display = ['name', 'get_event_type', 'number_registered', 'published']
+    list_display = ['name', 'get_event_type', 'number_registered', 'teams_registered', 'published']
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -49,7 +49,6 @@ class OrganizerAdmin(admin.ModelAdmin):
 
 
 class TeamRegistrationAdmin(admin.ModelAdmin):
-    # autocomplete_fields = ['leader', 'members']
     list_display = ['id', 'event', 'leader', 'number_of_members']
     list_filter = ['event']
     search_fields = ['leader__user__first_name', 'leader__user__last_name', 'leader__user__email', 'leader__phone']

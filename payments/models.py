@@ -39,14 +39,10 @@ class Order(models.Model):
         return self.id
 
     def transacted(self):
-        if self.transaction_set.count() > 0:
-            return True
-        return False
+        return self.transaction_set.count() == 1
 
     def transaction_status(self):
-        if self.transacted():
-            return self.transaction_set.all()[0].status
-        return "NA"
+        return self.transaction_set.first().status if self.transacted() else "NA"
 
     def is_random(self):
         return self.id[:11] == "IG-RAN-0000"
@@ -73,14 +69,10 @@ class BulkOrder(models.Model):
         return self.id
 
     def transacted(self):
-        if self.transaction_set.count() > 0:
-            return True
-        return False
+        return self.bulktransaction_set.count() == 1
 
     def transaction_status(self):
-        if self.transacted():
-            return self.transaction_set.all()[0].status
-        return "NA"
+        return self.bulktransaction_set.first().status if self.transacted() else "NA"
 
 
 class Transaction(models.Model):
@@ -140,9 +132,7 @@ class PromoCode(models.Model):
         return self.code
 
     def is_valid(self):
-        if self.valid and self.uses < self.max_uses:
-            return True
-        return False
+        return self.valid and (self.uses < self.max_uses)
 
     def use(self):
         self.uses += 1

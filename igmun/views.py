@@ -70,20 +70,3 @@ class PreRegistrationFormAPIView(generics.CreateAPIView):
         preregform.save()
 
         return Response({"message": "Pre Registered Successfully!"}, status=status.HTTP_201_CREATED)
-
-#
-# class IGMUNCARegisterAPIView(generics.CreateAPIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def create(self, request, *args, **kwargs):
-#         user = User.objects.get(id=request.user.id)
-#         userprofile = UserProfile.objects.get(user=user)
-#         ca = IGMUNCampusAmbassador.objects.create(
-#             ca_user=userprofile
-#         )
-#         ca.save()
-
-#         userprofile.is_igmun_ca = True
-#         userprofile.save()
-
-#         return Response({"message": "CA Registered Successfully", "referral_code": ca.referral_code}, status=status.HTTP_201_CREATED)
