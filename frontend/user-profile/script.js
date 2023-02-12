@@ -216,7 +216,7 @@ function getUserProfileDetails() {
       get_pass_btn.style.display = 'block';
       delete_account_button.style.display = 'none';
     }
-    if(response.data.user.email.substring(string.length - 10) == "iitj.ac.in"){
+    if(response.data.user.email.substring(response.data.user.email.length - 10) == "iitj.ac.in"){
       if(!response.data.user.iitj){
         get_pass_btn.style.display = 'none';
         delete_account_button.style.display = 'block';
