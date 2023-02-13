@@ -72,7 +72,7 @@ function updateSchedule(data){
 						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
-							href="../events/events.html"
+							href="../event-details/index.html?ref=${data[i].get_reference_name}"
 							style="text-decoration: none"
 							>
 							<button class="am-btn reg-btn">View More</button>
@@ -93,7 +93,7 @@ function updateSchedule(data){
 						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
-							href="../events/events.html"
+							href="../event-details/index.html?ref=${data[i].get_reference_name}"
 							style="text-decoration: none"
 							>
 							<button class="am-btn reg-btn">View More</button>
@@ -114,7 +114,7 @@ function updateSchedule(data){
 						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
-							href="../events/events.html"
+							href="../event-details/index.html?ref=${data[i].get_reference_name}"
 							style="text-decoration: none"
 							>
 							<button class="am-btn reg-btn">View More</button>
@@ -135,7 +135,7 @@ function updateSchedule(data){
 						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
-							href="../events/events.html"
+							href="../event-details/index.html?ref=${data[i].get_reference_name}"
 							style="text-decoration: none"
 							>
 							<button class="am-btn reg-btn">View More</button>
