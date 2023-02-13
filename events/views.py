@@ -29,9 +29,7 @@ class EventScheduleView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = EventScheduleSerializer
     model = Event
-    queryset = Event.objects.prefetch_related(
-        Prefetch('events', queryset=Event.objects.filter(published=True).order_by('start_time'), to_attr='published_events')
-    )
+    queryset = Event.objects.filter(published=True).order_by('start_time')
 
 class EventTypeView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
