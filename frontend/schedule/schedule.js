@@ -60,7 +60,7 @@ var nineteenCount = 0;
 function updateSchedule(data){
 	for(let i = 0; i < data.length; i++){
 		if(data[i].start_time != null){
-			if(data[i].start_time.substring(8, 2) == "16"){
+			if(data[i].start_time.substring(8, 10) == "16"){
 				sixteenCount++;
 				sixteenText += `
 					<tr class="event-row">
@@ -69,7 +69,7 @@ function updateSchedule(data){
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
-						<td>${data[i].start_time.substring(11, 5)}</td>
+						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
 							href="../events/events.html"
@@ -81,7 +81,7 @@ function updateSchedule(data){
 					</tr>
 				`;
 			}
-			else if(data[i].start_time.substring(8, 2) == "17"){
+			else if(data[i].start_time.substring(8, 10) == "17"){
 				seventeenCount++;
 				seventeenText += `
 					<tr class="event-row">
@@ -90,7 +90,7 @@ function updateSchedule(data){
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
-						<td>${data[i].start_time.substring(11, 5)}</td>
+						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
 							href="../events/events.html"
@@ -102,7 +102,7 @@ function updateSchedule(data){
 					</tr>
 				`;
 			}
-			else if(data[i].start_time.substring(8, 2) == "18"){
+			else if(data[i].start_time.substring(8, 10) == "18"){
 				eighteenCount++;
 				eighteenText += `
 					<tr class="event-row">
@@ -111,7 +111,7 @@ function updateSchedule(data){
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
-						<td>${data[i].start_time.substring(11, 5)}</td>
+						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
 							href="../events/events.html"
@@ -123,7 +123,7 @@ function updateSchedule(data){
 					</tr>
 				`;
 			}
-			else if(data[i].start_time.substring(8, 2) == "19"){
+			else if(data[i].start_time.substring(8, 10) == "19"){
 				nineteenCount++;
 				nineteenText += `
 					<tr class="event-row">
@@ -132,7 +132,7 @@ function updateSchedule(data){
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
-						<td>${data[i].start_time.substring(11, 5)}</td>
+						<td>${data[i].start_time.substring(11, 16)}</td>
 						<td>
 							<a
 							href="../events/events.html"
