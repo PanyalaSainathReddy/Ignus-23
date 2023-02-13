@@ -496,13 +496,13 @@ body{
 #Contact {background-color: blue;}
 #About {background-color: orange;} */
 
-#schedule {
+.schedule {
   font-family: 'Montserrat', sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-#schedule .club-name{
+.schedule .club-name{
   font-size: small;
   font-weight: normal;
 }
@@ -539,7 +539,7 @@ tr:nth-child(2n){
 }
 
 @media(max-width:628px){
-  #schedule{
+  .schedule{
     font-size: 14px;
     width: 100%;
   }
@@ -548,7 +548,7 @@ tr:nth-child(2n){
     width: 75%;
   }
 
-  #schedule .reg-btn{
+  .schedule .reg-btn{
     border-radius: 100px;
     padding: 6px 10px !important;
     font-size: 11px;
