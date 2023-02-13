@@ -16,6 +16,11 @@ class EventSerializer(serializers.ModelSerializer):
         # }
 
 
+class EventScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ("name", "sub_title", "get_event_type", "get_venue", "start_time", "end_time")
+
 class AllEventsSerializer(serializers.ModelSerializer):
     events = EventSerializer(source="published_events", many=True, read_only=True)
 

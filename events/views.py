@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from registration.models import UserProfile
 
 from .models import Event, EventType, TeamRegistration
-from .serializers import AllEventsSerializer, EventTypeSerializer
+from .serializers import AllEventsSerializer, EventTypeSerializer, EventScheduleSerializer
 
 User = get_user_model()
 
@@ -24,6 +24,14 @@ class AllEventsView(ListAPIView):
         Prefetch('events', queryset=Event.objects.filter(published=True), to_attr='published_events')
     )
 
+
+class EventScheduleView(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = EventScheduleSerializer
+    model = Event
+    queryset = Event.objects.prefetch_related(
+        Prefetch('events', queryset=Event.objects.filter(published=True).order_by('start_time'), to_attr='published_events')
+    )
 
 class EventTypeView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]

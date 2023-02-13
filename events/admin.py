@@ -23,16 +23,15 @@ class EventResource(resources.ModelResource):
         attribute="userprofile_set",
         widget=widgets.ManyToManyWidget("registration.UserProfile", field="registration_code", separator="; ")
     )
-    phone = fields.Field(column_name="phone")
+    phone = fields.Field(
+        column_name="phone_numbers",
+        attribute="userprofile_set",
+        widget=widgets.ManyToManyWidget("registration.UserProfile", field="phone", separator="; ")
+    )
 
     class Meta:
         model = Event
         fields = ('name', 'userfield', 'phone')
-
-    def dehydrate_phone_numbers(self, event):
-        user_profiles = event.userprofile_set.all()
-        phone = [f"{profile.registration_code} ({profile.phone})" for profile in user_profiles]
-        return "; ".join(phone)
 
 
 class EventAdmin(ImportExportActionModelAdmin):
