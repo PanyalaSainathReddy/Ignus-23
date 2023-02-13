@@ -793,7 +793,23 @@ class DeleteAccountAPIView(generics.DestroyAPIView):
 
         userprofile.events_registered.clear()
 
-        userprofile.delete()
-        user.delete()
+        try:
+            refreshToken = request.COOKIES.get('refresh')
+            token = RefreshToken(refreshToken)
+            token.blacklist()
+            userprofile.delete()
+            user.delete()
+            res = Response(status=status.HTTP_200_OK, data={"message": "User deleted successfully"})
+            res.delete_cookie('access', domain=".ignus.co.in")
+            res.delete_cookie('refresh', domain=".ignus.co.in")
+            res.delete_cookie('LoggedIn', domain=".ignus.co.in")
+            res.delete_cookie("X-CSRFToken", domain=".ignus.co.in")
+            res.delete_cookie("csrftoken", domain=".ignus.co.in")
+            res.delete_cookie("isProfileComplete", domain=".ignus.co.in")
+            res.delete_cookie("isCA", domain=".ignus.co.in")
+            res.delete_cookie("ignusID", domain=".ignus.co.in")
+            res.delete_cookie("isGoogle", domain=".ignus.co.in")
 
-        return Response(data={"message": "User deleted successfully"}, status=status.HTTP_200_OK)
+            return res
+        except Exception:
+            raise exceptions.ParseError("Invalid token")

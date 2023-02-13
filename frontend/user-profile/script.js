@@ -269,7 +269,7 @@ delete_account_button.addEventListener('click', function(){
   }).then(function (response) {
     if(response.status == 200){
       sessionStorage.setItem("showmsg", "Account Deleted Succesfully!");
-      window.location.href("/index.html");
+      window.location.replace("/index.html");
     }
   })
   .catch(function (error) {
