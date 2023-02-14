@@ -8,6 +8,7 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 const res_nav = document.querySelector(".res-nav");
+const banner = document.querySelectorAll(".banner")
 
 
 // code for setting section (scene) backgrounds
@@ -26,6 +27,9 @@ container.addEventListener("wheel", (e)=>{
   e.preventDefault();
   container.scrollBy({
     left: e.deltaY,
+  })
+  banner.forEach((bnr) => {
+    bnr.style.opacity = 0
   })
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
@@ -135,7 +139,7 @@ var x = setInterval(function() {
   secs_cont.innerHTML = seconds;
 }, 1000);
 
-if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!'){
+if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!' || sessionStorage.getItem("showmsg")=='Account Deleted Succesfully!'){
   var x = document.getElementById("snackbar");
   x.innerHTML = sessionStorage.getItem("showmsg");
   x.className = "show";

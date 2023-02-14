@@ -34,7 +34,7 @@ class PreCAAdmin(admin.ModelAdmin):
 class UserProfileResource(resources.ModelResource):
     class Meta:
         model = UserProfile
-        fields = ('user__first_name', 'user__last_name', 'user__email', 'phone', 'college', 'registration_code', 'amount_paid', 'accomodation_4', 'accomodation_2', 'flagship', 'igmun', 'igmun_pref', 'mun_exp')
+        fields = ('user__first_name', 'user__last_name', 'user__email', 'phone', 'college', 'gender', 'registration_code', 'amount_paid', 'accomodation_4', 'accomodation_2', 'flagship', 'igmun', 'igmun_pref', 'mun_exp')
 
 
 class UserProfileAdmin(ImportExportActionModelAdmin):

@@ -104,6 +104,9 @@ class Event(models.Model):
     def get_event_type(self):
         return self.event_type.name()
 
+    def get_reference_name(self):
+        return self.event_type.reference_name
+
     def get_venue(self):
         if self.venue is not None:
             venue = {
