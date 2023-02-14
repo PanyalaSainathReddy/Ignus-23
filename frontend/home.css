@@ -640,6 +640,17 @@ iframe{
   margin-top: 22vh;
 }
 
+.banner{
+  position: absolute;
+  top: 3vh;
+  width: 30vw;
+  transition: all 0.5 ease-in;
+  -webkit-transition:  all 0.5s ease-in;
+}
+.banner:nth-child(2){
+  right: 0;
+}
+
 
 
 
@@ -657,6 +668,7 @@ iframe{
 
 @media screen and (max-width: 1090px) {  /*tablet*/
   .init-content img{display: none;}
+
   iframe{
     width: 90vw;
     border: 3px solid white !important;
@@ -778,8 +790,14 @@ iframe{
 }
 
 
+@media screen and (max-width: 900px){
+  .banner{top: 5vh; width: 30vw;}
+}
+
+
 
 @media screen and (max-width: 500px){ /*mobile*/
+  .banner{display: none;}
   iframe{width: 92vw !important;}
 
   main{flex-direction: column; height: fit-content; padding-bottom: 30vh;}
