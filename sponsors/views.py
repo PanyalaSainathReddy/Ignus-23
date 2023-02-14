@@ -11,4 +11,4 @@ class AllSponsorsView(ListAPIView):
     model = SponsorDesignation
     queryset = SponsorDesignation.objects.prefetch_related(
         Prefetch('sponsors', queryset=Sponsors.objects.filter(old_sponsor=False).order_by('sponsor_rank'), to_attr='new_sponsors')
-    )
+    ).order_by('title_rank')
