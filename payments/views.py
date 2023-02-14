@@ -20,7 +20,7 @@ from events.models import Event, TeamRegistration
 from registration.models import UserProfile
 
 from .models import BulkOrder, BulkTransaction, Order, PromoCode, Transaction
-from .utils import (get_failed_transactions, get_na_orders, get_payment_status,
+from .utils import (get_na_orders, get_payment_status,
                     get_pending_transactions, id_generator)
 
 User = get_user_model()
@@ -535,123 +535,6 @@ def update_payments(request):
     return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-def update_failed_payments(request):
-    failed_txns = get_failed_transactions()
-    updated_transactions = []
-
-    logging.info(msg="Updating Failed Transactions...")
-    for t in failed_txns:
-        data = get_payment_status(t.order.id)
-        body = data["body"]
-
-        t.bank_txn_id = body.get('bankTxnId', '')
-        t.status = body["resultInfo"].get('resultStatus', '')
-        t.amount = body.get('txnAmount', '')
-        t.gateway_name = body.get('gatewayName', '')
-        t.payment_mode = body.get('paymentMode', '')
-        t.resp_code = body["resultInfo"].get('resultCode', '')
-        t.resp_msg = body["resultInfo"].get('resultMsg', '')
-        t.timestamp = body.get('txnDate', '')
-
-        t.save()
-
-        updated_transactions.append(t)
-
-    for txn in updated_transactions:
-        order_id = txn.order.id
-        if order_id[:11] == "IG-RAN-0000" or order_id[:11] == "IG-ALU-0000":
-            pass
-        else:
-            if txn.status == 'TXN_SUCCESS':
-                user = txn.user
-                order = txn.order
-                pay_for = order.pay_for
-                if order.promo_code:
-                    order.promo_code.use()
-
-                if pay_for == "pass-499.00":
-                    user.amount_paid = True
-                    user.pronites = True
-                    user.main_pronite = True
-                    user.igmun = False
-                elif pay_for == "pass-2299.00":
-                    user.amount_paid = True
-                    user.pronites = True
-                    user.main_pronite = True
-                    user.accomodation_4 = True
-                    user.igmun = False
-                elif pay_for == "pass-1500.00":
-                    user.amount_paid = True
-                    user.pronites = True
-                    user.main_pronite = True
-                    user.igmun = True
-                elif pay_for == "pass-2500.00":
-                    user.amount_paid = True
-                    user.pronites = True
-                    user.main_pronite = True
-                    user.igmun = True
-                    user.accomodation_2 = True
-                elif pay_for == "pass-1800.00":
-                    user.accomodation_4 = True
-                elif pay_for == "pass-1000.00":
-                    user.accomodation_2 = True
-                elif pay_for == "pass-1499.00-antarang":
-                    if user.amount_paid is True:
-                        user.flagship = True
-                        user.antarang = True
-                        event = Event.objects.get(name='Antarang')
-                        user.events_registered.add(event)
-                        user.save()
-                        team = TeamRegistration.objects.create(
-                            leader=user,
-                            event=event
-                        )
-                        team.save()
-                elif pay_for == "pass-1499.00-nrityansh":
-                    if user.amount_paid is True:
-                        user.flagship = True
-                        user.nrityansh = True
-                        event = Event.objects.get(name='Nrityansh')
-                        user.events_registered.add(event)
-                        user.save()
-                        team = TeamRegistration.objects.create(
-                            leader=user,
-                            event=event
-                        )
-                        team.save()
-                elif pay_for == "pass-1499.00-aayaam":
-                    if user.amount_paid is True:
-                        user.flagship = True
-                        user.aayaam = True
-                        event = Event.objects.get(name='Aayaam')
-                        user.events_registered.add(event)
-                        user.save()
-                        team = TeamRegistration.objects.create(
-                            leader=user,
-                            event=event
-                        )
-                        team.save()
-                elif pay_for == "pass-1499.00-clashofbands":
-                    if user.amount_paid is True:
-                        user.flagship = True
-                        user.cob = True
-                        event = Event.objects.get(name='Thunder Beats')
-                        user.events_registered.add(event)
-                        user.save()
-                        team = TeamRegistration.objects.create(
-                            leader=user,
-                            event=event
-                        )
-                        team.save()
-
-                user.save()
-
-    logging.info(msg="Updated Transactions")
-
-    return Response(data={"message": "Transactions Updated"}, status=status.HTTP_200_OK)
-
-
 class PaymentCallback(APIView):
     def post(self, request, format=None):
         logging.info(msg=f"Paytm Callback Data: {request.data}")
@@ -705,19 +588,31 @@ class PaymentCallback(APIView):
             order = Order.objects.get(id=order_id)
             user = order.user
 
-            txn = Transaction.objects.create(
-                txn_id=txn_id,
-                bank_txn_id=data.get('BANKTXNID', ''),
-                order=order,
-                user=user,
-                status=data.get('STATUS', ''),
-                amount=data.get('TXNAMOUNT', ''),
-                gateway_name=data.get('GATEWAYNAME', ''),
-                payment_mode=data.get('PAYMENTMODE', ''),
-                resp_code=data.get('RESPCODE', ''),
-                resp_msg=data.get('RESPMSG', ''),
-                timestamp=data.get('TXNDATE', '')
-            )
+            if Transaction.objects.filter(txn_id=txn_id).exists():
+                txn = Transaction.objects.get(txn_id=txn_id)
+
+                txn.bank_txn_id = data.get('BANKTXNID', '')
+                txn.status = data.get('STATUS', '')
+                txn.amount = data.get('TXNAMOUNT', '')
+                txn.gateway_name = data.get('GATEWAYNAME', '')
+                txn.payment_mode = data.get('PAYMENTMODE', '')
+                txn.resp_code = data.get('RESPCODE', '')
+                txn.resp_msg = data.get('RESPMSG', '')
+                txn.timestamp = data.get('TXNDATE', '')
+            else:
+                txn = Transaction.objects.create(
+                    txn_id=txn_id,
+                    bank_txn_id=data.get('BANKTXNID', ''),
+                    order=order,
+                    user=user,
+                    status=data.get('STATUS', ''),
+                    amount=data.get('TXNAMOUNT', ''),
+                    gateway_name=data.get('GATEWAYNAME', ''),
+                    payment_mode=data.get('PAYMENTMODE', ''),
+                    resp_code=data.get('RESPCODE', ''),
+                    resp_msg=data.get('RESPMSG', ''),
+                    timestamp=data.get('TXNDATE', '')
+                )
             txn.save()
 
         if not from_app:
