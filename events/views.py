@@ -31,6 +31,7 @@ class EventScheduleView(ListAPIView):
     model = Event
     queryset = Event.objects.filter(published=True).order_by('start_time')
 
+
 class EventTypeView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = EventTypeSerializer

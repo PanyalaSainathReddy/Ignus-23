@@ -1,13 +1,13 @@
-from rest_framework import viewsets
 from rest_framework import permissions
-from .models import Sponsors
-from .serializers import SponsorSerializer
+from .models import Sponsors, SponsorDesignation
+from .serializers import AllSponsorsSerializer
+from rest_framework.generics import ListAPIView
+from django.db.models import Prefetch
 
-
-class SponsorListAPIViewSet(viewsets.ModelViewSet):
-    serializer_class = SponsorSerializer
+class AllSponsorsView(ListAPIView):
     permission_classes = [permissions.AllowAny]
-    ordering_fields = ['designation_title_rank']
-
-    def get_queryset(self):
-        return Sponsors.objects.all()
+    serializer_class = AllSponsorsSerializer
+    model = SponsorDesignation
+    queryset = SponsorDesignation.objects.prefetch_related(
+        Prefetch('sponsors', queryset=Sponsors.objects.filter(old_sponsor=False).order_by('sponsor_rank'), to_attr='new_sponsors')
+    )

@@ -1,11 +1,8 @@
-from django.urls import path, include
-from rest_framework import routers
-from .views import SponsorListAPIViewSet
+from django.urls import path
+from .views import AllSponsorsView
 
 app_name = 'sponsors'
 
-router = routers.DefaultRouter()
-router.register(r'sponsors-list', SponsorListAPIViewSet, basename='sponsors-list')
 urlpatterns = [
-    path('', include(router.urls)),
+    path('list/', AllSponsorsView.as_view(), name="sponsors"),
 ]
