@@ -8,6 +8,7 @@ const sun = document.getElementById("sun");
 const aud_btn = document.getElementById("aud");
 const footer = document.querySelector(".footer");
 const res_nav = document.querySelector(".res-nav");
+const banner = document.querySelectorAll(".banner")
 
 
 // code for setting section (scene) backgrounds
@@ -26,6 +27,9 @@ container.addEventListener("wheel", (e)=>{
   e.preventDefault();
   container.scrollBy({
     left: e.deltaY,
+  })
+  banner.forEach((bnr) => {
+    bnr.style.opacity = 0
   })
   body.style.backgroundColor = clrs[Math.floor(container.scrollLeft / window.innerWidth)];
   sun.style.top = `${5 + window.outerHeight/(window.outerWidth*35)*container.scrollLeft}vh`;
