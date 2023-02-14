@@ -10,7 +10,7 @@ class SponsorDesignation(models.Model):
 
 
 class Sponsors(models.Model):
-    designation = models.ForeignKey(SponsorDesignation, on_delete=models.CASCADE)
+    designation = models.ForeignKey(SponsorDesignation, on_delete=models.CASCADE, related_name="sponsors", related_query_name="sponsor")
     image = models.ImageField(upload_to='sponsors/', verbose_name='sponsors Logo')
     name = models.CharField(default='', max_length=150, verbose_name='Sponsor name', blank=True)
     sponsor_link = models.URLField(default='', max_length=1500, verbose_name='Link to Sponsors website', blank=True)
