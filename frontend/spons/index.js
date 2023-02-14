@@ -40,8 +40,20 @@ function updateSponsors(data){
     for(let j = 0; j < data[i].sponsors.length; j++){
       sponsors_main_div_text += `
         <div class="sponsors-tile">
-          <img src="${BASE_URL + data[i].sponsors[j].image.substring(20)}" alt="${data[i].sponsors[j].name}">
-          ${data[i].sponsors[j].name}
+      `;
+      if(data[i].sponsors[j].sponsor_link == ""){
+        sponsors_main_div_text += `
+            <img src="${BASE_URL + data[i].sponsors[j].image.substring(20)}" alt="${data[i].sponsors[j].name}">
+        `;
+      }
+      else{
+        sponsors_main_div_text += `
+            <a href="${data[i].sponsors[j].sponsor_link}" target="_blank">
+              <img src="${BASE_URL + data[i].sponsors[j].image.substring(20)}" alt="${data[i].sponsors[j].name}">
+            </a>
+        `;
+      }
+      sponsors_main_div_text += `
         </div>
       `;
     }
