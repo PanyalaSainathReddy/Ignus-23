@@ -4,6 +4,7 @@ from .serializers import AllSponsorsSerializer
 from rest_framework.generics import ListAPIView
 from django.db.models import Prefetch
 
+
 class AllSponsorsView(ListAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = AllSponsorsSerializer
