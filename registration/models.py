@@ -240,6 +240,9 @@ class UserProfile(models.Model):
     cob = models.BooleanField(default=False)
     igmun_pref = models.CharField(max_length=1000, default='', blank=True)
     mun_exp = models.CharField(max_length=1000, default="", blank=True)
+    attendance_day1 = models.BooleanField(default=False)
+    attendance_day2 = models.BooleanField(default=False)
+    attendance_day3 = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['timestamp']

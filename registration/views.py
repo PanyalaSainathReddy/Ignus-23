@@ -653,6 +653,45 @@ class UserDetailAPI(APIView):
         return Response(serializer.data)
 
 
+class UserAttendance(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        userProfile = UserProfile.objects.get(uuid=request.uuid)
+
+        if (userProfile is None):
+            return Response(data={"error": "User does not exist"}, status=status.HTTP_403_FORBIDDEN)
+
+        if (userProfile.pronites == False):
+            return Response(data={"error": "User not registered for Pronites"}, status=status.HTTP_403_FORBIDDEN)
+
+        if (datetime.date.today() == "2023-2-16"):
+            if (userProfile.attendance_day1 == True):
+                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                userProfile.attendance_day1 = True
+                userProfile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+
+        if (datetime.date.today() == "2023-2-17"):
+            if (userProfile.attendance_day2 == True):
+                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                userProfile.attendance_day2 = True
+                userProfile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+
+        if (datetime.date.today() == "2023-2-18"):
+            if (userProfile.attendance_day3 == True):
+                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                userProfile.attendance_day3 = True
+                userProfile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+
+        return Response(data={"error": "Attendace can only be marked on the day of event"}, status=status.HTTP_403_FORBIDDEN)
+
+
 class UserProfileAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
