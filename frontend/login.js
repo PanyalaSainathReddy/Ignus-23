@@ -117,40 +117,48 @@ var sign_up_form=document.getElementById('sign_up_form')
 
 sign_up_form.addEventListener('submit', function(e){
   e.preventDefault()
-  if(document.getElementById('password_sign_up').value == document.getElementById('confirm_password_sign_up').value){
-    var first_name=document.getElementById('first_name').value
-    var last_name=document.getElementById('last_name').value
-    var email_sign_up=document.getElementById('email_sign_up').value
-    var password_sign_up=document.getElementById('password_sign_up').value
-
-    fetch(BASE_URL + 'api/accounts/register/', {
-      method: 'POST',
-      body: JSON.stringify({
-        first_name:first_name,
-        last_name:last_name,
-        email:email_sign_up,
-        password:password_sign_up,
-      }),
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-    .then(function(response){
-      if(response.status == 200){
-        window.location.replace("complete-profile/index.html");
-      }
-      return response.json()
-    })
-    .then(function(data){
-      if(data.Error != undefined){
-        var x = document.getElementById("snackbar");
-        x.innerHTML = data.Error;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-      }
-    })
-    .catch(error => console.error('Error:', error));
+  if(document.getElementById('email_sign_up').value.substring(document.getElementById('email_sign_up').value.length - 10) == "iitj.ac.in"){
+    var x = document.getElementById("snackbar");
+    x.innerHTML = `IITJ Users can only use Google Sign up`;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+  }
+  else{
+    if(document.getElementById('password_sign_up').value == document.getElementById('confirm_password_sign_up').value){
+      var first_name=document.getElementById('first_name').value
+      var last_name=document.getElementById('last_name').value
+      var email_sign_up=document.getElementById('email_sign_up').value
+      var password_sign_up=document.getElementById('password_sign_up').value
+  
+      fetch(BASE_URL + 'api/accounts/register/', {
+        method: 'POST',
+        body: JSON.stringify({
+          first_name:first_name,
+          last_name:last_name,
+          email:email_sign_up,
+          password:password_sign_up,
+        }),
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then(function(response){
+        if(response.status == 200){
+          window.location.replace("complete-profile/index.html");
+        }
+        return response.json()
+      })
+      .then(function(data){
+        if(data.Error != undefined){
+          var x = document.getElementById("snackbar");
+          x.innerHTML = data.Error;
+          x.className = "show";
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
   }
 });
 
@@ -200,40 +208,48 @@ var mob_sign_up_form=document.getElementById('mob_sign_up_form')
 
 mob_sign_up_form.addEventListener('submit', function(e){
   e.preventDefault()
-  if(document.getElementById('mob_password_sign_up').value == document.getElementById('mob_confirm_password_sign_up').value){
-    var first_name=document.getElementById('mob_first_name').value
-    var last_name=document.getElementById('mob_last_name').value
-    var email_sign_up=document.getElementById('mob_email_sign_up').value
-    var password_sign_up=document.getElementById('mob_password_sign_up').value
-
-    fetch(BASE_URL + 'api/accounts/register/', {
-      method: 'POST',
-      body: JSON.stringify({
-        first_name:first_name,
-        last_name:last_name,
-        email:email_sign_up,
-        password:password_sign_up,
-      }),
-      credentials: 'include',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-    .then(function(response){
-      if(response.status == 200){
-        window.location.replace("complete-profile/index.html");
-      }
-      return response.json()
-    })
-    .then(function(data){
-      if(data.Error != undefined){
-        var x = document.getElementById("snackbar");
-        x.innerHTML = data.Error;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-      }
-    })
-    .catch(error => console.error('Error:', error));
+  if(document.getElementById('mob_email_sign_up').value.substring(document.getElementById('mob_email_sign_up').value.length - 10) == "iitj.ac.in"){
+    var x = document.getElementById("snackbar");
+    x.innerHTML = `IITJ Users can only use Google Sign up`;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+  }
+  else{
+    if(document.getElementById('mob_password_sign_up').value == document.getElementById('mob_confirm_password_sign_up').value){
+      var first_name=document.getElementById('mob_first_name').value
+      var last_name=document.getElementById('mob_last_name').value
+      var email_sign_up=document.getElementById('mob_email_sign_up').value
+      var password_sign_up=document.getElementById('mob_password_sign_up').value
+  
+      fetch(BASE_URL + 'api/accounts/register/', {
+        method: 'POST',
+        body: JSON.stringify({
+          first_name:first_name,
+          last_name:last_name,
+          email:email_sign_up,
+          password:password_sign_up,
+        }),
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then(function(response){
+        if(response.status == 200){
+          window.location.replace("complete-profile/index.html");
+        }
+        return response.json()
+      })
+      .then(function(data){
+        if(data.Error != undefined){
+          var x = document.getElementById("snackbar");
+          x.innerHTML = data.Error;
+          x.className = "show";
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
   }
 });
 
