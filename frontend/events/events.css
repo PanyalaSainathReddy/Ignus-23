@@ -131,7 +131,15 @@ h1{
   margin: 10vh 0 0 10vw;
   width: 90vw;
 }
-.pronite .btn-container, .informal .btn-container{
+.pronite .btn-container{
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 20%;
+  height: 30vh;
+  row-gap: 5%;
+  z-index: 1;
+}
+.informal .btn-container{
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   width: 25%;

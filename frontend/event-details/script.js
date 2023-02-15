@@ -327,7 +327,7 @@ function createCompleteEventDetails(data, x){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(data.events[i].name == "ArTees"){
+					if(data.events[i].name == "ArTees" || data.events[i].name == "Funky Faces"){
 						desDivHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 					}
 					else{
@@ -393,7 +393,7 @@ function createCompleteEventDetails(data, x){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(data.events[i].name == "ArTees"){
+					if(data.events[i].name == "ArTees" || data.events[i].name == "Funky Faces"){
 						desDivHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 					}
 					else{
@@ -457,7 +457,7 @@ function createCompleteEventDetails(data, x){
 				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 			}
 			else{
-				if(data.events[i].name == "ArTees"){
+				if(data.events[i].name == "ArTees" || data.events[i].name == "Funky Faces"){
 					desDivMobHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 				}
 				else{
