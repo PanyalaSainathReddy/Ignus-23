@@ -253,6 +253,7 @@ class UserProfile(models.Model):
     attendance_day1 = models.BooleanField(default=False)
     attendance_day2 = models.BooleanField(default=False)
     attendance_day3 = models.BooleanField(default=False)
+    attendance_day4 = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['timestamp']
