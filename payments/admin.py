@@ -80,10 +80,31 @@ class OrderIsRandomFilter(admin.SimpleListFilter):
             return new_queryset
 
 
+class OrderIsSBIFilter(admin.SimpleListFilter):
+    title = 'Filter By Is SBI'
+    parameter_name = 'is_sbi'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('True', 'True'),
+            ('False', 'False'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'True':
+            new_queryset = [query.id for query in queryset.all() if query.is_sbi()]
+            new_queryset = queryset.filter(id__in=new_queryset)
+            return new_queryset
+        if self.value() == 'False':
+            new_queryset = [query.id for query in queryset.all() if not query.is_sbi()]
+            new_queryset = queryset.filter(id__in=new_queryset)
+            return new_queryset
+
+
 class OrderAdmin(ImportExportActionModelAdmin):
     resource_class = OrderResource
     list_display = ['id', "amount", "user", 'pay_for', 'promo_code', 'transacted', 'transaction_status', 'is_random']
-    list_filter = ['pay_for', 'promo_code__code', OrderTransactedFilter, OrderTransactionStatusFilter, OrderIsRandomFilter]
+    list_filter = [OrderTransactedFilter, OrderTransactionStatusFilter, OrderIsRandomFilter, OrderIsSBIFilter, 'promo_code__code']
     search_fields = ['id', 'user__user__first_name', 'user__user__last_name', 'user__registration_code']
 
 

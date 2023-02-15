@@ -4,7 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 from import_export import resources
 from import_export.admin import ExportActionMixin, ImportExportActionModelAdmin
 
-from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
+from .models import (BlacklistedEmail, CampusAmbassador, PreCA,
+                     PreRegistration, UserProfile)
 
 User = get_user_model()
 
@@ -20,6 +21,11 @@ class CustomUserAdmin(UserAdmin):
 
     class Meta:
         model = User
+
+
+class BlacklistedEmailAdmin(admin.ModelAdmin):
+    class Meta:
+        model = BlacklistedEmail
 
 
 class PreCAAdmin(admin.ModelAdmin):
@@ -62,6 +68,7 @@ class PreRegistrationAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(BlacklistedEmail, BlacklistedEmailAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(CampusAmbassador, CampusAmbassadorAdmin)
 admin.site.register(PreRegistration, PreRegistrationAdmin)

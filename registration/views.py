@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile
+from .models import (BlacklistedEmail, CampusAmbassador, PreCA,
+                     PreRegistration, UserProfile)
 from .serializers import (CookieTokenRefreshSerializer,
                           PreCARegistrationSerializer,
                           PreRegistrationSerializer, RegisterSerializer,
@@ -267,6 +268,10 @@ class GoogleRegisterView(APIView):
             params = urlencode({'Error': "Failed to obtain user info from Google."})
             return redirect(f'{login_url}?{params}')
 
+        if BlacklistedEmail.objects.filter(email=user_data["email"]).exists():
+            params = urlencode({'Error': "This email is blacklisted"})
+            return redirect(f'{login_url}?{params}')
+
         try:
             user = User.objects.create(
                 username=user_data['email'],
@@ -383,6 +388,9 @@ class GoogleRegisterViewApp(APIView):
 
         data = request.data
 
+        if BlacklistedEmail.objects.filter(email=data.get("email")).exists():
+            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
+
         try:
             user = User.objects.create(
                 first_name=data.get('first_name', ''),
@@ -455,6 +463,9 @@ class GoogleLoginView(APIView):
             return redirect(f'{login_url}?{params}')
 
         response = Response(status=302)
+
+        if BlacklistedEmail.objects.filter(email=user_data["email"]).exists():
+            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
 
         if User.objects.filter(email=user_data['email']).exists():
             if User.objects.get(email=user_data['email']).is_google:
@@ -563,6 +574,9 @@ class GoogleLoginViewApp(APIView):
 
         data = request.data
 
+        if BlacklistedEmail.objects.filter(email=data.get('email')).exists():
+            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
+
         if User.objects.filter(email=data.get('email')).exists():
             user = User.objects.get(email=data.get('email'))
 
@@ -653,43 +667,47 @@ class UserDetailAPI(APIView):
         return Response(serializer.data)
 
 
-class UserAttendance(APIView):
-    permission_classes = [IsAuthenticated]
-
+class MarkPronitesAttendance(APIView):
     def post(self, request, *args, **kwargs):
-        userProfile = UserProfile.objects.get(uuid=request.uuid)
+        data = request.data
+        uuid = data.get('uuid')
 
-        if (userProfile is None):
-            return Response(data={"error": "User does not exist"}, status=status.HTTP_403_FORBIDDEN)
+        if UserProfile.objects.filter(uuid=uuid).exists():
+            userprofile = UserProfile.objects.get(uuid=uuid)
+        else:
+            userprofile = None
 
-        if (userProfile.pronites == False):
-            return Response(data={"error": "User not registered for Pronites"}, status=status.HTTP_403_FORBIDDEN)
+        if userprofile is None:
+            return Response(data={"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-        if (datetime.date.today() == "2023-2-16"):
-            if (userProfile.attendance_day1 == True):
+        if not userprofile.pronites:
+            return Response(data={"error": "User not paid for Pronites"}, status=status.HTTP_402_PAYMENT_REQUIRED)
+
+        if str(datetime.date.today()) == "2023-02-17":
+            if userprofile.attendance_day1:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
-                userProfile.attendance_day1 = True
-                userProfile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+                userprofile.attendance_day1 = True
+                userprofile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
-        if (datetime.date.today() == "2023-2-17"):
-            if (userProfile.attendance_day2 == True):
+        if str(datetime.date.today()) == "2023-02-18":
+            if userprofile.attendance_day2:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
-                userProfile.attendance_day2 = True
-                userProfile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+                userprofile.attendance_day2 = True
+                userprofile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
-        if (datetime.date.today() == "2023-2-18"):
-            if (userProfile.attendance_day3 == True):
+        if str(datetime.date.today()) == "2023-02-19":
+            if userprofile.attendance_day3:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
-                userProfile.attendance_day3 = True
-                userProfile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_201_CREATED)
+                userprofile.attendance_day3 = True
+                userprofile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
-        return Response(data={"error": "Attendace can only be marked on the day of event"}, status=status.HTTP_403_FORBIDDEN)
+        return Response(data={"error": "Attendance can only be marked on the day of event"}, status=status.HTTP_403_FORBIDDEN)
 
 
 class UserProfileAPIView(generics.CreateAPIView):

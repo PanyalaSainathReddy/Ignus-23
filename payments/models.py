@@ -47,6 +47,9 @@ class Order(models.Model):
     def is_random(self):
         return self.id[:11] == "IG-RAN-0000"
 
+    def is_sbi(self):
+        return self.id[:11] == "IG-SBI-0000"
+
 
 class BulkOrder(models.Model):
     id = models.CharField(max_length=30, unique=True, primary_key=True)

@@ -1,6 +1,8 @@
 import csv
 import json
 
+from registration.models import UserProfile
+
 from .models import Order, Transaction
 from .utils import id_generator
 
@@ -8,10 +10,10 @@ from .utils import id_generator
 def convert_to_txn():
     f = open('payments/1675948481555.xls', 'r')
     csv_file = csv.reader(f)
-    f.close()
 
     ids = {}
     dup = []
+    user_not_found = []
 
     for lines in csv_file:
         line = lines[0].split('\t')
@@ -45,9 +47,16 @@ def convert_to_txn():
             "pay_for": pay_for
         }
 
+    f.close()
+
     for id in ids:
         order_id = f"IG-SBI-0000-{id_generator(size=18)}"
-        user = None
+
+        if not UserProfile.objects.filter(registration_code=id).exists():
+            user_not_found.append(id)
+            continue
+
+        user = UserProfile.objects.get(registration_code=id)
         pay_for = ids[id]["pay_for"]
         amount = ids[id]["amount"]
         response_timestamp = ids[id]["timestamp"]
@@ -83,6 +92,15 @@ def convert_to_txn():
         "dup": dup
     }
     dups = json.dumps(dup, indent=4)
-    f = open("dup_ids.json", "w")
+    f = open("payments/dup_ids.json", "w")
     f.write(dups)
     f.close()
+
+    unf = json.dumps(user_not_found, indent=4)
+    f = open("payments/unf.json", "w")
+    f.write(unf)
+    f.close()
+
+    print(f"{len(ids)} txns created")
+    print(f"{len(dup)} duplicates found")
+    print(f"{len(user_not_found)} users not found")
