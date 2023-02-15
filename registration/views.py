@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile, BlacklistedEmail
+from .models import (BlacklistedEmail, CampusAmbassador, PreCA,
+                     PreRegistration, UserProfile)
 from .serializers import (CookieTokenRefreshSerializer,
                           PreCARegistrationSerializer,
                           PreRegistrationSerializer, RegisterSerializer,

@@ -4,7 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 from import_export import resources
 from import_export.admin import ExportActionMixin, ImportExportActionModelAdmin
 
-from .models import CampusAmbassador, PreCA, PreRegistration, UserProfile, BlacklistedEmail
+from .models import (BlacklistedEmail, CampusAmbassador, PreCA,
+                     PreRegistration, UserProfile)
 
 User = get_user_model()
 
