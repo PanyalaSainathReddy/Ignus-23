@@ -13,6 +13,7 @@ def convert_to_txn():
 
     ids = {}
     dup = []
+    user_not_found = []
 
     for lines in csv_file:
         line = lines[0].split('\t')
@@ -51,23 +52,24 @@ def convert_to_txn():
     for id in ids:
         order_id = f"IG-SBI-0000-{id_generator(size=18)}"
 
-        if UserProfile.objects.filter(registration_code=id).exists():
-            user = UserProfile.objects.get(registration_code=id)
-        else:
-            user = None
+        if not UserProfile.objects.filter(registration_code=id).exists():
+            user_not_found.append(id)
+            continue
 
+        user = UserProfile.objects.get(registration_code=id)
         pay_for = ids[id]["pay_for"]
         amount = ids[id]["amount"]
         response_timestamp = ids[id]["timestamp"]
 
-        order = Order.objects.create(
-            id=order_id,
-            user=user,
-            pay_for=pay_for,
-            amount=amount,
-            response_timestamp=response_timestamp
-        )
-        order.save()
+        if not Order.objects.filter(user=user).exists():
+            order = Order.objects.create(
+                id=order_id,
+                user=user,
+                pay_for=pay_for,
+                amount=amount,
+                response_timestamp=response_timestamp
+            )
+            order.save()
 
         txn_id = id_generator(size=50)
         bank_txn_id = ids[id]["bank_txn_id"]
@@ -75,17 +77,18 @@ def convert_to_txn():
         payment_mode = ids[id]["payment_mode"]
         timestamp = ids[id]["timestamp"]
 
-        txn = Transaction.objects.create(
-            txn_id=txn_id,
-            bank_txn_id=bank_txn_id,
-            user=user,
-            status=status,
-            order=order,
-            amount=amount,
-            payment_mode=payment_mode,
-            timestamp=timestamp
-        )
-        txn.save()
+        if not Transaction.objects.filter(user=user).exists():
+            txn = Transaction.objects.create(
+                txn_id=txn_id,
+                bank_txn_id=bank_txn_id,
+                user=user,
+                status=status,
+                order=order,
+                amount=amount,
+                payment_mode=payment_mode,
+                timestamp=timestamp
+            )
+            txn.save()
 
     dups = {
         "dup": dup
@@ -95,5 +98,11 @@ def convert_to_txn():
     f.write(dups)
     f.close()
 
+    unf = json.dumps(user_not_found, indent=4)
+    f = open("payments/unf.json", "w")
+    f.write(unf)
+    f.close()
+
     print(f"{len(ids)} txns created")
-    print(f"{len(dups)} duplicates found")
+    print(f"{len(dup)} duplicates found")
+    print(f"{len(user_not_found)} users not found")
