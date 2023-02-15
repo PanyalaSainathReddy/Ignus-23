@@ -5,9 +5,9 @@ from .views import (CARegisterAPIView, CookieTokenRefreshView,
                     CookieTokenRefreshViewApp, DeleteAccountAPIView,
                     GoogleLoginView, GoogleLoginViewApp, GoogleRegisterView,
                     GoogleRegisterViewApp, LoginView, LogoutView,
-                    PreCARegistrationAPIView, PreRegistrationAPIView,
-                    RegisterUserAPIView, UserDetailAPI, UserProfileAPIView,
-                    UserProfileDetailsView, UserAttendance)
+                    MarkPronitesAttendance, PreCARegistrationAPIView,
+                    PreRegistrationAPIView, RegisterUserAPIView, UserDetailAPI,
+                    UserProfileAPIView, UserProfileDetailsView)
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
@@ -24,7 +24,7 @@ urlpatterns = [
     path('refresh/', CookieTokenRefreshView.as_view(), name="refresh"),
     path('refresh/app/', CookieTokenRefreshViewApp.as_view(), name="refresh-app"),
     path('user-details/', UserDetailAPI.as_view()),
-    path('user-attendance/', UserAttendance.as_view()),
+    path('pronites/mark-attendance/', MarkPronitesAttendance.as_view()),
     path('user-profile/', UserProfileAPIView.as_view()),
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),

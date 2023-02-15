@@ -16,6 +16,16 @@ class User(AbstractUser):
     iitj = models.BooleanField(default=False)
 
 
+class BlacklistedEmail(models.Model):
+    email = models.EmailField()
+
+    def __str__(self) -> str:
+        return self.email
+
+    class Meta:
+        verbose_name_plural = "Blacklisted Emails"
+
+
 class PreRegistration(models.Model):
     # choices
     YEAR_CHOICES = (
