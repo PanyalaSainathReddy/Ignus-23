@@ -685,8 +685,7 @@ class MarkPronitesAttendance(APIView):
         if not userprofile.amount_paid and not userprofile.user.iitj:
             return Response(data={"error": "User not paid for Pronites"}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
-        # date_today = str(datetime.date.today())
-        date_time = datetime.now(pytz.timezone('Asia/Kolkata'))
+        date_time = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
         date_today = str(date_time.date())
 
         if date_today == "2023-02-16":
