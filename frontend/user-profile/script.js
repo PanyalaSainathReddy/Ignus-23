@@ -137,6 +137,9 @@ function getUserProfileDetails() {
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
     if(response.data.user.iitj){
+      document.getElementById("pronite_pass").style.display = 'flex';
+      document.getElementById("acc_yes").style.display = 'none';
+      document.getElementById("acc_no").style.display = 'none';
       document.getElementById("flagship_container").style.display = 'block';
       document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
       get_pass_btn.style.display = 'none';
