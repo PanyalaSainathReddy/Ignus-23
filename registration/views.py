@@ -269,7 +269,8 @@ class GoogleRegisterView(APIView):
             return redirect(f'{login_url}?{params}')
 
         if BlacklistedEmail.objects.filter(email=user_data["email"]).exists():
-            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
+            params = urlencode({'Error': "This email is blacklisted"})
+            return redirect(f'{login_url}?{params}')
 
         try:
             user = User.objects.create(
