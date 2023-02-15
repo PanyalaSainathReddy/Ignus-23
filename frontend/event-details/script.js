@@ -327,14 +327,19 @@ function createCompleteEventDetails(data, x){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(x==0){
-						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-					}
-					else if(data.name == "Flagship Event"){
-						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+					if(data.events[i].name == "ArTees"){
+						desDivHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 					}
 					else{
-						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						if(x==0){
+							desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						}
+						else if(data.name == "Flagship Event"){
+							desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+						}
+						else{
+							desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						}
 					}
 				}
 			}
@@ -388,14 +393,19 @@ function createCompleteEventDetails(data, x){
 					desDivHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 				}
 				else{
-					if(x==0){
-						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-					}
-					else if(data.name == "Flagship Event"){
-						desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+					if(data.events[i].name == "ArTees"){
+						desDivHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 					}
 					else{
-						desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						if(x==0){
+							desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						}
+						else if(data.name == "Flagship Event"){
+							desDivHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+						}
+						else{
+							desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+						}
 					}
 				}
 			}
@@ -447,14 +457,19 @@ function createCompleteEventDetails(data, x){
 				desDivMobHtml += `<button class="register-btn" onClick="openModal(team_arr[${i}], ${data.events[i].max_team_size})">Your Team</button>`;
 			}
 			else{
-				if(x==0){
-					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
-				}
-				else if(data.name == "Flagship Event"){
-					desDivMobHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+				if(data.events[i].name == "ArTees"){
+					desDivMobHtml += `<button class="register-btn">REGISTRATIONS CLOSED</button>`
 				}
 				else{
-					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+					if(x==0){
+						desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+					}
+					else if(data.name == "Flagship Event"){
+						desDivMobHtml += `<button class="register-btn" onClick="openModal2('1499.00', '${data.reference_name}')">PAY & REGISTER</button>`
+					}
+					else{
+						desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
+					}
 				}
 			}
 		}
