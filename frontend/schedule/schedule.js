@@ -50,73 +50,126 @@ var seventeenText = ``;
 var eighteenText = ``;
 var nineteenText = ``;
 
-var seventeenCount = 0;
-var eighteenCount = 0;
-var nineteenCount = 0;
-
 function updateSchedule(data){
 	for(let i = 0; i < data.length; i++){
 		if(data[i].start_time != null){
 			if(data[i].start_time.substring(8, 10) == "17"){
-				seventeenCount++;
 				seventeenText += `
 					<tr class="event-row">
-						<td style="min-width: 30px">${seventeenCount}</td>
 						<td>
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
 						<td>${data[i].start_time.substring(11, 16)}</td>
-						<td>
-							<a
-							href="../event-details/index.html?ref=${data[i].get_reference_name}"
-							style="text-decoration: none"
-							>
-							<button class="am-btn reg-btn">View More</button>
-							</a>
-						</td>
+				`
+				if(data[i].get_venue != null){
+					seventeenText += `
+						<td style="min-width: 30px">${data[i].get_venue.name}</td>
+					`
+				}
+				else{
+					seventeenText += `
+						<td style="min-width: 30px"> - </td>
+					`
+				}
+				if(data[i].get_reference_name == "for-schedule"){
+					seventeenText += `
+						<td> </td>
+					`
+				}
+				else{
+					seventeenText += `
+							<td>
+								<a
+								href="../event-details/index.html?ref=${data[i].get_reference_name}"
+								style="text-decoration: none"
+								>
+								<button class="am-btn reg-btn">View More</button>
+								</a>
+							</td>
+					`
+				}
+				seventeenText += `
 					</tr>
 				`;
 			}
 			else if(data[i].start_time.substring(8, 10) == "18"){
-				eighteenCount++;
 				eighteenText += `
 					<tr class="event-row">
-						<td style="min-width: 30px">${eighteenCount}</td>
 						<td>
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
 						<td>${data[i].start_time.substring(11, 16)}</td>
-						<td>
-							<a
-							href="../event-details/index.html?ref=${data[i].get_reference_name}"
-							style="text-decoration: none"
-							>
-							<button class="am-btn reg-btn">View More</button>
-							</a>
-						</td>
+				`
+				if(data[i].get_venue != null){
+					eighteenText += `
+						<td style="min-width: 30px">${data[i].get_venue.name}</td>
+					`
+				}
+				else{
+					eighteenText += `
+						<td style="min-width: 30px"> - </td>
+					`
+				}
+				if(data[i].get_reference_name == "for-schedule"){
+					eighteenText += `
+						<td> </td>
+					`
+				}
+				else{
+					eighteenText += `
+							<td>
+								<a
+								href="../event-details/index.html?ref=${data[i].get_reference_name}"
+								style="text-decoration: none"
+								>
+								<button class="am-btn reg-btn">View More</button>
+								</a>
+							</td>
+					`
+				}
+				eighteenText += `
 					</tr>
 				`;
 			}
 			else if(data[i].start_time.substring(8, 10) == "19"){
-				nineteenCount++;
 				nineteenText += `
 					<tr class="event-row">
-						<td style="min-width: 30px">${nineteenCount}</td>
 						<td>
 							<p class="event-title">${data[i].name}</p>
 							<p class="club-name">${data[i].sub_title}</p>
 						</td>
 						<td>${data[i].start_time.substring(11, 16)}</td>
-						<td>
-							<a
-							href="../event-details/index.html?ref=${data[i].get_reference_name}"
-							style="text-decoration: none"
-							>
-							<button class="am-btn reg-btn">View More</button>
-							</a>
-						</td>
+				`
+				if(data[i].get_venue != null){
+					nineteenText += `
+						<td style="min-width: 30px">${data[i].get_venue.name}</td>
+					`
+				}
+				else{
+					nineteenText += `
+						<td style="min-width: 30px"> - </td>
+					`
+				}
+				if(data[i].get_reference_name == "for-schedule"){
+					nineteenText += `
+						<td> </td>
+					`
+				}
+				else{
+					nineteenText += `
+							<td>
+								<a
+								href="../event-details/index.html?ref=${data[i].get_reference_name}"
+								style="text-decoration: none"
+								>
+								<button class="am-btn reg-btn">View More</button>
+								</a>
+							</td>
+					`
+				}
+				nineteenText += `
 					</tr>
 				`;
 			}
