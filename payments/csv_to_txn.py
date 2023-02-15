@@ -61,15 +61,14 @@ def convert_to_txn():
         amount = ids[id]["amount"]
         response_timestamp = ids[id]["timestamp"]
 
-        if not Order.objects.filter(user=user).exists():
-            order = Order.objects.create(
-                id=order_id,
-                user=user,
-                pay_for=pay_for,
-                amount=amount,
-                response_timestamp=response_timestamp
-            )
-            order.save()
+        order = Order.objects.create(
+            id=order_id,
+            user=user,
+            pay_for=pay_for,
+            amount=amount,
+            response_timestamp=response_timestamp
+        )
+        order.save()
 
         txn_id = id_generator(size=50)
         bank_txn_id = ids[id]["bank_txn_id"]
@@ -77,18 +76,17 @@ def convert_to_txn():
         payment_mode = ids[id]["payment_mode"]
         timestamp = ids[id]["timestamp"]
 
-        if not Transaction.objects.filter(user=user).exists():
-            txn = Transaction.objects.create(
-                txn_id=txn_id,
-                bank_txn_id=bank_txn_id,
-                user=user,
-                status=status,
-                order=order,
-                amount=amount,
-                payment_mode=payment_mode,
-                timestamp=timestamp
-            )
-            txn.save()
+        txn = Transaction.objects.create(
+            txn_id=txn_id,
+            bank_txn_id=bank_txn_id,
+            user=user,
+            status=status,
+            order=order,
+            amount=amount,
+            payment_mode=payment_mode,
+            timestamp=timestamp
+        )
+        txn.save()
 
     dups = {
         "dup": dup
