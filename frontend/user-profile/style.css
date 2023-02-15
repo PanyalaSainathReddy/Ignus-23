@@ -174,7 +174,7 @@ body{background-color: #F66C40;}
   position: absolute;
   right: 0;
   top: 50%;
-  max-width: 48vw;
+  max-width: 40vw;
   z-index: -1;
   /* top: 0; */
   transform: translate(0, -50%);
@@ -197,7 +197,7 @@ main{
   /* height: 100vh; */
   padding: 15vh 5vw;
   color: white;
-  width: 48vw;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   min-height: fit-content;
