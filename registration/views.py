@@ -462,10 +462,11 @@ class GoogleLoginView(APIView):
             params = urlencode({'Error': "Failed to obtain user info from Google."})
             return redirect(f'{login_url}?{params}')
 
-        response = Response(status=302)
-
         if BlacklistedEmail.objects.filter(email=user_data["email"]).exists():
-            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
+            params = urlencode({'Error': "This email is blacklisted"})
+            return redirect(f'{login_url}?{params}')
+
+        response = Response(status=302)
 
         if User.objects.filter(email=user_data['email']).exists():
             if User.objects.get(email=user_data['email']).is_google:
