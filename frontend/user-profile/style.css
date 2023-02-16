@@ -403,6 +403,42 @@ button{
   display: none;
 }
 
+.lightbox{
+  min-height: 100vh;
+  position: fixed;
+  width: 100vw;
+  background: rgba( 255, 255, 255, 0.25 );
+  backdrop-filter: blur( 25px );
+  -webkit-backdrop-filter: blur( 4px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 1;
+}
+.lightboxImg{
+  max-height: 70vh;
+  max-width: 50vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+.close{
+  width: 1.6rem;
+  aspect-ratio: 1/1;
+  position: absolute;
+  right: 3vw;
+  top: 13vh;
+  cursor: pointer;
+  
+}
+.close img{
+  position: relative;
+  width: 80%;
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 * {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -415,6 +451,10 @@ button{
   .res-menu-btn{ display: inline;}
   #user_name_span{
     max-width: 80% !important;
+  }
+  .lightboxImg{
+    min-width: 90vw;
+    max-height: 70vh;
   }
 }
 

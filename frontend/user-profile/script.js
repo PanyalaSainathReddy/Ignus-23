@@ -285,3 +285,26 @@ delete_account_button.addEventListener('click', function(){
     delete_account_button.disabled = false;
   })
 })
+
+const lightBox = document.querySelector(".lightbox");
+const lbCloseBtn = document.querySelector(".close");
+const lbImg = document.getElementById("lbImg");
+
+var qr_div = document.getElementById("pronites_qr");
+var qr_img = qr_div.getElementsByTagName("img")[0];
+var qr_img_src = qr_img.src;
+
+document.getElementById("pronite_pass").addEventListener("click", ()=>{
+  lightBox.style.display = "block";
+  lbImg.src = qr_img_src;
+});
+
+lbCloseBtn.addEventListener("click", ()=>{
+  lightBox.style.display = "none";
+})
+
+lightBox.addEventListener("click", ()=>{
+  if(lightBox.style.display != "none"){
+    lightBox.style.display = "none";
+  }
+})
