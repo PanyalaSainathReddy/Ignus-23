@@ -130,6 +130,9 @@ function change(res){
 		document.getElementById("promoModal").style.display = "none";
 		all_pass_container.style.display = "none";
 		iitj_students_msg.style.display = "block";
+		if(response.data.user.email.substring(response.data.user.email.length - 9) == "sbi.co.in"){
+			iitj_students_msg.innerHTML = `<p style="font-size: 20px; font-weight: 600; margin-top: 20px; margin-bottom: 20px; text-align: center;">You are a verified SBI employee, participation in all pronites and events is free for you (if everyone in your team is a verified SBI employee), you can register for the events you are interested in on the events page.</p>`;
+		}
 	}
 	else if(res.data.userprofile.amount_paid){
 		all_pass_container.style.display = "block";

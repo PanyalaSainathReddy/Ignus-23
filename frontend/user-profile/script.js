@@ -141,7 +141,12 @@ function getUserProfileDetails() {
       document.getElementById("acc_yes").style.display = 'none';
       document.getElementById("acc_no").style.display = 'none';
       document.getElementById("flagship_container").style.display = 'block';
-      document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
+      if(response.data.user.email.substring(response.data.user.email.length - 9) == "sbi.co.in"){
+        document.getElementById("payment_status").innerHTML = `You are a verified SBI employee, participation in all pronites and events is free for you (if everyone in your team is a verified SBI employee), you can register for the events you are interested in on the events page.`;
+      }
+      else{
+        document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
+      }
       document.getElementById("pronites_qr").innerHTML = response.data.userprofile.pronites_qr;
       document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
       get_pass_btn.style.display = 'none';
