@@ -1,10 +1,10 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from .views import (CARegisterAPIView, CookieTokenRefreshView,
+from .views import (CARegisterAPIView, ClearCookies, CookieTokenRefreshView,
                     CookieTokenRefreshViewApp, DeleteAccountAPIView,
                     GoogleLoginView, GoogleLoginViewApp, GoogleRegisterView,
-                    GoogleRegisterViewApp, LoginView, LogoutView,
+                    GoogleRegisterViewApp, LoginView, LogoutView, MarkEntry,
                     MarkPronitesAttendance, PreCARegistrationAPIView,
                     PreRegistrationAPIView, RegisterUserAPIView, UserDetailAPI,
                     UserProfileAPIView, UserProfileDetailsView)
@@ -25,9 +25,11 @@ urlpatterns = [
     path('refresh/app/', CookieTokenRefreshViewApp.as_view(), name="refresh-app"),
     path('user-details/', UserDetailAPI.as_view()),
     path('pronites/mark-attendance/', MarkPronitesAttendance.as_view()),
+    path('mark-entry/', MarkEntry.as_view()),
     path('user-profile/', UserProfileAPIView.as_view()),
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),
     path('delete-account/', DeleteAccountAPIView.as_view()),
+    path('clear-cookies/', ClearCookies.as_view()),
     path('', include(router.urls)),
 ]
