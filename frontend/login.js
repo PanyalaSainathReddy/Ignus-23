@@ -92,11 +92,11 @@ function getCookie(cname) {
 	return "";
 }
 
-function checkLoggedIn() {
-  if(getCookie("LoggedIn")){
-    window.location.replace("index.html");
-  }
-}
+// function checkLoggedIn() {
+//   if(getCookie("LoggedIn")){
+//     window.location.replace("index.html");
+//   }
+// }
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
 	get: (searchParams, prop) => searchParams.get(prop),

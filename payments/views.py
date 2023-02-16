@@ -527,6 +527,27 @@ def update_payments(request):
                             event=event
                         )
                         team.save()
+                elif pay_for == "pass-200.00-dance-workshop":
+                    event = Event.objects.get(name='Dance Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-129.00-resinart-workshop":
+                    event = Event.objects.get(name='Resin Art Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-100.00-music-workshop":
+                    event = Event.objects.get(name='Music Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-100.00-filmmaking-workshop":
+                    event = Event.objects.get(name='Film Making Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-150.00-pottery-workshop":
+                    event = Event.objects.get(name='Pottery Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-150.00-phadpainting-workshop":
+                    event = Event.objects.get(name='Phad Painting Workshop')
+                    user.events_registered.add(event)
+                elif pay_for == "pass-150.00-papercutting-workshop":
+                    event = Event.objects.get(name='Paper Cutting Workshop')
+                    user.events_registered.add(event)
 
                 user.save()
 
@@ -753,7 +774,27 @@ class PaymentCallback(APIView):
                                 event=event
                             )
                             team.save()
-
+                    elif pay_for == "pass-200.00-dance-workshop":
+                        event = Event.objects.get(name='Dance Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-129.00-resinart-workshop":
+                        event = Event.objects.get(name='Resin Art Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-100.00-music-workshop":
+                        event = Event.objects.get(name='Music Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-100.00-filmmaking-workshop":
+                        event = Event.objects.get(name='Film Making Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-150.00-pottery-workshop":
+                        event = Event.objects.get(name='Pottery Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-150.00-phadpainting-workshop":
+                        event = Event.objects.get(name='Phad Painting Workshop')
+                        user.events_registered.add(event)
+                    elif pay_for == "pass-150.00-papercutting-workshop":
+                        event = Event.objects.get(name='Paper Cutting Workshop')
+                        user.events_registered.add(event)
                     user.save()
             else:
                 user = txn.user
@@ -845,6 +886,55 @@ class PaymentCallback(APIView):
 
                         return HttpResponseRedirect(
                             redirect_to=f"{frontend_base_url}/event-details/index.html?ref=clashofbands&status=success")
+                elif pay_for == "pass-200.00-dance-workshop":
+                    event = Event.objects.get(name='Dance Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=dance-workshop&status=success")
+                elif pay_for == "pass-129.00-resinart-workshop":
+                    event = Event.objects.get(name='Resin Art Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=resinart-workshop&status=success")
+                elif pay_for == "pass-100.00-music-workshop":
+                    event = Event.objects.get(name='Music Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=music-workshop&status=success")
+                elif pay_for == "pass-100.00-filmmaking-workshop":
+                    event = Event.objects.get(name='Film Making Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=filmmaking-workshop&status=success")
+                elif pay_for == "pass-150.00-pottery-workshop":
+                    event = Event.objects.get(name='Pottery Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=pottery-workshop&status=success")
+                elif pay_for == "pass-150.00-phadpainting-workshop":
+                    event = Event.objects.get(name='Phad Painting Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=phadpainting-workshop&status=success")
+                elif pay_for == "pass-150.00-papercutting-workshop":
+                    event = Event.objects.get(name='Paper Cutting Workshop')
+                    user.events_registered.add(event)
+                    user.save()
+
+                    return HttpResponseRedirect(
+                        redirect_to=f"{frontend_base_url}/workshop-details/index.html?ref=papercutting-workshop&status=success")
 
                 user.save()
 

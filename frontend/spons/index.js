@@ -34,7 +34,7 @@ function updateSponsors(data){
   for(let i = 0; i < data.length; i++){
     sponsors_main_div_text += `
       <section>
-        <h2>${data[i].sponsor_type}</h2>
+        <h2 style="text-align: center">${data[i].sponsor_type}</h2>
         <div class="sponsors-container">
     `;
     for(let j = 0; j < data[i].sponsors.length; j++){

@@ -63,11 +63,11 @@ function check() {
   if (getCookie("LoggedIn") == "") {
     window.location.replace("../login.html");
   }
-  else{
-    if(getCookie("isProfileComplete") == "True"){
-      window.location.replace("../user-profile/index.html");
-    }
-  }
+  // else{
+  //   if(getCookie("isProfileComplete") == "True"){
+  //     window.location.replace("../user-profile/index.html");
+  //   }
+  // }
 }
 
 // API

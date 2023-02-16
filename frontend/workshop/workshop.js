@@ -12,10 +12,8 @@ const res_nav = document.querySelector(".res-nav");
 for(let i=0; i<events_btns.length; i++){
   events_btns[i].addEventListener("click", ()=>{
     let key = events_btns[i].innerHTML.toLowerCase();
-    key = key.split(" ").join("");
-    if(key == "pottery" || key == "phadpainting"){
-      window.location.href = `../workshop-details/index.html?ref=${key}`;
-    }
+    key = key.split(" ").join("") + "-workshop";
+    window.location.href = `../workshop-details/index.html?ref=${key}`;
   })
 }
 

@@ -116,28 +116,28 @@ $(document).ready(function(){
 
 
 // countdown timer section 4 
-var countDownDate = new Date("Feb 16, 2023 00:00:00").getTime();
-var days_cont = document.querySelector(".days").children[0];
-var hours_cont = document.querySelector(".hours").children[0];
-var mins_cont = document.querySelector(".mins").children[0];
-var secs_cont = document.querySelector(".seconds").children[0];
-var x = setInterval(function() {
-  var now = new Date().getTime();
-  var distance = countDownDate - now;
+// var countDownDate = new Date("Feb 16, 2023 00:00:00").getTime();
+// var days_cont = document.querySelector(".days").children[0];
+// var hours_cont = document.querySelector(".hours").children[0];
+// var mins_cont = document.querySelector(".mins").children[0];
+// var secs_cont = document.querySelector(".seconds").children[0];
+// var x = setInterval(function() {
+//   var now = new Date().getTime();
+//   var distance = countDownDate - now;
 
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
-  // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-  // + minutes + "m " + seconds + "s ";  
-  days_cont.innerHTML = days;
-  hours_cont.innerHTML = hours;
-  mins_cont.innerHTML = minutes;
-  secs_cont.innerHTML = seconds;
-}, 1000);
+//   // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+//   // + minutes + "m " + seconds + "s ";  
+//   days_cont.innerHTML = days;
+//   hours_cont.innerHTML = hours;
+//   mins_cont.innerHTML = minutes;
+//   secs_cont.innerHTML = seconds;
+// }, 1000);
 
 if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!' || sessionStorage.getItem("showmsg")=='Account Deleted Succesfully!'){
   var x = document.getElementById("snackbar");

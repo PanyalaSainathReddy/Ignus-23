@@ -1,4 +1,5 @@
 import datetime
+import pytz
 from urllib.parse import urlencode
 
 from django.conf import settings
@@ -462,10 +463,11 @@ class GoogleLoginView(APIView):
             params = urlencode({'Error': "Failed to obtain user info from Google."})
             return redirect(f'{login_url}?{params}')
 
-        response = Response(status=302)
-
         if BlacklistedEmail.objects.filter(email=user_data["email"]).exists():
-            return Response(data={"message": "This email is blacklisted"}, status=status.HTTP_403_FORBIDDEN)
+            params = urlencode({'Error': "This email is blacklisted"})
+            return redirect(f'{login_url}?{params}')
+
+        response = Response(status=302)
 
         if User.objects.filter(email=user_data['email']).exists():
             if User.objects.get(email=user_data['email']).is_google:
@@ -680,30 +682,49 @@ class MarkPronitesAttendance(APIView):
         if userprofile is None:
             return Response(data={"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-        if not userprofile.pronites:
+        if not userprofile.amount_paid and not userprofile.user.iitj:
             return Response(data={"error": "User not paid for Pronites"}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
-        if str(datetime.date.today()) == "2023-02-17":
-            if userprofile.attendance_day1:
+        date_time = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
+        date_today = str(date_time.date())
+
+        if date_today == "2023-02-16":
+            if userprofile.igmun:
+                return Response(data={"error": "User registered for ignum only"}, status=status.HTTP_403_FORBIDDEN)
+            elif userprofile.attendance_day1:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day1 = True
                 userprofile.save()
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
-        if str(datetime.date.today()) == "2023-02-18":
-            if userprofile.attendance_day2:
+        if date_today == "2023-02-17":
+            if userprofile.igmun:
+                return Response(data={"error": "User registered for ignum only"}, status=status.HTTP_403_FORBIDDEN)
+            elif userprofile.attendance_day2:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day2 = True
                 userprofile.save()
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
-        if str(datetime.date.today()) == "2023-02-19":
-            if userprofile.attendance_day3:
+        if date_today == "2023-02-18":
+            if not userprofile.igmun:
+                return Response(data={"error": "User not registered for ignum"}, status=status.HTTP_403_FORBIDDEN)
+            elif userprofile.attendance_day3:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day3 = True
+                userprofile.save()
+                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
+
+        if date_today == "2023-02-19":
+            if not userprofile.igmun:
+                return Response(data={"error": "User not registered for ignum"}, status=status.HTTP_403_FORBIDDEN)
+            elif userprofile.attendance_day4:
+                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                userprofile.attendance_day4 = True
                 userprofile.save()
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 

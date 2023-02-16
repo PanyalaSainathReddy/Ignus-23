@@ -137,8 +137,13 @@ function getUserProfileDetails() {
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
     if(response.data.user.iitj){
+      document.getElementById("pronite_pass").style.display = 'flex';
+      document.getElementById("acc_yes").style.display = 'none';
+      document.getElementById("acc_no").style.display = 'none';
       document.getElementById("flagship_container").style.display = 'block';
       document.getElementById("payment_status").innerHTML = `You are a verified IITJ student, participation in all pronites and events is free for you (if everyone in your team is a verified IITJ student), you can register for the events you are interested in on the events page.`;
+      document.getElementById("pronites_qr").innerHTML = response.data.userprofile.pronites_qr;
+      document.getElementById("pass_user_name_and_id").innerHTML = response.data.user.first_name + "<br/>" + response.data.userprofile.registration_code;
       get_pass_btn.style.display = 'none';
       delete_account_button.style.display = 'none';
     }
@@ -279,4 +284,25 @@ delete_account_button.addEventListener('click', function(){
   .finally(function () {
     delete_account_button.disabled = false;
   })
+})
+
+const lightBox = document.querySelector(".lightbox");
+const lbCloseBtn = document.querySelector(".close");
+const lbImg = document.getElementById("lbImg");
+
+var qr_div = document.getElementById("pronites_qr");
+
+document.getElementById("pronite_pass").addEventListener("click", ()=>{
+  lightBox.style.display = "block";
+  lbImg.src = qr_div.getElementsByTagName("img")[0].src;
+});
+
+lbCloseBtn.addEventListener("click", ()=>{
+  lightBox.style.display = "none";
+})
+
+lightBox.addEventListener("click", ()=>{
+  if(lightBox.style.display != "none"){
+    lightBox.style.display = "none";
+  }
 })

@@ -45,7 +45,7 @@ class EventType(models.Model):
     )
 
     type = models.CharField(max_length=2, choices=ETYPE_CHOICES, default='1')
-    reference_name = models.CharField(max_length=20, unique=False, default="")
+    reference_name = models.CharField(max_length=40, unique=False, default="")
     pdf = models.FileField(upload_to='pdf', null=True, blank=True)
     organizers = models.ManyToManyField(Organizer)
 
