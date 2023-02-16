@@ -63,5 +63,5 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "referred_by", "user", "profile_pic", "phone", "gender", "current_year", "college", "state",
             "registration_code", "is_ca", "amount_paid", "pronites", "igmun", "accomodation_4", 'accomodation_2',
             "main_pronite", "flagship", "aayaam", "antarang", "nrityansh", "cob", "igmun_pref", "mun_exp",
-            "qr_code", "pronites_qr", "attendance_day1", "attendance_day2", "attendance_day3", "events_registered"
+            "qr_code", "pronites_qr", "attendance_day1", "attendance_day2", "attendance_day3", "events"
         ]

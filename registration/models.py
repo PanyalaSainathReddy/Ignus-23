@@ -278,6 +278,14 @@ class UserProfile(models.Model):
         )
     pronites_qr.short_description = 'Pronites QR'
 
+    def events(self):
+        events = []
+
+        for e in self.events_registered.all():
+            events.append(e.name)
+        
+        return events
+
 
 def pre_save_user_profile(sender, instance, **kwargs):
     if instance._state.adding is True:
