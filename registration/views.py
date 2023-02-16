@@ -709,9 +709,7 @@ class MarkPronitesAttendance(APIView):
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
         if date_today == "2023-02-18":
-            if not userprofile.igmun:
-                return Response(data={"error": "User not registered for igmun"}, status=status.HTTP_403_FORBIDDEN)
-            elif userprofile.attendance_day3:
+            if userprofile.attendance_day3:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day3 = True
@@ -719,9 +717,7 @@ class MarkPronitesAttendance(APIView):
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
         if date_today == "2023-02-19":
-            if not userprofile.igmun:
-                return Response(data={"error": "User not registered for igmun"}, status=status.HTTP_403_FORBIDDEN)
-            elif userprofile.attendance_day4:
+            if userprofile.attendance_day4:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day4 = True
