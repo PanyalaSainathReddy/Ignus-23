@@ -284,7 +284,7 @@ class UserProfile(models.Model):
 
         for e in self.events_registered.all():
             events.append(e.name)
-        
+
         return events
 
 

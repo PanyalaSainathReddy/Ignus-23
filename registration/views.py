@@ -1,7 +1,7 @@
 import datetime
-import pytz
 from urllib.parse import urlencode
 
+import pytz
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import redirect
@@ -690,7 +690,7 @@ class MarkPronitesAttendance(APIView):
 
         if date_today == "2023-02-16":
             if userprofile.igmun:
-                return Response(data={"error": "User registered for ignum only"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User registered for igmun only"}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day1:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
@@ -700,7 +700,7 @@ class MarkPronitesAttendance(APIView):
 
         if date_today == "2023-02-17":
             if userprofile.igmun:
-                return Response(data={"error": "User registered for ignum only"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User registered for igmun only"}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day2:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
@@ -710,7 +710,7 @@ class MarkPronitesAttendance(APIView):
 
         if date_today == "2023-02-18":
             if not userprofile.igmun:
-                return Response(data={"error": "User not registered for ignum"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User not registered for igmun"}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day3:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
@@ -720,7 +720,7 @@ class MarkPronitesAttendance(APIView):
 
         if date_today == "2023-02-19":
             if not userprofile.igmun:
-                return Response(data={"error": "User not registered for ignum"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User not registered for igmun"}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day4:
                 return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
             else:
@@ -729,6 +729,29 @@ class MarkPronitesAttendance(APIView):
                 return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
 
         return Response(data={"error": "Attendance can only be marked on the day of event"}, status=status.HTTP_403_FORBIDDEN)
+
+
+class MarkEntry(APIView):
+    def post(self, request, format=None):
+        data = request.data
+        ignus_id = data.get('ignus_id')
+
+        if not UserProfile.objects.filter(registration_code=ignus_id).exists():
+            return Response(data={"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        userprofile = UserProfile.objects.get(registration_code=ignus_id)
+
+        if not userprofile.amount_paid and not userprofile.user.iitj:
+            return Response(data={"error": "User has not bought a pass"}, status=status.HTTP_402_PAYMENT_REQUIRED)
+
+        date_time = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
+        date_today = str(date_time.date())
+
+        if date_today == "2023-02-16" or date_today == "2023-02-17":
+            if userprofile.igmun:
+                return Response(data={"error": "User registered for igmun only"}, status=status.HTTP_403_FORBIDDEN)
+
+        return Response(data={"message": "User entry validated"}, status=status.HTTP_200_OK)
 
 
 class UserProfileAPIView(generics.CreateAPIView):
