@@ -913,6 +913,9 @@ class DeleteAccountAPIView(generics.DestroyAPIView):
 
 
 class ClearCookies(APIView):
+    permission_classes = []
+    authentication_classes = []
+
     def post(self, request, format=None):
         res = Response()
         res.delete_cookie('access', domain=".ignus.co.in")
