@@ -115,6 +115,24 @@ if(error){
 const BASE_URL = "https://api.ignus.co.in/";
 var sign_up_form=document.getElementById('sign_up_form')
 
+function checkLoggedIn() {
+  if(getCookie("LoggedIn")){
+    fetch(BASE_URL + 'api/accounts/clear-cookies/', {
+      method: 'POST',
+      body: null,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+    .then(function(response){
+      console.log("Cleared all cookies");
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }
+}
+
 sign_up_form.addEventListener('submit', function(e){
   e.preventDefault()
   if(document.getElementById('email_sign_up').value.substring(document.getElementById('email_sign_up').value.length - 10) == "iitj.ac.in"){
