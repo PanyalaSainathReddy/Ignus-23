@@ -120,6 +120,7 @@ function checkLoggedIn() {
     fetch(BASE_URL + 'api/accounts/clear-cookies/', {
       method: 'POST',
       body: null,
+      credentials: 'include',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       }
