@@ -910,3 +910,19 @@ class DeleteAccountAPIView(generics.DestroyAPIView):
             return res
         except Exception:
             raise exceptions.ParseError("Invalid token")
+
+
+class ClearCookies(APIView):
+    def post(self, request, format=None):
+        res = Response()
+        res.delete_cookie('access', domain=".ignus.co.in")
+        res.delete_cookie('refresh', domain=".ignus.co.in")
+        res.delete_cookie('LoggedIn', domain=".ignus.co.in")
+        res.delete_cookie("X-CSRFToken", domain=".ignus.co.in")
+        res.delete_cookie("csrftoken", domain=".ignus.co.in")
+        res.delete_cookie("isProfileComplete", domain=".ignus.co.in")
+        res.delete_cookie("isCA", domain=".ignus.co.in")
+        res.delete_cookie("ignusID", domain=".ignus.co.in")
+        res.delete_cookie("isGoogle", domain=".ignus.co.in")
+
+        return res
