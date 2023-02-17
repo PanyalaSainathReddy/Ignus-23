@@ -687,46 +687,46 @@ class MarkPronitesAttendance(APIView):
             return Response(data={"error": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         if not userprofile.amount_paid and not userprofile.user.iitj:
-            return Response(data={"error": "User not paid for Pronites"}, status=status.HTTP_402_PAYMENT_REQUIRED)
+            return Response(data={"error": "User not paid for Pronites", "is_gold": userprofile.is_gold}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
         date_time = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
         date_today = str(date_time.date())
 
         if date_today == "2023-02-16":
             if userprofile.igmun:
-                return Response(data={"error": "User registered for igmun only"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User registered for igmun only", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day1:
-                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User already entered Pronite", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day1 = True
                 userprofile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
+                return Response(data={"Message": "User attendace marked successfully!", "is_gold": userprofile.is_gold}, status=status.HTTP_200_OK)
 
         if date_today == "2023-02-17":
             if userprofile.igmun:
-                return Response(data={"error": "User registered for igmun only"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User registered for igmun only", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             elif userprofile.attendance_day2:
-                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User already entered Pronite", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day2 = True
                 userprofile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
+                return Response(data={"Message": "User attendace marked successfully!", "is_gold": userprofile.is_gold}, status=status.HTTP_200_OK)
 
         if date_today == "2023-02-18":
             if userprofile.attendance_day3:
-                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User already entered Pronite", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day3 = True
                 userprofile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
+                return Response(data={"Message": "User attendace marked successfully!", "is_gold": userprofile.is_gold}, status=status.HTTP_200_OK)
 
         if date_today == "2023-02-19":
             if userprofile.attendance_day4:
-                return Response(data={"error": "User already entered Pronite"}, status=status.HTTP_403_FORBIDDEN)
+                return Response(data={"error": "User already entered Pronite", "is_gold": userprofile.is_gold}, status=status.HTTP_403_FORBIDDEN)
             else:
                 userprofile.attendance_day4 = True
                 userprofile.save()
-                return Response(data={"Message: User attendace marked successfully!"}, status=status.HTTP_200_OK)
+                return Response(data={"Message": "User attendace marked successfully!", "is_gold": userprofile.is_gold}, status=status.HTTP_200_OK)
 
         return Response(data={"error": "Attendance can only be marked on the day of event"}, status=status.HTTP_403_FORBIDDEN)
 
