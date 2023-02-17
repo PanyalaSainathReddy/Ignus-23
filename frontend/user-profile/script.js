@@ -136,6 +136,19 @@ function getUserProfileDetails() {
     else{
       document.getElementById("gender").innerHTML = "Gender: Others";
     }
+    if(response.data.userprofile.events.length > 0){
+      var registeredEventsText = `Registered Events:</b> `;
+      for(var i=0; i<response.data.userprofile.events.length; i++){
+        registeredEventsText += response.data.userprofile.events[i];
+        if(i != response.data.userprofile.events.length - 1){
+          registeredEventsText += ", ";
+        }
+        else{
+          registeredEventsText += ".";
+        }
+      }
+      document.getElementById("registered_events_span").innerHTML = registeredEventsText;
+    }
     if(response.data.user.iitj){
       document.getElementById("pronite_pass").style.display = 'flex';
       document.getElementById("acc_yes").style.display = 'none';

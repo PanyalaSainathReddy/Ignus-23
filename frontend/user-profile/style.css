@@ -482,7 +482,7 @@ button{
   .name-cont{ text-align: center; }
   .name-cont h2{font-size: 22px;}
   .name-cont h3{font-size: 16px;}
-  #year_and_college, #email, #phone, #state, #gender{
+  #year_and_college, #email, #phone, #state, #gender, #registered_events_div{
     text-align: center;
     font-size: 14px !important;
   }
