@@ -145,9 +145,16 @@ function createEventDetails(data, x){
 			`;
 		}
 		if(data.events[i].start_time != null){
-			desDivHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
-			`;
+			if(data.reference_name == "pottery-workshop" || data.reference_name == "phadpainting-workshop" || data.reference_name == "papercutting-workshop"){
+				desDivHtml += `
+					<span> 17, 18, 19 Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
+			else{
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
 		}
 		desDivHtml += data.events[i].about;
 		if(x == 0){
@@ -175,9 +182,16 @@ function createEventDetails(data, x){
 			`;
 		}
 		if(data.events[i].start_time != null){
-			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
-			`;
+			if(data.reference_name == "pottery-workshop" || data.reference_name == "phadpainting-workshop" || data.reference_name == "papercutting-workshop"){
+				desDivHtml += `
+					<span> 17, 18, 19 Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
+			else{
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
 		}
 		desDivMobHtml += data.events[i].about;
 		if(x == 0){
@@ -218,9 +232,16 @@ function createCompleteEventDetails(data, x){
 			`;
 		}
 		if(data.events[i].start_time != null){
-			desDivHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
-			`;
+			if(data.reference_name == "pottery-workshop" || data.reference_name == "phadpainting-workshop" || data.reference_name == "papercutting-workshop"){
+				desDivHtml += `
+					<span> 17, 18, 19 Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
+			else{
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
 		}
 		desDivHtml += data.events[i].about;
 		if(data.events[i].is_registered){
@@ -274,9 +295,16 @@ function createCompleteEventDetails(data, x){
 			`;
 		}
 		if(data.events[i].start_time != null){
-			desDivMobHtml += `
-				<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
-			`;
+			if(data.reference_name == "pottery-workshop" || data.reference_name == "phadpainting-workshop" || data.reference_name == "papercutting-workshop"){
+				desDivHtml += `
+					<span> 17, 18, 19 Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
+			else{
+				desDivHtml += `
+					<span> ${data.events[i].start_time.substr(8, 2)} Feb '23, ${data.events[i].start_time.substr(11, 5)} onwards </span><br>
+				`;
+			}
 		}
 		desDivMobHtml += data.events[i].about;
 		if(data.events[i].is_registered){
