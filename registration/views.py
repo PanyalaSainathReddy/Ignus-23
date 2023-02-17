@@ -283,7 +283,9 @@ class GoogleRegisterView(APIView):
                 is_google=True,
             )
             user.set_password('google')
-            if user_data['email'].split('@')[1] == "iitj.ac.in":
+
+            domain = user_data['email'].split('@')[1]
+            if "iitj.ac.in" in domain or "sbi.co.in" in domain or "ihub-drishti.ai" in domain:
                 user.iitj = True
 
             user.save()
@@ -405,7 +407,9 @@ class GoogleRegisterViewApp(APIView):
             return Response(data={"message": "User Already Exists"}, status=status.HTTP_409_CONFLICT)
 
         user.set_password('google')
-        if data.get('email').split('@')[1] == "iitj.ac.in":
+
+        domain = data.get('email').split('@')[1]
+        if "iitj.ac.in" in domain or "sbi.co.in" in domain or "ihub-drishti.ai" in domain:
             user.iitj = True
 
         user.save()
