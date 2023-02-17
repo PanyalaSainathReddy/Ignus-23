@@ -245,20 +245,14 @@ function createCompleteEventDetails(data, x){
 				else if(data.reference_name == "resinart-workshop"){
 					desDivHtml += `<button class="register-btn" onClick="pay('129.00', 'pass-129.00-resinart-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "music-workshop"){
+				else if(data.reference_name == "music-workshop"){
 					desDivHtml += `<button class="register-btn" onClick="pay('100.00', 'pass-100.00-music-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "filmmaking-workshop"){
+				else if(data.reference_name == "filmmaking-workshop"){
 					desDivHtml += `<button class="register-btn" onClick="pay('100.00', 'pass-100.00-filmmaking-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "pottery-workshop"){
-					desDivHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-pottery-workshop')">REGISTER</button>`;
-				}
-				else if(workshop_ref_name == "phadpainting-workshop"){
-					desDivHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-phadpainting-workshop')">REGISTER</button>`;
-				}
-				else if(workshop_ref_name == "papercutting-workshop"){
-					desDivHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-papercutting-workshop')">REGISTER</button>`;
+				else{
+					desDivHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
 				}
 			}
 		}
@@ -307,20 +301,14 @@ function createCompleteEventDetails(data, x){
 				else if(data.reference_name == "resinart-workshop"){
 					desDivMobHtml += `<button class="register-btn" onClick="pay('129.00', 'pass-129.00-resinart-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "music-workshop"){
+				else if(data.reference_name == "music-workshop"){
 					desDivMobHtml += `<button class="register-btn" onClick="pay('100.00', 'pass-100.00-music-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "filmmaking-workshop"){
+				else if(data.reference_name == "filmmaking-workshop"){
 					desDivMobHtml += `<button class="register-btn" onClick="pay('100.00', 'pass-100.00-filmmaking-workshop')">REGISTER</button>`;
 				}
-				else if(workshop_ref_name == "pottery-workshop"){
-					desDivMobHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-pottery-workshop')">REGISTER</button>`;
-				}
-				else if(workshop_ref_name == "phadpainting-workshop"){
-					desDivMobHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-phadpainting-workshop')">REGISTER</button>`;
-				}
-				else if(workshop_ref_name == "papercutting-workshop"){
-					desDivMobHtml += `<button class="register-btn" onClick="pay('150.00', 'pass-150.00-papercutting-workshop')">REGISTER</button>`;
+				else{
+					desDivMobHtml += `<button class="register-btn" onClick="registerEvent('${data.events[i].name}')">REGISTER</button>`;
 				}
 			}
 		}
