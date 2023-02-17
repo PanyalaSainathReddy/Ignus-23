@@ -145,6 +145,9 @@ class RegisterUserAPIView(generics.CreateAPIView):
             )
 
             user.set_password(request.data['password'])
+            if request.data['email'][-9:]=="sbi.co.in" or request.data['email'][-15:]=="ihub-drishti.ai":
+                user.iitj = True
+
             user.save()
         except Exception:
             return Response({"Error": "User already exists, try to sign-in!!"}, status=status.HTTP_409_CONFLICT)
@@ -284,8 +287,7 @@ class GoogleRegisterView(APIView):
             )
             user.set_password('google')
 
-            domain = user_data['email'].split('@')[1]
-            if "iitj.ac.in" in domain or "sbi.co.in" in domain or "ihub-drishti.ai" in domain:
+            if user_data['email'][-10:]=="iitj.ac.in" or user_data['email'][-9:]=="sbi.co.in" or user_data['email'][-15:]=="ihub-drishti.ai":
                 user.iitj = True
 
             user.save()
@@ -408,8 +410,7 @@ class GoogleRegisterViewApp(APIView):
 
         user.set_password('google')
 
-        domain = data.get('email').split('@')[1]
-        if "iitj.ac.in" in domain or "sbi.co.in" in domain or "ihub-drishti.ai" in domain:
+        if data.get('email')[-10:]=="iitj.ac.in" or data.get('email')[-9:]=="sbi.co.in" or data.get('email')[-15:]=="ihub-drishti.ai":
             user.iitj = True
 
         user.save()
@@ -781,6 +782,8 @@ class UserProfileAPIView(generics.CreateAPIView):
             igmun_pref=request.data["igmun_pref"],
             mun_exp=request.data["mun_exp"]
         )
+        if user.email[-10:]=="iitj.ac.in" or user.email[-9:]=="sbi.co.in" or user.email[-15:]=="ihub-drishti.ai":
+            userprofile.is_gold = True
         userprofile.save()
 
         user.profile_complete = True
