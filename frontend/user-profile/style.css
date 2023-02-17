@@ -236,7 +236,7 @@ h2{
   aspect-ratio: 1/1;
   transform: scale(50%);
 }
-#year_and_college, #state, #email, #phone, #gender{font-size: 19px !important; font-weight: 600;}
+#year_and_college, #state, #email, #phone, #gender, #registered_events_div{font-size: 19px !important; font-weight: 600;}
 
 .name-cont{
   display: flex;
@@ -290,7 +290,7 @@ main h2, main p, main span{
 main p{font-size: 17px; line-height: 25px;}
 #address{margin: 5% 0 0 0; width: 80%;}
 main span{width: max-content;}
-#gender, #state{margin-bottom: 5%;}
+#gender, #state, #registered_events_div{margin-bottom: 5%;}
 .payment img{
   width: 20px;
   aspect-ratio: 1/1;
