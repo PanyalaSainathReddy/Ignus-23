@@ -265,6 +265,9 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+    def get_email(self):
+        return self.user.email
+
     def qr_code(self):
         base_url = "https://chart.apis.google.com/chart?chs=150x150&cht=qr"
         data = self.registration_code
