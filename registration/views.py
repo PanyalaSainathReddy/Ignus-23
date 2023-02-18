@@ -145,7 +145,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
             )
 
             user.set_password(request.data['password'])
-            if request.data['email'][-9:]=="sbi.co.in" or request.data['email'][-15:]=="ihub-drishti.ai":
+            if request.data['email'][-9:] == "sbi.co.in" or request.data['email'][-15:] == "ihub-drishti.ai":
                 user.iitj = True
 
             user.save()
@@ -287,7 +287,7 @@ class GoogleRegisterView(APIView):
             )
             user.set_password('google')
 
-            if user_data['email'][-10:]=="iitj.ac.in" or user_data['email'][-9:]=="sbi.co.in" or user_data['email'][-15:]=="ihub-drishti.ai":
+            if user_data['email'][-10:] == "iitj.ac.in" or user_data['email'][-9:] == "sbi.co.in" or user_data['email'][-15:] == "ihub-drishti.ai":
                 user.iitj = True
 
             user.save()
@@ -410,7 +410,7 @@ class GoogleRegisterViewApp(APIView):
 
         user.set_password('google')
 
-        if data.get('email')[-10:]=="iitj.ac.in" or data.get('email')[-9:]=="sbi.co.in" or data.get('email')[-15:]=="ihub-drishti.ai":
+        if data.get('email')[-10:] == "iitj.ac.in" or data.get('email')[-9:] == "sbi.co.in" or data.get('email')[-15:] == "ihub-drishti.ai":
             user.iitj = True
 
         user.save()
@@ -782,7 +782,7 @@ class UserProfileAPIView(generics.CreateAPIView):
             igmun_pref=request.data["igmun_pref"],
             mun_exp=request.data["mun_exp"]
         )
-        if user.email[-10:]=="iitj.ac.in" or user.email[-9:]=="sbi.co.in" or user.email[-15:]=="ihub-drishti.ai":
+        if user.email[-10:] == "iitj.ac.in" or user.email[-9:] == "sbi.co.in" or user.email[-15:] == "ihub-drishti.ai":
             userprofile.is_gold = True
         userprofile.save()
 
