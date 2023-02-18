@@ -31,7 +31,7 @@ class EventResource(resources.ModelResource):
     email = fields.Field(
         column_name="email IDs",
         attribute="userprofile_set",
-        widget=widgets.ManyToManyWidget("registration.UserProfile", field="get_email", separator="; ")
+        widget=widgets.ManyToManyWidget("registration.UserProfile", field="user__email", separator="; ")
     )
     college = fields.Field(
         column_name="College",
