@@ -33,10 +33,15 @@ class EventResource(resources.ModelResource):
         attribute="userprofile_set",
         widget=widgets.ManyToManyWidget("registration.UserProfile", field="college", separator="; ")
     )
+    user_name = fields.Field(
+        column_name="user_name",
+        attribute="userprofile_set",
+        widget=widgets.ManyToManyWidget("registration.UserProfile", field="user", separator="; ")
+    )
 
     class Meta:
         model = Event
-        fields = ('name', 'userfield', 'phone', 'college')
+        fields = ('name', 'user_name', 'userfield', 'phone', 'college')
 
 
 class EventAdmin(ImportExportActionModelAdmin):
