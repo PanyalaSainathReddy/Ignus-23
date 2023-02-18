@@ -224,6 +224,103 @@ class UpgradeToIGMUNAPIView(APIView):
         )
 
 
+class UpgradeToGoldAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        user = User.objects.get(id=request.user.id)
+
+        userprofile = UserProfile.objects.get(
+            user=user
+        )
+        ignus_id = userprofile.registration_code
+        timestamp = round(time() * 1000)
+        rand = id_generator()
+        order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+        callback_url = "https://api.ignus.co.in/api/payments/callback/"
+        mid = settings.PAYTM_MID
+        merchant_key = settings.PAYTM_MERCHANT_KEY
+        amount = request.data.get('amount')
+        pay_for = "gold-upgrade"
+        promo_code = request.data.get('promo_code', '')
+        promo = None
+
+        if promo_code:
+            try:
+                promo = PromoCode.objects.get(code=promo_code)
+
+                if pay_for[:10] == promo.pass_name[:10]:
+                    if promo.is_valid():
+                        amount = promo.discounted_amount
+                    else:
+                        return Response(data={"message": "Promo Code Expired!"}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response(data={"message": "Promo Code is not valid for this Pass"}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
+                return Response(data={"message": "Invalid Promo Code"}, status=status.HTTP_400_BAD_REQUEST)
+
+        paytm_params = dict()
+        paytm_params["body"] = {
+            "requestType": "Payment",
+            "mid": mid,
+            "websiteName": "WEBPROD",
+            "orderId": order_id,
+            "callbackUrl": callback_url,
+            "txnAmount": {
+                "value": amount,
+                "currency": "INR"
+            },
+            "userInfo": {
+                "custId": ignus_id,
+                "mobile": userprofile.phone,
+                "email": userprofile.user.email,
+                "firstName": userprofile.user.first_name,
+                "lastName": userprofile.user.last_name
+            },
+            "extendInfo": {
+                "mercUnqRef": "Ignus 2023 Payments"
+            }
+        }
+
+        checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+        paytm_params["head"] = {
+            "signature": checksum
+        }
+
+        data = json.dumps(paytm_params)
+        url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+        response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+        txnToken = response["body"]["txnToken"]
+        order = Order.objects.create(
+            id=order_id,
+            user=userprofile,
+            checksum=checksum,
+            pay_for=pay_for,
+            amount=amount,
+            promo_code=promo,
+            currency="INR",
+            request_timestamp=str(timestamp),
+            response_timestamp=str(response["head"]["responseTimestamp"]),
+            signature=response["head"]["signature"],
+            result_code=response["body"]["resultInfo"]["resultCode"],
+            result_msg=response["body"]["resultInfo"]["resultMsg"],
+            transaction_token=txnToken
+        )
+        order.save()
+
+        return Response(
+            data={
+                "message": "Order Created Successfully",
+                "txnToken": txnToken,
+                "orderId": order_id,
+                "mid": mid
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
 @api_view(['POST'])
 def bulk_payment(request):
     timestamp = round(time() * 1000)
@@ -366,6 +463,93 @@ def generate_random_payment_link(request):
             'qr_code': qr
         }
     )
+
+
+@api_view(['POST'])
+def payment_500(request):
+    timestamp = round(time() * 1000)
+    rand = id_generator()
+    ignus_id = "IG-500-0000"
+    order_id = ignus_id+"-"+str(timestamp)+"-"+rand
+    callback_url = "https://api.ignus.co.in/api/payments/callback/"
+    mid = settings.PAYTM_MID
+    merchant_key = settings.PAYTM_MERCHANT_KEY
+    name = request.data.get('name')
+    amount = "499.00"
+    pay_for = name + "; " + request.data.get('remarks', '')
+    paytm_params = dict()
+    paytm_params["body"] = {
+        "requestType": "Payment",
+        "mid": mid,
+        "websiteName": "WEBPROD",
+        "orderId": order_id,
+        "callbackUrl": callback_url,
+        "txnAmount": {
+            "value": amount,
+            "currency": "INR"
+        },
+        "userInfo": {
+            "custId": ignus_id,
+            "firstName": name
+        },
+        "extendInfo": {
+            "mercUnqRef": "Ignus 2023 Payments"
+        }
+    }
+
+    checksum = paytmchecksum.generateSignature(json.dumps(paytm_params["body"]), merchant_key)
+    paytm_params["head"] = {
+        "signature": checksum
+    }
+
+    data = json.dumps(paytm_params)
+    url = f"https://securegw.paytm.in/theia/api/v1/initiateTransaction?mid={mid}&orderId={order_id}"
+
+    response = requests.post(url, data=data, headers={"Content-type": "application/json"}).json()
+
+    txnToken = response["body"]["txnToken"]
+    order = Order.objects.create(
+        id=order_id,
+        user=None,
+        checksum=checksum,
+        pay_for=pay_for,
+        amount=amount,
+        currency="INR",
+        request_timestamp=str(timestamp),
+        response_timestamp=str(response["head"]["responseTimestamp"]),
+        signature=response["head"]["signature"],
+        result_code=response["body"]["resultInfo"]["resultCode"],
+        result_msg=response["body"]["resultInfo"]["resultMsg"],
+        transaction_token=txnToken
+    )
+    order.save()
+
+    link = f"https://ignus.co.in/payments/pay.html?mid={mid}&orderId={order_id}&txnToken={txnToken}"
+
+    return Response(data={"link": link}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def payment_500_statuses(request):
+    orders = [order.id for order in Order.objects.all() if order.id[:11] == "IG-500-0000"]
+    orders = Order.objects.filter(id__in=orders)
+
+    data = []
+
+    for order in orders:
+        name, remarks = order.pay_for.split("; ")
+        order_id = order.id
+        order_status = get_payment_status(order_id=order_id)["body"]["resultInfo"].get('resultStatus', '')
+
+        d = {
+            "name": name,
+            "remarks": remarks,
+            "status": order_status,
+            "order_id": order_id
+        }
+        data.append(d)
+
+    return Response(data={"data": data}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -586,6 +770,7 @@ class PaymentCallback(APIView):
         is_random = order_id[:11] == "IG-RAN-0000"
         is_alumni = order_id[:11] == "IG-ALU-0000"
         bulk_order = order_id[:11] == "IG-BUL-0000"
+        is_500 = order_id[:11] == "IG-500-0000"
 
         if bulk_order:
             order = BulkOrder.objects.get(id=order_id)
@@ -667,6 +852,9 @@ class PaymentCallback(APIView):
             if is_alumni:
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=failed")
 
+            if is_500:
+                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "PENDING":
@@ -679,6 +867,9 @@ class PaymentCallback(APIView):
             if is_alumni:
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=pending")
 
+            if is_500:
+                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
         elif txn.status == "TXN_SUCCESS":
@@ -687,6 +878,9 @@ class PaymentCallback(APIView):
 
             if is_alumni:
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=success")
+
+            if is_500:
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/success.html")
 
             pay_for = order.pay_for
 
@@ -798,6 +992,7 @@ class PaymentCallback(APIView):
                     user.save()
             else:
                 user = txn.user
+
                 if order.promo_code:
                     order.promo_code.use()
                 if pay_for == "pass-499.00":
@@ -805,6 +1000,8 @@ class PaymentCallback(APIView):
                     user.pronites = True
                     user.main_pronite = True
                     user.igmun = False
+                elif pay_for == "gold-upgrade":
+                    user.is_gold = True
                 elif pay_for == "pass-2299.00":
                     user.amount_paid = True
                     user.pronites = True
