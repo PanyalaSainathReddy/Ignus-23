@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Instant Payment</title>
+	<style>
+		.container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+            width: 100% !important;
+            overflow-y: hidden;
+		}
+
+		form {
+			background-color: #f5f5f5;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px #888888;
+			text-align: center;
+		}
+
+		input[type="text"], textarea {
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0px 0px 5px #888888;
+			margin-bottom: 10px;
+			width: 100%;
+			box-sizing: border-box;
+			resize: vertical;
+		}
+
+		input[type="submit"] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<form id="pay_499_form">
+            <div style="text-align: left;">
+                <label for="name">Name*</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="remarks">Remarks</label>
+                <input type="text" id="remarks" name="remarks"></input><br>
+            </div>
+			<input type="submit" value="Pay Rs.499">
+		</form>
+	</div>
+    <script src="pay_499.js"></script>
+</body>
+</html>

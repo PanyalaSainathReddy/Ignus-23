@@ -853,7 +853,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=failed")
 
             if is_500:
-                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/failed.html")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
@@ -868,7 +868,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=pending")
 
             if is_500:
-                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/pending.html")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
