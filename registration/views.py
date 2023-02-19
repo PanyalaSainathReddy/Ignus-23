@@ -4,8 +4,10 @@ from urllib.parse import urlencode
 import pytz
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
 from rest_framework import exceptions, generics, serializers, status, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -936,3 +938,64 @@ class ClearCookies(APIView):
         res.delete_cookie("isGoogle", domain=".ignus.co.in")
 
         return res
+
+
+@api_view(['GET'])
+def fetch_users(request):
+    users = [user.registration_code for user in UserProfile.objects.all() if user.amount_paid or user.user.iitj]
+    users = UserProfile.objects.filter(registration_code__in=users)
+
+    data = []
+
+    for user in users:
+        d = {
+            "uuid": user.uuid,
+            "attendance_day4": user.attendance_day4,
+            "is_gold": user.is_gold,
+            "is_iitj": user.user.iitj
+        }
+        data.append(d)
+
+    return Response(data=data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_users_attendance(request):
+    uuids = request.data.get('uuids')
+    users = UserProfile.objects.filter(uuid__in=uuids)
+
+    for user in users:
+        user.attendance_day4 = True
+        user.save()
+
+    return Response(data={"message": "Attendance marked successfully"}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pronites_attendance(request):
+    return render(request=request, template_name="pronites_attendance.html")
+
+
+@api_view(['POST'])
+def check_status(request):
+    data = request.data
+    ignus_id = data.get('ignus-id', '')
+
+    if ignus_id != '':
+        if UserProfile.objects.filter(registration_code=ignus_id).exists():
+            user = UserProfile.objects.get(registration_code=ignus_id)
+        else:
+            return render(request=request, template_name="pronites_attendance.html", context={"error": "User does not exist"})
+    else:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User does not exist"})
+
+    if user.attendance_day4:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User already entered pronite", "is_gold": user.is_gold})
+
+    if not user.amount_paid:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User not paid"})
+
+    qr_base_url = "https://chart.apis.google.com/chart?chs=250x250&cht=qr&choe=UTF-8"
+    qr = mark_safe(f'{qr_base_url}&chl={user.uuid}')
+
+    return render(request=request, template_name="pronites_attendance.html", context={"pronites_qr": qr, "is_gold": user.is_gold})
