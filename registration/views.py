@@ -992,8 +992,8 @@ def check_status(request):
     if user.attendance_day4:
         return render(request=request, template_name="pronites_attendance.html", context={"error": "User already entered pronite", "is_gold": user.is_gold})
 
-    if not user.amount_paid:
-        return render(request=request, template_name="pronites_attendance.html", context={"error": "User not paid"})
+    if not user.amount_paid and not user.user.iitj:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User not paid or not an IITJ student"})
 
     qr_base_url = "https://chart.apis.google.com/chart?chs=250x250&cht=qr&choe=UTF-8"
     qr = mark_safe(f'{qr_base_url}&chl={user.uuid}')
