@@ -151,6 +151,8 @@ function getUserProfileDetails() {
     }
     if(response.data.user.iitj){
       document.getElementById("pronite_pass").style.display = 'flex';
+      document.getElementById("pass_type").innerHTML = 'GOLD';
+      document.getElementById("pass_type").style.color = 'gold';
       document.getElementById("acc_yes").style.display = 'none';
       document.getElementById("acc_no").style.display = 'none';
       document.getElementById("flagship_container").style.display = 'block';
@@ -169,6 +171,10 @@ function getUserProfileDetails() {
       delete_account_button.style.display = 'none';
       if(response.data.userprofile.pronites){
         document.getElementById("pronite_pass").style.display = 'flex';
+        if(response.data.userprofile.is_gold){
+          document.getElementById("pass_type").innerHTML = 'GOLD';
+          document.getElementById("pass_type").style.color = 'gold';
+        }
         if(response.data.userprofile.igmun){
           document.getElementById("pass_name").innerHTML = 'IGMUN';
           document.getElementById("pass_sub_name").innerHTML = '+ All Pronites';
