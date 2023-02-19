@@ -5,6 +5,7 @@ import pytz
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.shortcuts import redirect
+from rest_framework.decorators import api_view
 from rest_framework import exceptions, generics, serializers, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -936,3 +937,34 @@ class ClearCookies(APIView):
         res.delete_cookie("isGoogle", domain=".ignus.co.in")
 
         return res
+
+
+@api_view(['GET'])
+def fetch_users(request):
+    users = [user.registration_code for user in UserProfile.objects.all() if user.amount_paid and user.pronites and user.main_pronite]
+    users = UserProfile.objects.filter(registration_code__in=users)
+
+    data = []
+
+    for user in users:
+        d = {
+            "uuid": user.uuid,
+            "attendance_day4": user.attendance_day4,
+            "is_gold": user.is_gold,
+            "is_iitj": user.user.iitj
+        }
+        data.append(d)
+
+    return Response(data=data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def update_users_attendance(request):
+    uuids = request.data.get('uuids')
+    users = UserProfile.objects.filter(uuid__in=uuids)
+
+    for user in users:
+        user.attendance_day4 = True
+        user.save()
+
+    return Response(data={"message": "Attendance marked successfully"}, status=status.HTTP_200_OK)
