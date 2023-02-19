@@ -642,6 +642,14 @@ def update_payments(request):
                     user.pronites = True
                     user.main_pronite = True
                     user.igmun = False
+                elif pay_for == "pass-799.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                    user.is_gold = True
+                elif pay_for == "gold-upgrade":
+                    user.is_gold = True
                 elif pay_for == "pass-2299.00":
                     user.amount_paid = True
                     user.pronites = True
@@ -893,6 +901,14 @@ class PaymentCallback(APIView):
                         user.pronites = True
                         user.main_pronite = True
                         user.igmun = False
+                    elif pay_for == "pass-799.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.igmun = False
+                        user.is_gold = True
+                    elif pay_for == "gold-upgrade":
+                        user.is_gold = True
                     elif pay_for == "pass-2299.00":
                         user.amount_paid = True
                         user.pronites = True
@@ -1000,6 +1016,12 @@ class PaymentCallback(APIView):
                     user.pronites = True
                     user.main_pronite = True
                     user.igmun = False
+                elif pay_for == "pass-799.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                    user.is_gold = True
                 elif pay_for == "gold-upgrade":
                     user.is_gold = True
                 elif pay_for == "pass-2299.00":

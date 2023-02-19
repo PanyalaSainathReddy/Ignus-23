@@ -112,10 +112,12 @@ function check(){
 
 function change(res){
 	pass_btn_499 = document.getElementById("get_pass_499");
+	pass_btn_799 = document.getElementById("get_pass_799");
 	pass_btn_2299 = document.getElementById("get_pass_2299");
 	pass_btn_1500 = document.getElementById("get_pass_1500");
 	pass_btn_2500 = document.getElementById("get_pass_2500");
 	pass_div_499 = document.getElementById("pass-tile-499");
+	pass_div_799 = document.getElementById("pass-tile-799");
 	pass_div_2299 = document.getElementById("pass-tile-2299");
 	pass_div_1500 = document.getElementById("pass-tile-1500");
 	pass_div_2500 = document.getElementById("pass-tile-2500");
@@ -140,6 +142,7 @@ function change(res){
 
 		if(res.data.userprofile.pronites){
 			pass_btn_499.disabled = true;
+			pass_btn_799.disabled = true;
 			pass_btn_2299.disabled = true;
 			pass_btn_1500.disabled = true;
 			pass_btn_2500.disabled = true;
@@ -149,6 +152,7 @@ function change(res){
 					pass_btn_2500.style.backgroundColor = "green";
 					pass_btn_2500.innerHTML = "PURCHASED";
 					pass_div_499.style.display = "none";
+					pass_div_799.style.display = "none";
 					pass_div_2299.style.display = "none";
 					pass_div_1500.style.display = "none";
 				}
@@ -156,13 +160,9 @@ function change(res){
 					pass_btn_1500.style.backgroundColor = "green";
 					pass_btn_1500.innerHTML = "PURCHASED";
 					pass_div_499.style.display = "none";
+					pass_div_799.style.display = "none";
 					pass_div_2299.style.display = "none";
 					pass_div_2500.style.display = "none";
-					upper_btn_div.style.margin = "0px auto 20px";
-					add_accomodation_btn.style.display = "block";
-					add_accomodation_btn.addEventListener("click", function(){
-						openModal('1000.00');
-					});
 				}
 			}
 			else{
@@ -170,21 +170,41 @@ function change(res){
 					pass_btn_2299.style.backgroundColor = "green";
 					pass_btn_2299.innerHTML = "PURCHASED";
 					pass_div_499.style.display = "none";
+					pass_div_799.style.display = "none";
 					pass_div_1500.style.display = "none";
 					pass_div_2500.style.display = "none";
 				}
 				else{
-					pass_btn_499.style.backgroundColor = "green";
-					pass_btn_499.innerHTML = "PURCHASED";
-					pass_div_2299.style.display = "none";
-					pass_div_1500.style.display = "none";
-					pass_div_2500.style.display = "none";
-					upper_btn_div.style.margin = "0px auto 20px";
-					add_accomodation_btn.style.display = "block";
-					add_accomodation_btn.addEventListener("click", function(){
-						openModal('1800.00');
-					});
+					if(res.data.userprofile.is_gold){
+						pass_btn_799.style.backgroundColor = "green";
+						pass_btn_799.innerHTML = "PURCHASED";
+						pass_div_499.style.display = "none";
+						pass_div_2299.style.display = "none";
+						pass_div_1500.style.display = "none";
+						pass_div_2500.style.display = "none";
+					}
+					else{
+						pass_btn_499.style.backgroundColor = "green";
+						pass_btn_499.innerHTML = "PURCHASED";
+						pass_div_799.style.display = "none";
+						pass_div_2299.style.display = "none";
+						pass_div_1500.style.display = "none";
+						pass_div_2500.style.display = "none";
+					}
 				}
+			}
+			if(res.data.userprofile.is_gold){
+				upper_btn_div.style.margin = "0px auto 20px";
+				add_accomodation_btn.style.display = "block";
+				add_accomodation_btn.style.backgroundColor = "green";
+				add_accomodation_btn.innerHTML = "UPGRADED TO GOLD";
+			}
+			else{
+				upper_btn_div.style.margin = "0px auto 20px";
+				add_accomodation_btn.style.display = "block";
+				add_accomodation_btn.addEventListener("click", function(){
+					upgradeToGold();
+				});
 			}
 		}
 	}
@@ -193,7 +213,13 @@ function change(res){
 let payButtonList = document.getElementsByClassName("pay-btn");
 for(let i of payButtonList){
 	i.addEventListener("click", function(e){
-		openModal(e.target.value);
+		var pay_amount = e.target.value;
+		if(pay_amount == "499.00" || pay_amount == "799.00"){
+			pay(pay_amount, "");
+		}
+		else{
+			openModal(pay_amount);
+		}
 	})
 }
 
@@ -208,11 +234,7 @@ function openModal(pay_amount){
 	submit_button.disabled = false;
 	submit_button.style.backgroundColor = "#1d3557";
 
-	if(pay_amount == "499.00"){
-		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 499.00`;
-		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, and includes silver lane pass for all pronites.`;
-	}
-	else if(pay_amount == "2299.00"){
+	if(pay_amount == "2299.00"){
 		document.getElementById("modal_pass_amount").innerHTML = `<span>Amount: </span>Rs. 2299.00`;
 		document.getElementById("modal_pass_details").innerHTML = `<span>Details: </span> This pass includes access to all the events except flagship events, includes silver lane pass to all pronites and an accomodation for 4 nights.`;
 	}
@@ -277,6 +299,49 @@ function pay(pay_amount, promo_code){
 	}
 
 	miAPI.post(BASE_URL + 'api/payments/init-payment/', body, {
+	headers: {
+		'Content-type': 'application/json; charset=UTF-8',
+	},
+	withCredentials: true,
+	}
+	)
+	.then(function (response) {
+		console.log(response);
+		var mid = response.data.mid;
+		var orderId = response.data.orderId;
+		var txnToken = response.data.txnToken;
+		window.location.href = "https://ignus.co.in/payments/pay.html?mid=" + mid + "&orderId=" + orderId + "&txnToken=" + txnToken;
+	})
+	.catch(function (error) {
+		console.log(error);
+		if(error.response.status == 400){
+			var x = document.getElementById("snackbar");
+			x.innerHTML = error.response.data.message;
+			x.className = "show";
+			setTimeout(function(){
+				x.className = x.className.replace("show", "");
+				submit_button.disabled = false;
+				submit_button.style.backgroundColor = "#1d3557";
+			}, 5000);
+		}
+	})
+	.finally(function () {
+		// always executed
+	});
+}
+
+add_accomodation_btn = document.getElementById("add_accomodation_btn");
+
+function upgradeToGold(){
+	add_accomodation_btn.disabled = true;
+	add_accomodation_btn.style.backgroundColor = "grey";
+
+	var body = {
+		amount: "300.00",
+		promo_code: "",
+	}
+
+	miAPI.post(BASE_URL + 'api/payments/upgrade-to-gold/', body, {
 	headers: {
 		'Content-type': 'application/json; charset=UTF-8',
 	},
