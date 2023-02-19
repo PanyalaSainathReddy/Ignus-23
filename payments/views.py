@@ -475,7 +475,7 @@ def payment_500(request):
     mid = settings.PAYTM_MID
     merchant_key = settings.PAYTM_MERCHANT_KEY
     name = request.data.get('name')
-    amount = "499.00"
+    amount = request.data.get('amount')
     pay_for = name + "; " + request.data.get('remarks', '')
     paytm_params = dict()
     paytm_params["body"] = {

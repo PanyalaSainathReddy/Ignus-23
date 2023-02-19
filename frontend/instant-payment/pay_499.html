@@ -21,7 +21,7 @@
 			text-align: center;
 		}
 
-		input[type="text"], textarea {
+		input[type="text"], select, textarea {
 			padding: 10px;
 			border-radius: 5px;
 			border: none;
@@ -53,6 +53,11 @@
             <div style="text-align: left;">
                 <label for="name">Name*</label>
                 <input type="text" id="name" name="name" required><br>
+				<label for="name">Pass Type*</label>
+				<select name="pass_type" id="pass_type">
+					<option value="gold">Gold (Rs 799 + GST)</option>
+					<option value="silver">Silver (Rs 499 + GST)</option>
+				</select><br>
                 <label for="remarks">Remarks</label>
                 <input type="text" id="remarks" name="remarks"></input><br>
             </div>

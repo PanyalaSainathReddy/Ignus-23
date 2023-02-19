@@ -5,12 +5,18 @@ document.getElementById("pay_499_form").addEventListener("submit", function(even
     event.preventDefault();
 
     var name = document.getElementById("name").value;
+    var pass_type = document.getElementById("pass_type").value;
     var remarks = document.getElementById("remarks").value;
+    var amount = "799.00";
+    if(pass_type == "silver"){
+      amount = "499.00";
+    }
 
     fetch(BASE_URL + 'api/payments/payment-500/', {
         method: 'POST',
         body: JSON.stringify({
           name: name,
+          amount: amount,
           remarks: remarks,
         }),
         headers: {
