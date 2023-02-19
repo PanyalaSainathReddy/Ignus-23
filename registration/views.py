@@ -942,7 +942,7 @@ class ClearCookies(APIView):
 
 @api_view(['GET'])
 def fetch_users(request):
-    users = [user.registration_code for user in UserProfile.objects.all() if (user.amount_paid and user.pronites and user.main_pronite) or (user.user.iitj)]
+    users = [user.registration_code for user in UserProfile.objects.all() if user.amount_paid or user.user.iitj]
     users = UserProfile.objects.filter(registration_code__in=users)
 
     data = []
