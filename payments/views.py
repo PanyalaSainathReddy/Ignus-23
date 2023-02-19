@@ -642,6 +642,14 @@ def update_payments(request):
                     user.pronites = True
                     user.main_pronite = True
                     user.igmun = False
+                elif pay_for == "pass-799.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                    user.is_gold = True
+                elif pay_for == "gold-upgrade":
+                    user.is_gold = True
                 elif pay_for == "pass-2299.00":
                     user.amount_paid = True
                     user.pronites = True
@@ -853,7 +861,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=failed")
 
             if is_500:
-                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/failed.html")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=failed&msg={'-'.join(txn.resp_msg.split())}")
@@ -868,7 +876,7 @@ class PaymentCallback(APIView):
                 return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/alumni/index.html?status=pending")
 
             if is_500:
-                return Response(data={"message": txn.resp_msg}, status=status.HTTP_400_BAD_REQUEST)
+                return HttpResponseRedirect(redirect_to=f"{frontend_base_url}/payments/pending.html")
 
             return HttpResponseRedirect(
                 redirect_to=f"{frontend_base_url}/payment_steps/steps.html?status=pending&msg={'-'.join(txn.resp_msg.split())}")
@@ -893,6 +901,14 @@ class PaymentCallback(APIView):
                         user.pronites = True
                         user.main_pronite = True
                         user.igmun = False
+                    elif pay_for == "pass-799.00":
+                        user.amount_paid = True
+                        user.pronites = True
+                        user.main_pronite = True
+                        user.igmun = False
+                        user.is_gold = True
+                    elif pay_for == "gold-upgrade":
+                        user.is_gold = True
                     elif pay_for == "pass-2299.00":
                         user.amount_paid = True
                         user.pronites = True
@@ -1000,6 +1016,12 @@ class PaymentCallback(APIView):
                     user.pronites = True
                     user.main_pronite = True
                     user.igmun = False
+                elif pay_for == "pass-799.00":
+                    user.amount_paid = True
+                    user.pronites = True
+                    user.main_pronite = True
+                    user.igmun = False
+                    user.is_gold = True
                 elif pay_for == "gold-upgrade":
                     user.is_gold = True
                 elif pay_for == "pass-2299.00":

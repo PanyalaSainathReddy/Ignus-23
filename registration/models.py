@@ -16,7 +16,7 @@ class User(AbstractUser):
     iitj = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return self.get_full_name()
+        return self.email
 
 
 class BlacklistedEmail(models.Model):
