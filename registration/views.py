@@ -4,9 +4,10 @@ from urllib.parse import urlencode
 import pytz
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.shortcuts import redirect
-from rest_framework.decorators import api_view
+from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
 from rest_framework import exceptions, generics, serializers, status, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -968,3 +969,33 @@ def update_users_attendance(request):
         user.save()
 
     return Response(data={"message": "Attendance marked successfully"}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pronites_attendance(request):
+    return render(request=request, template_name="pronites_attendance.html")
+
+
+@api_view(['POST'])
+def check_status(request):
+    data = request.data
+    ignus_id = data.get('ignus-id', '')
+
+    if ignus_id != '':
+        if UserProfile.objects.filter(registration_code=ignus_id).exists():
+            user = UserProfile.objects.get(registration_code=ignus_id)
+        else:
+            return render(request=request, template_name="pronites_attendance.html", context={"error": "User does not exist"})
+    else:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User does not exist"})
+
+    if user.attendance_day4:
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User already entered pronite", "is_gold": user.is_gold})
+
+    if (not user.amount_paid) and (not user.pronites) and (not user.main_pronite):
+        return render(request=request, template_name="pronites_attendance.html", context={"error": "User not paid"})
+
+    qr_base_url = "https://chart.apis.google.com/chart?chs=250x250&cht=qr&choe=UTF-8"
+    qr = mark_safe(f'{qr_base_url}&chl={user.uuid}')
+
+    return render(request=request, template_name="pronites_attendance.html", context={"pronites_qr": qr, "is_gold": user.is_gold})

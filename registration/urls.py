@@ -7,7 +7,8 @@ from .views import (CARegisterAPIView, ClearCookies, CookieTokenRefreshView,
                     GoogleRegisterViewApp, LoginView, LogoutView, MarkEntry,
                     MarkPronitesAttendance, PreCARegistrationAPIView,
                     PreRegistrationAPIView, RegisterUserAPIView, UserDetailAPI,
-                    UserProfileAPIView, UserProfileDetailsView, fetch_users, update_users_attendance)
+                    UserProfileAPIView, UserProfileDetailsView, check_status,
+                    fetch_users, pronites_attendance, update_users_attendance)
 
 router = routers.DefaultRouter()
 router.register(r'pre-register', PreRegistrationAPIView)
@@ -28,6 +29,8 @@ urlpatterns = [
     path('mark-entry/', MarkEntry.as_view()),
     path('users/fetch/', fetch_users),
     path('users/mark-attendance/', update_users_attendance),
+    path('pronites/', pronites_attendance),
+    path('pronites/status/', check_status),
     path('user-profile/', UserProfileAPIView.as_view()),
     path('user-profile-details/', UserProfileDetailsView.as_view()),
     path('ca-register/', CARegisterAPIView.as_view(), name="ca-register"),
