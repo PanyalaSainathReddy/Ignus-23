@@ -138,7 +138,7 @@ class BulkOrderAdmin(admin.ModelAdmin):
 class TransactionResource(resources.ModelResource):
     class Meta:
         model = Transaction
-        fields = ('txn_id', 'bank_txn_id', 'status', 'order__id', 'amount', 'gateway_name', 'payment_mode', 'resp_code', 'resp_msg', 'timestamp', 'user__registration_code', 'user__user__first_name', 'user__user__last_name')
+        fields = ('txn_id', 'bank_txn_id', 'status', 'order__id', 'amount', 'gateway_name', 'payment_mode', 'resp_code', 'resp_msg', 'timestamp', 'user__registration_code', 'user__user__first_name', 'user__user__last_name', 'user__user__email')
 
 
 class TransactionAdmin(ImportExportActionModelAdmin):
