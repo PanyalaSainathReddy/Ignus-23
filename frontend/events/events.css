@@ -142,7 +142,7 @@ h1{
 .informal .btn-container{
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  width: 25%;
+  width: 45%;
 }
 
 .flagship-img{
@@ -545,9 +545,13 @@ nav button:hover{
   .informal{
     padding: 2vh 0 0 0;
   }
-  .pronite .btn-container, .flagship .btn-container, .informal .btn-container{
+  .pronite .btn-container, .flagship .btn-container{
     width: 55vw;
     margin-top: -20vh  !important;
+  }
+  .informal .btn-container{
+    width: 80vw;
+    margin-top: -10vh  !important;
   }
   .flagship .btn-container{
     transform: translate(-30vw, 0);
