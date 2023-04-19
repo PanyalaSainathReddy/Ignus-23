@@ -1,23 +1,23 @@
 // countdown js 
-var countDownDate = new Date("Feb 18, 2023 00:00:00").getTime();
-const countdownTiles = document.querySelectorAll('.countdown-tile')
-const days_cont = countdownTiles[0].children[0]
-const hours_cont = countdownTiles[1].children[0]
-const mins_cont = countdownTiles[2].children[0]
-const secs_cont = countdownTiles[3].children[0]
-var x = setInterval(function() {
-  var now = new Date().getTime();
-  var distance = countDownDate - now;
+// var countDownDate = new Date("Feb 18, 2023 00:00:00").getTime();
+// const countdownTiles = document.querySelectorAll('.countdown-tile')
+// const days_cont = countdownTiles[0].children[0]
+// const hours_cont = countdownTiles[1].children[0]
+// const mins_cont = countdownTiles[2].children[0]
+// const secs_cont = countdownTiles[3].children[0]
+// var x = setInterval(function() {
+//   var now = new Date().getTime();
+//   var distance = countDownDate - now;
 
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-  days_cont.innerHTML = days;
-  hours_cont.innerHTML = hours;
-  mins_cont.innerHTML = minutes;
-  secs_cont.innerHTML = seconds;
-}, 1000);
+//   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//   days_cont.innerHTML = days;
+//   hours_cont.innerHTML = hours;
+//   mins_cont.innerHTML = minutes;
+//   secs_cont.innerHTML = seconds;
+// }, 1000);
 
 // responsive menu js 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
