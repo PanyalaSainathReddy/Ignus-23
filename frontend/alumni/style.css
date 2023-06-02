@@ -351,7 +351,7 @@ input[type= "text"], input[type= "email"]{
 /* Snackbar */
 
 #snackbar {
-	visibility: hidden;
+	visibility: visible;
 	min-width: 250px;
 	margin-left: -125px;
 	background-color: rgb(255, 62, 62);
@@ -362,14 +362,8 @@ input[type= "text"], input[type= "email"]{
 	position: fixed;
 	z-index: 200000000;
 	left: 50%;
-	top: 30px;
+	top: 70px;
 	font-size: 17px;
-}
-  
-#snackbar.show {
-	visibility: visible;
-	-webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
-	animation: fadein 0.5s, fadeout 0.5s 4.5s;
 }
   
 @-webkit-keyframes fadein {

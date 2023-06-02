@@ -16,33 +16,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-const params = new Proxy(new URLSearchParams(window.location.search), {
-	get: (searchParams, prop) => searchParams.get(prop),
-});
+// const params = new Proxy(new URLSearchParams(window.location.search), {
+// 	get: (searchParams, prop) => searchParams.get(prop),
+// });
 
-let stat = params.status;
+// let stat = params.status;
 
-if(stat == "success"){
-  var x = document.getElementById("snackbar");
-  x.innerHTML = "Thank you for your contribution!";
-  x.className = "show";
-  x.style.backgroundColor = "#4CAF50";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-}
-else if(stat == "failed"){
-  var x = document.getElementById("snackbar");
-  x.innerHTML = "Your Payment has been failed, try again!";
-  x.className = "show";
-  x.style.backgroundColor = "red";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-}
-else if(stat == "pending"){
-	var x = document.getElementById("snackbar");
-	x.innerHTML = "Your Payment is still Pending!";
-	x.className = "show";
-  x.style.backgroundColor = "red";
-	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-}
+// if(stat == "success"){
+//   var x = document.getElementById("snackbar");
+//   x.innerHTML = "Thank you for your contribution!";
+//   x.className = "show";
+//   x.style.backgroundColor = "#4CAF50";
+//   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+// }
+// else if(stat == "failed"){
+//   var x = document.getElementById("snackbar");
+//   x.innerHTML = "Your Payment has been failed, try again!";
+//   x.className = "show";
+//   x.style.backgroundColor = "red";
+//   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+// }
+// else if(stat == "pending"){
+// 	var x = document.getElementById("snackbar");
+// 	x.innerHTML = "Your Payment is still Pending!";
+// 	x.className = "show";
+//   x.style.backgroundColor = "red";
+// 	setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+// }
 
 // froms tab funcitonality
 const presence_btn = document.querySelector(".presence")
@@ -91,138 +91,138 @@ contribution_btn.addEventListener("click", ()=>{
   contribution_form.style.display = "grid"
 })
 
-presence_form.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  var name = name_confirm.value;
-  var email = email_confirm.value;
-  var phone = phone_confirm.value;
-  var year = year_confirm.value;
+// presence_form.addEventListener("submit", (e)=>{
+//   e.preventDefault();
+//   var name = name_confirm.value;
+//   var email = email_confirm.value;
+//   var phone = phone_confirm.value;
+//   var year = year_confirm.value;
 
-  body = {
-    name: name,
-    email: email,
-    phone: phone,
-    passing_year: year
-  }
+//   body = {
+//     name: name,
+//     email: email,
+//     phone: phone,
+//     passing_year: year
+//   }
 
-  fetch("https://api.ignus.co.in/api/payments/confirm-alumni-presence/", {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(function(response){
-    if(response.status == 201){
-      var x = document.getElementById("snackbar");
-      x.innerHTML = `Your presence has been confirmed!`;
-      x.className = "show";
-      x.style.backgroundColor = "#4CAF50";
-      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+//   fetch("https://api.ignus.co.in/api/payments/confirm-alumni-presence/", {
+//     method: "POST",
+//     body: JSON.stringify(body),
+//     headers: {
+//       "Content-Type": "application/json"
+//     }
+//   })
+//   .then(function(response){
+//     if(response.status == 201){
+//       var x = document.getElementById("snackbar");
+//       x.innerHTML = `Your presence has been confirmed!`;
+//       x.className = "show";
+//       x.style.backgroundColor = "#4CAF50";
+//       setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
 
-      presence_btn.classList.remove("active-btn");
-      contribution_btn.classList.add("active-btn");
-      presence_form.style.display = "none";
-      contribution_form.style.display = "grid";
-      presence_btn.disabled = true;
+//       presence_btn.classList.remove("active-btn");
+//       contribution_btn.classList.add("active-btn");
+//       presence_form.style.display = "none";
+//       contribution_form.style.display = "grid";
+//       presence_btn.disabled = true;
 
-      name_contribute.value = name;
-      email_contribute.value = email;
-      phone_contribute.value = phone;
-      year_contribute.value = year;
-      name_contribute.disabled = true;
-      email_contribute.disabled = true;
-      phone_contribute.disabled = true;
-      year_contribute.disabled = true;
-      opinion_msg.style.display = "block";
-      checkbox_confirmation_contribute.checked = false;
-      confirmation_contribute.style.display = "none";
-      document.getElementById('presence_first_btn').disabled = true;
-    }
-  })
-  .catch(error => console.error('Error:', error));
-});
+//       name_contribute.value = name;
+//       email_contribute.value = email;
+//       phone_contribute.value = phone;
+//       year_contribute.value = year;
+//       name_contribute.disabled = true;
+//       email_contribute.disabled = true;
+//       phone_contribute.disabled = true;
+//       year_contribute.disabled = true;
+//       opinion_msg.style.display = "block";
+//       checkbox_confirmation_contribute.checked = false;
+//       confirmation_contribute.style.display = "none";
+//       document.getElementById('presence_first_btn').disabled = true;
+//     }
+//   })
+//   .catch(error => console.error('Error:', error));
+// });
 
-contribution_form.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  var name = name_contribute.value;
-  var email = email_contribute.value;
-  var phone = phone_contribute.value;
-  var year = year_contribute.value;
-  var amount = amount_contribute.value;
-  var remarks = remarks_contribute.value;
+// contribution_form.addEventListener("submit", (e)=>{
+//   e.preventDefault();
+//   var name = name_contribute.value;
+//   var email = email_contribute.value;
+//   var phone = phone_contribute.value;
+//   var year = year_contribute.value;
+//   var amount = amount_contribute.value;
+//   var remarks = remarks_contribute.value;
 
-  if(document.getElementById("checkbox_confirmation_contribute").checked == true){
-    body = {
-      name: name,
-      email: email,
-      phone: phone,
-      passing_year: year
-    }
+//   if(document.getElementById("checkbox_confirmation_contribute").checked == true){
+//     body = {
+//       name: name,
+//       email: email,
+//       phone: phone,
+//       passing_year: year
+//     }
   
-    fetch("https://api.ignus.co.in/api/payments/confirm-alumni-presence/", {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(function(response){
-      if(response.status == 201){
-        body = {
-          name: name,
-          email: email,
-          phone: phone,
-          passing_year: year,
-          amount: amount,
-          remarks: remarks
-        }
+//     fetch("https://api.ignus.co.in/api/payments/confirm-alumni-presence/", {
+//       method: "POST",
+//       body: JSON.stringify(body),
+//       headers: {
+//         "Content-Type": "application/json"
+//       }
+//     })
+//     .then(function(response){
+//       if(response.status == 201){
+//         body = {
+//           name: name,
+//           email: email,
+//           phone: phone,
+//           passing_year: year,
+//           amount: amount,
+//           remarks: remarks
+//         }
       
-        fetch("https://api.ignus.co.in/api/payments/alumni-contribution/", {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(function(response){
-          return response.json();
-        })
-        .then(function(data){
-          if(data.link != undefined){
-            window.location.href = data.link;
-          }
-        })
-        .catch(error => console.error('Error:', error));
-      }
-    })
-    .catch(error => console.error('Error:', error));
-  }
-  else{
-    body = {
-      name: name,
-      email: email,
-      phone: phone,
-      passing_year: year,
-      amount: amount,
-      remarks: remarks
-    }
+//         fetch("https://api.ignus.co.in/api/payments/alumni-contribution/", {
+//           method: "POST",
+//           body: JSON.stringify(body),
+//           headers: {
+//             "Content-Type": "application/json"
+//           }
+//         })
+//         .then(function(response){
+//           return response.json();
+//         })
+//         .then(function(data){
+//           if(data.link != undefined){
+//             window.location.href = data.link;
+//           }
+//         })
+//         .catch(error => console.error('Error:', error));
+//       }
+//     })
+//     .catch(error => console.error('Error:', error));
+//   }
+//   else{
+//     body = {
+//       name: name,
+//       email: email,
+//       phone: phone,
+//       passing_year: year,
+//       amount: amount,
+//       remarks: remarks
+//     }
   
-    fetch("https://api.ignus.co.in/api/payments/alumni-contribution/", {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(function(response){
-      return response.json();
-    })
-    .then(function(data){
-      if(data.link != undefined){
-        window.location.href = data.link;
-      }
-    })
-    .catch(error => console.error('Error:', error));
-  }
-});
+//     fetch("https://api.ignus.co.in/api/payments/alumni-contribution/", {
+//       method: "POST",
+//       body: JSON.stringify(body),
+//       headers: {
+//         "Content-Type": "application/json"
+//       }
+//     })
+//     .then(function(response){
+//       return response.json();
+//     })
+//     .then(function(data){
+//       if(data.link != undefined){
+//         window.location.href = data.link;
+//       }
+//     })
+//     .catch(error => console.error('Error:', error));
+//   }
+// });

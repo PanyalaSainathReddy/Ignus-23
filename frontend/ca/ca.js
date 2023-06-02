@@ -87,106 +87,106 @@ $(document).ready(function(){
 	});
 });
 
-function getCookie(cname) {
-	let name = cname + "=";
-	let decodedCookie = decodeURIComponent(document.cookie);
-	let ca = decodedCookie.split(';');
-	for(let i = 0; i <ca.length; i++) {
-	  let c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
-	}
-	return "";
-}
+// function getCookie(cname) {
+// 	let name = cname + "=";
+// 	let decodedCookie = decodeURIComponent(document.cookie);
+// 	let ca = decodedCookie.split(';');
+// 	for(let i = 0; i <ca.length; i++) {
+// 	  let c = ca[i];
+// 	  while (c.charAt(0) == ' ') {
+// 		c = c.substring(1);
+// 	  }
+// 	  if (c.indexOf(name) == 0) {
+// 		return c.substring(name.length, c.length);
+// 	  }
+// 	}
+// 	return "";
+// }
+// 
+// var ca_register_btn = document.getElementById("ca_register_btn");
+// var referral_code = document.getElementById("referral_code");
 
-var ca_register_btn = document.getElementById("ca_register_btn");
-var referral_code = document.getElementById("referral_code");
-
-if(getCookie("LoggedIn") == "True"){
-  if(getCookie("isProfileComplete") == "True"){
-    if(getCookie("isCA") == "True"){
-      ca_register_btn.innerHTML = "<a>Registered!</a>";
-      referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
-    }
-  }
-  else{
-    ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
-  }
-}
-else{
-  ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
-}
+// if(getCookie("LoggedIn") == "True"){
+//   if(getCookie("isProfileComplete") == "True"){
+//     if(getCookie("isCA") == "True"){
+//       ca_register_btn.innerHTML = "<a>Registered!</a>";
+//       referral_code.innerHTML = `Referral Code: <b style="font-size: larger;">${getCookie("ignusID")}</b>`
+//     }
+//   }
+//   else{
+//     ca_register_btn.innerHTML = "<a href='../complete-profile/index.html'>CA Register</a>";
+//   }
+// }
+// else{
+//   ca_register_btn.innerHTML = "<a href='../login.html'>CA Register</a>";
+// }
 
 // API
-const BASE_URL = "https://api.ignus.co.in/"; 
-const URL_USER_AUTHENTICATE= "api/accounts/login/";
-const URL_REFRESH_TOKEN="api/accounts/refresh/";
+// const BASE_URL = "https://api.ignus.co.in/"; 
+// const URL_USER_AUTHENTICATE= "api/accounts/login/";
+// const URL_REFRESH_TOKEN="api/accounts/refresh/";
 
-const miAPI = axios.create({
-    baseURL: BASE_URL,
-    withCredentials:true
-});
+// const miAPI = axios.create({
+//     baseURL: BASE_URL,
+//     withCredentials:true
+// });
 
-miAPI.interceptors.response.use(function(response) {
-  return response;
-},function(error) {
-    const originalReq = error.config;
+// miAPI.interceptors.response.use(function(response) {
+//   return response;
+// },function(error) {
+//     const originalReq = error.config;
 
-    if ( error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE ) {
-      originalReq._retry = true;
+//     if ( error.response.status == 401 && !originalReq._retry && error.response.config.url != URL_USER_AUTHENTICATE ) {
+//       originalReq._retry = true;
 
-      return axios.post(BASE_URL+URL_REFRESH_TOKEN, null, {
-        withCredentials:true
-      }).then((res) =>{
-          if ( res.status == 200) {
-              return axios(originalReq);
-          }
-        }).catch((error) => {window.location.href="/login.html"});
-    }
-    return Promise.reject(error);
-});
+//       return axios.post(BASE_URL+URL_REFRESH_TOKEN, null, {
+//         withCredentials:true
+//       }).then((res) =>{
+//           if ( res.status == 200) {
+//               return axios(originalReq);
+//           }
+//         }).catch((error) => {window.location.href="/login.html"});
+//     }
+//     return Promise.reject(error);
+// });
 
-ca_register_btn.addEventListener("click", function(){
-  if(getCookie("LoggedIn") == "True"){
-    if(getCookie("isProfileComplete") == "True"){
-      if(getCookie("isCA") == "False"){
-        miAPI.post("api/accounts/ca-register/", null, {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            // 'X-CSRFToken': getCookie('csrftoken'),
-          },
-          withCredentials: true,
-        }
-        ).then(function(response){
-          // ca_register_btn.innerHTML = "<a>Registered!</a>";
-          window.location.replace("../ca/ca.html");
-          sessionStorage.setItem("showmsg", "Successfully Registered as CA");
-        }).catch(function(error){
-          if(error.response.status == 403){
-            var x = document.getElementById("snackbar");
-            x.innerHTML = error.response.data.error;
-            x.style.backgroundColor = "red";
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-            sessionStorage.removeItem("showmsg");
-          }
-          else if(error.response.status == 402){
-            sessionStorage.setItem("showmsg", error.response.data.error);
-            window.location.replace("../payment_steps/steps.html");
-          }
-        });
-      }
-    }
-  }
-});
+// ca_register_btn.addEventListener("click", function(){
+//   if(getCookie("LoggedIn") == "True"){
+//     if(getCookie("isProfileComplete") == "True"){
+//       if(getCookie("isCA") == "False"){
+//         miAPI.post("api/accounts/ca-register/", null, {
+//           headers: {
+//             'Content-type': 'application/json; charset=UTF-8',
+//             // 'X-CSRFToken': getCookie('csrftoken'),
+//           },
+//           withCredentials: true,
+//         }
+//         ).then(function(response){
+//           // ca_register_btn.innerHTML = "<a>Registered!</a>";
+//           window.location.replace("../ca/ca.html");
+//           sessionStorage.setItem("showmsg", "Successfully Registered as CA");
+//         }).catch(function(error){
+//           if(error.response.status == 403){
+//             var x = document.getElementById("snackbar");
+//             x.innerHTML = error.response.data.error;
+//             x.style.backgroundColor = "red";
+//             x.className = "show";
+//             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+//             sessionStorage.removeItem("showmsg");
+//           }
+//           else if(error.response.status == 402){
+//             sessionStorage.setItem("showmsg", error.response.data.error);
+//             window.location.replace("../payment_steps/steps.html");
+//           }
+//         });
+//       }
+//     }
+//   }
+// });
 
-if(sessionStorage.getItem("showmsg")=='Successfully Registered as CA'){
-  var x = document.getElementById("snackbar");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-  sessionStorage.removeItem("showmsg");
-}
+// if(sessionStorage.getItem("showmsg")=='Successfully Registered as CA'){
+//   var x = document.getElementById("snackbar");
+//   x.className = "show";
+//   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+//   sessionStorage.removeItem("showmsg");
+// }

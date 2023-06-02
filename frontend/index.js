@@ -139,13 +139,13 @@ $(document).ready(function(){
 //   secs_cont.innerHTML = seconds;
 // }, 1000);
 
-if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!' || sessionStorage.getItem("showmsg")=='Account Deleted Succesfully!'){
-  var x = document.getElementById("snackbar");
-  x.innerHTML = sessionStorage.getItem("showmsg");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-  sessionStorage.removeItem("showmsg");
-}
+// if(sessionStorage.getItem("showmsg")=='Successfully pre-registered' || sessionStorage.getItem("showmsg")=='Successfully logged-out!' || sessionStorage.getItem("showmsg")=='Account Deleted Succesfully!'){
+//   var x = document.getElementById("snackbar");
+//   x.innerHTML = sessionStorage.getItem("showmsg");
+//   x.className = "show";
+//   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+//   sessionStorage.removeItem("showmsg");
+// }
 
 
 // lightBox functionality 
@@ -168,28 +168,28 @@ document.querySelector(".prakriti-btn").addEventListener("click", ()=>{
   window.location.href = "prakriti/prakriti.html";
 })
 
-function getCookie(cname) {
-	let name = cname + "=";
-	let decodedCookie = decodeURIComponent(document.cookie);
-	let ca = decodedCookie.split(';');
-	for(let i = 0; i <ca.length; i++) {
-	  let c = ca[i];
-	  while (c.charAt(0) == ' ') {
-		c = c.substring(1);
-	  }
-	  if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-	  }
-	}
-	return "";
-}
+// function getCookie(cname) {
+// 	let name = cname + "=";
+// 	let decodedCookie = decodeURIComponent(document.cookie);
+// 	let ca = decodedCookie.split(';');
+// 	for(let i = 0; i <ca.length; i++) {
+// 	  let c = ca[i];
+// 	  while (c.charAt(0) == ' ') {
+// 		c = c.substring(1);
+// 	  }
+// 	  if (c.indexOf(name) == 0) {
+// 		return c.substring(name.length, c.length);
+// 	  }
+// 	}
+// 	return "";
+// }
 
-var reg_get_pass_btn = document.querySelector("#reg_get_pass_btn");
+// var reg_get_pass_btn = document.querySelector("#reg_get_pass_btn");
 
-if(getCookie("LoggedIn")){
-  reg_get_pass_btn.innerHTML = "<button> Get Passes </button>";
-  reg_get_pass_btn.href = "payment_steps/steps.html";
-}
+// if(getCookie("LoggedIn")){
+//   reg_get_pass_btn.innerHTML = "<button> Get Passes </button>";
+//   reg_get_pass_btn.href = "payment_steps/steps.html";
+// }
 
 
 
