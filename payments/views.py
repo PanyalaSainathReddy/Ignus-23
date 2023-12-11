@@ -2,7 +2,6 @@ import json
 import logging
 from time import time
 from urllib.parse import quote_plus
-
 import paytmchecksum
 import requests
 from django.conf import settings
@@ -15,10 +14,8 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from events.models import Event, TeamRegistration
 from registration.models import UserProfile
-
 from .models import BulkOrder, BulkTransaction, Order, PromoCode, Transaction
 from .utils import (get_na_orders, get_payment_status,
                     get_pending_transactions, id_generator)
