@@ -30,7 +30,7 @@ export const Overlay = () =>{
                         <div className="loader-header">
                         <img className="logo" src="./text-1702194921094.png" />
                         <p className="quote">Where passion meets pride</p>
-                        <p className="date">15th - 18th February</p>
+                        {/* <p className="date">15th - 18th February</p> */}
                     </div>
                     
                          
