@@ -15,7 +15,7 @@ from .serializers import AllEventsSerializer, EventTypeSerializer, EventSchedule
 
 User = get_user_model()
 
-# Temp Change corresponding 
+
 class AllEventsView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = AllEventsSerializer
