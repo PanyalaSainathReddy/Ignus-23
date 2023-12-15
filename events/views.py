@@ -42,7 +42,7 @@ class EventTypeView(ListAPIView):
         serializer = EventTypeSerializer(eventType)
         data = serializer.data
 
-        if type(request.user) != AnonymousUser:
+        if type(request.user) is not AnonymousUser:
             user = User.objects.get(id=request.user.id)
             try:
                 userprofile = UserProfile.objects.get(user=user)

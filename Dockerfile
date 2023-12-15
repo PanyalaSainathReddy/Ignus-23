@@ -10,3 +10,4 @@ RUN PIP_USER=1 PIP_IGNORE_INSTALLED=1 pipenv install --system --deploy --dev \
 
 WORKDIR /app
 COPY . /app
+EXPOSE 8000
