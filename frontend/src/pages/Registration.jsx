@@ -88,12 +88,12 @@ const RegistrationForm = () => {
   ];
 
   return (
-    <div className="container" id="container">
-      <div className="form-container sign-up-container">
+    <div className="container" >
+      {/* <div className="form-container sign-up-container">
         <form action="#">
           <h1>Thank you for Registrations</h1>
         </form>
-      </div>
+      </div> */}
       <div className="form-container sign-in-container">
         <form >
           <h1>Pre-Registration</h1>
@@ -101,6 +101,7 @@ const RegistrationForm = () => {
             type="text"
             placeholder="Full Name"
             name="fullName"
+            required
           // value={formData.fullName}
           // onChange={(e) => handleInputChange('fullName', e.target.value)}
           />
@@ -108,25 +109,40 @@ const RegistrationForm = () => {
             type="email"
             placeholder="Email"
             name="email"
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+            required
+            // len
           // value={formData.email}
           // onChange={(e) => handleInputChange('email', e.target.value)}
           />
           <input
-            type="number"
+            type="tel"
             placeholder="Phone Number"
             name="phoneNumber"
-          // value={formData.phoneNumber}
+            maxLength="10"
+            minLength="10"
+            required
+            // value={formData.phoneNumber}
           // onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
           />
           <input
             type="text"
             placeholder="College Name"
             name="collegeName"
+            required
+          // value={formData.collegeName}
+          // onChange={(e) => handleInputChange('collegeName', e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="City"
+            name="cityName"
+            required
           // value={formData.collegeName}
           // onChange={(e) => handleInputChange('collegeName', e.target.value)}
           />
         
-          <select name="state" id="state" placeholder="College State">
+          <select name="state" id="state" placeholder="College State" required>
             <option value="" disabled selected>Choose College State</option>
             <option value="0">Andhra Pradesh</option>
             <option value="1">Arunachal Pradesh</option>
@@ -165,7 +181,7 @@ const RegistrationForm = () => {
             <option value="34">Puducherry</option>
           </select>
 
-          <select name="state" id="state" placeholder="College State">
+          <select name="state" id="state" placeholder="College State" required>
             <option value="" disabled selected>Current Year</option>
             <option value="0">First Year</option>
             <option value="1">Second Year</option>
